@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const findOrCreate = require('mongoose-findorcreate');
 
 const { Schema, model } = mongoose;
-
-const db_uri = 'mongodb://localhost/gallerist';
+const db_uri = process.env.DB_URI;
 
 mongoose.connect(db_uri)
   .then(() => console.log('Connection to Database successful'))
