@@ -5,7 +5,7 @@ const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 require('dotenv').config();
 
-const { NODE_ENV = 'development' } = process.env;
+const { NODE_ENV } = process.env;
 const isDev = NODE_ENV.includes('dev');
 
 const config = {
