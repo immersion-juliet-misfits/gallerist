@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack",
     "start": "nodemon server/index.js",
-    "seed": "node server/db/seed.js"
+    "seed": "node server/db/seed.js",
+    "dev": "concurrently --kill-others \"npm run build\" \"npm start\""
   },
   "repository": {
     "type": "git",
@@ -50,6 +51,7 @@
     "autoprefixer": "^10.4.17",
     "babel": "^6.23.0",
     "babel-loader": "^9.1.3",
+    "concurrently": "^8.2.2",
     "css-loader": "^6.9.0",
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
