@@ -10,7 +10,7 @@ import Profile from './Profile';
 import Home from './Home';
 import PhotoInfo from './PhotoInfo';
 import PalGallery from './PalGallery';
-import MemeMaker from './MemeMaker';
+import MemeMaker from './meme/MemeMaker';
 
 const App = createBrowserRouter([
   {

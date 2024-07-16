@@ -36,7 +36,14 @@ const ArtSchema = new Schema({
   price: Number,
 });
 
+const MemeSchema = new Schema({
+  name: String,
+  url: String,
+  options: Object,
+});
+
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
+const Meme = model('Meme', MemeSchema);
 
-module.exports = { User, Art };
+module.exports = { User, Art, Meme };
