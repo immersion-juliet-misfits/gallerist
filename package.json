@@ -7,7 +7,7 @@
     "build": "webpack",
     "start": "nodemon server/index.js",
     "seed": "node server/db/seed.js",
-    "dev": "concurrently --kill-others \"npm run build\" \"npm start\""
+    "dev": "concurrently --kill-others \"npm run build\" \"npm start\" --restart-tries -1 "
   },
   "repository": {
     "type": "git",
