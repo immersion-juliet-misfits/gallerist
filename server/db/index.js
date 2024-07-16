@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 const mongoose = require('mongoose');
 const findOrCreate = require('mongoose-findorcreate');
-require('dotenv').config();
 
 const { Schema, model } = mongoose;
 

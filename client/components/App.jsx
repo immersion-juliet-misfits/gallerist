@@ -10,6 +10,7 @@ import Profile from './Profile';
 import Home from './Home';
 import PhotoInfo from './PhotoInfo';
 import PalGallery from './PalGallery';
+import MemeMaker from './MemeMaker';
 
 const App = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const App = createBrowserRouter([
       {
         path: '/home/art/:imageId',
         element: <PhotoInfo />,
+      },
+      {
+        path: '/home/meme',
+        element: <MemeMaker />,
       },
     ],
   },
