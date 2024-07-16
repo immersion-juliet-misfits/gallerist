@@ -10,6 +10,7 @@ import Profile from './Profile';
 import Home from './Home';
 import PhotoInfo from './PhotoInfo';
 import PalGallery from './PalGallery';
+import Quiz from './quiz/Quiz';
 
 const App = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const App = createBrowserRouter([
       {
         path: '/home/auction',
         element: <Auction />,
+      },
+      {
+        path: '/home/quiz',
+        element: <Quiz />,
       },
       {
         path: '/home/art/:imageId',

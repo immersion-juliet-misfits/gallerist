@@ -1,11 +1,11 @@
-const webpack = require('webpack');
+// const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 require('dotenv').config();
 
-const { NODE_ENV = 'production' } = process.env;
+const { NODE_ENV } = process.env;
 const isDev = NODE_ENV.includes('dev');
 
 const config = {
@@ -52,15 +52,23 @@ const config = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: [
-                  autoprefixer,
-                ],
+                plugins: [autoprefixer],
               },
             },
           },
           {
             // Loads a SASS/SCSS file and compiles it to CSS
             loader: 'sass-loader',
+            // Added to suppress webpack sass deprecation warnings
+            // Remove if we need to fix them later
+            options: {
+              /* eslint-disable global-require */
+              implementation: require('sass'),
+              /* eslint-enable global-require */
+              sassOptions: {
+                quietDeps: true,
+              },
+            },
           },
         ],
       },
