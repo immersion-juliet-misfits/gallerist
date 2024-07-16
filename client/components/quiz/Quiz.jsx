@@ -1,8 +1,11 @@
+/* eslint-disable jsx-quotes */
 // Top level container for the Quiz
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import StartGame from './startGame';
 
 function Quiz() {
   // State Start
@@ -51,14 +54,18 @@ function Quiz() {
   // Include ternary to control which view User is shown:
   // Start, Game, End
   return (
-    <Container>
-      <Row>
-        <h3>Quiz Time!</h3>
-        <h3>Placeholder</h3>
-        <h3>Wallet:</h3>
-        <h3>{wallet ? `$${wallet}` : '$0.00'}</h3>
+    <Container style={{ maxWidth: '1000px' }}>
+      <Row className='d-flex align-items-center'>
+        <Col>
+          <div className='d-flex'>
+            <h3>Wallet:</h3>
+            <h3 className='ms-2'>{wallet ? `$${wallet}` : '$0.00'}</h3>
+          </div>
+        </Col>
       </Row>
-      <Row>Placeholder</Row>
+      <Row>
+        <StartGame />
+      </Row>
     </Container>
   );
 }
