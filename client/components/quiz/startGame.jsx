@@ -2,24 +2,16 @@
 // Top level container for the Quiz
 // import React, { useState, useEffect } from 'react';
 import React from 'react';
-// import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
 
-function StartGame() {
+// Pass in Axios requests from Quiz.jsx
+function StartGame({ onStartClick }) {
   // State Start
 
   // State End
 
-  // Axios Requests Start
-
-  // Will render Start component
-  // useEffect(() => {
-  // }, []);
-
-  // Include ternary to control which view User is shown:
-  // Start, Game, End
   return (
     <Container
       style={{ maxWidth: '750px' }}
@@ -40,7 +32,11 @@ function StartGame() {
           <li>Click the Art Piece you believe belongs to the Title</li>
           <li>Win money for correct answers!</li>
         </ul>
-        <Button style={{ width: '200px', height: '50px' }} variant='secondary'>
+        <Button
+          style={{ width: '200px', height: '50px' }}
+          variant='secondary'
+          onClick={onStartClick}
+        >
           START?
         </Button>
       </Row>
