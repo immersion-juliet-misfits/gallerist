@@ -2,7 +2,7 @@ const express = require('express');
 
 const dbRouter = express.Router();
 
-const { User, Art } = require('../db/index');
+const { User, Art, Vault } = require('../db/index');
 
 // GET: to return user's profile info upon load of Profile component (could be used elsewhere)
 dbRouter.get('/db/user/', (req, res) => {
@@ -303,7 +303,9 @@ dbRouter.post('/db/art', (req, res) => {
 
 // GET to receive all art data of only those || no conditional logic yet
 dbRouter.get('/db/artOwners', (req, res) => {
-  Art.find({})
+  const { googleId } = req.user.doc;
+
+  Art.find({ 'userGallery.googleId': { $ne: googleId } })
     .then((pieces) => {
       console.log(pieces);
       // if (data.length >= 0) {
@@ -327,4 +329,34 @@ dbRouter.get('/db/randomArt/:googleId', (req, res) => {
     });
 });
 
+dbRouter.post('/db/security', (req, res) => {
+  const { name, googleId } = req.user.doc;
+  const { passcode, artGallery } = req.body;
+
+  Art.find({ 'userGallery.googleId': googleId })
+    .then((userArt) => {
+      // console.log('ART DATA', data);
+      Vault.findOne({ owner: req.user.doc }) // shoould probably find by user then create vault from that
+        .then((vault) => {
+          if (!vault) {
+          // console.log('macaroni')
+            console.log('req doc', req.user.doc);
+            Vault.create({ owner: req.user.doc, code: passcode, artGallery: userArt, name })
+              .then((newVault) => {
+                console.log(newVault, 'data created');
+                res.send(newVault);
+              })
+              .catch(() => {
+                res.sendStatus(500);
+              });
+          } else {
+            console.log(vault, 'data exists');
+            res.send(vault);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+});
 module.exports = { dbRouter };
