@@ -24,7 +24,7 @@ function Quiz() {
   // State End
 
   // Axios Requests Start -
-  // Re-Use: Function to check funds of user's wallet and set wallet state
+  // Re-Use: Function to Retrieve fund total of user's wallet and set wallet state
   function getWallet() {
     axios
       .get('/db/user/')
@@ -34,16 +34,18 @@ function Quiz() {
       .catch((err) => console.error('Could not GET wallet amount: ', err));
   }
 
-  // Function to retrieve Start views relevant Data
-  // Money is retrieved above, may also need Users previous high score.
-  // function getStart() {
+  // Function to retrieve 10 images from AIC & their titles
+  // (Make random after just successfully retrieving 10)
+  // Will be invoked when User clicks "START?" & pass State data to PlayGame
+  // function getArt() {
   //   axios
   //     .get('/db/placeholder/')
-  //     .then(({ data }) => {
-  //       setWallet(data.wallet);
+  //     .then(({ art }) => {
+
   //     })
   //     .catch((err) => console.error('Could not GET wallet amount: ', err));
   // }
+  // **********
   // Axios Requests End
 
   // Click Handlers Start
