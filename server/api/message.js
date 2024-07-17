@@ -1,0 +1,19 @@
+const axios = require('axios');
+require('dotenv').config();
+
+const { SERVICE_ID } = process.env;
+const { TEMPLATE_ID } = process.env;
+const { USER_ID } = process.env;
+
+module.exports = {
+  sendMessage: axios.post('https://api.emailjs.com/api/v1.0/email/send', {
+    service_id: SERVICE_ID,
+    template_id: TEMPLATE_ID,
+    user_id: USER_ID,
+    template_params: {
+      from_name: 'Galleriest',
+      to_name: 'user watching',
+      message: 'message',
+    },
+  }),
+};
