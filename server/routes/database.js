@@ -307,7 +307,6 @@ dbRouter.get('/db/artOwners', (req, res) => {
 
   Art.find({ 'userGallery.googleId': { $ne: googleId } })
     .then((pieces) => {
-      console.log(pieces);
       // if (data.length >= 0) {
       res.status(200).send(pieces);
       // }
@@ -329,34 +328,47 @@ dbRouter.get('/db/randomArt/:googleId', (req, res) => {
     });
 });
 
-dbRouter.post('/db/security', (req, res) => {
+// GET creates a vault for user's that don't have one setup...
+// ...otherwise send back existing vault data
+dbRouter.post('/db/vault', (req, res) => {
   const { name, googleId } = req.user.doc;
-  const { passcode, artGallery } = req.body;
 
   Art.find({ 'userGallery.googleId': googleId })
     .then((userArt) => {
       // console.log('ART DATA', data);
-      Vault.findOne({ owner: req.user.doc }) // shoould probably find by user then create vault from that
+      Vault.findOne({ owner: req.user.doc })
         .then((vault) => {
           if (!vault) {
           // console.log('macaroni')
             console.log('req doc', req.user.doc);
-            Vault.create({ owner: req.user.doc, code: passcode, artGallery: userArt, name })
+            Vault.create({ owner: req.user.doc, artGallery: userArt, name })
               .then((newVault) => {
                 console.log(newVault, 'data created');
-                res.send(newVault);
+                res.status(201).send(newVault);
               })
               .catch(() => {
                 res.sendStatus(500);
               });
           } else {
-            console.log(vault, 'data exists');
-            res.send(vault);
+            res.status(200).send(vault);
           }
         })
         .catch((err) => {
           console.error(err);
         });
+    });
+});
+
+dbRouter.patch('/db/vault/', (req, res) => {
+  const { _id } = req.user.doc;
+  const { code } = req.body;
+
+  Vault.findOneAndUpdate({ owner: _id }, { code })
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.error(err);
     });
 });
 module.exports = { dbRouter };
