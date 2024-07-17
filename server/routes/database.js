@@ -301,4 +301,30 @@ dbRouter.post('/db/art', (req, res) => {
   */
 });
 
+// GET to receive all art data of only those || no conditional logic yet
+dbRouter.get('/db/artOwners', (req, res) => {
+  Art.find({})
+    .then((pieces) => {
+      console.log(pieces);
+      // if (data.length >= 0) {
+      res.status(200).send(pieces);
+      // }
+    })
+    .catch(() => {
+      res.sendStatus(500);
+    });
+});
+
+// GET random art piece from a user's collection
+dbRouter.get('/db/randomArt/:googleId', (req, res) => {
+  const { googleId } = req.params;
+  Art.find({ 'userGallery.googleId': googleId })
+    .then((data) => {
+      res.send(data[Math.floor(data.length * Math.random())]);
+    })
+    .catch(() => {
+      res.sendStatus(500);
+    });
+});
+
 module.exports = { dbRouter };
