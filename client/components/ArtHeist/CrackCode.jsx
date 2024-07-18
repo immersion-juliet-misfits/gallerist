@@ -7,6 +7,7 @@ function CrackCode() {
   const [input, setInput] = useState('');
   const [vaults, setVaults] = useState([]);
   const [selectedVault, setSelectedVault] = useState({});
+  const [result, setResult] = useState(null);
 //   function getOtherOwners() {
 //     axios.get('/db/artOwners/')
 //       .then(({ data }) => {
@@ -53,11 +54,24 @@ function CrackCode() {
     axios.post('/db/guess', { owner, input })
       .then(({ data }) => {
         console.log(data, 'correct guess', input);
+        setResult(true);
       })
       .catch(() => {
         console.error('inncorrect pw', input);
+        setResult(false);
+        axios.put('/db/deductWallet', { price: 50 })
+          .then(() => {
+            console.log('You were fined for theft. -$50');
+          })
+          .catch(() => {
+            console.error('You got away with the theft attemp...');
+          });
       });
   }
+
+//   useEffect(() => {
+    
+//   }, [result]);
 
   useEffect(() => {
     // getOtherOwners();
@@ -87,6 +101,8 @@ function CrackCode() {
       <br />
       <input type="text" maxLength="5" size="5" placeholder="Guess vault passcode" onChange={(e) => handleInput(e)} />
       <input type="button" value="Submit Guess" onClick={() => handleGuess()} />
+      {result && <h2>Successful Attempt</h2>}
+      {!result && result !== null && <h2>Failed Attempt</h2>}
     </div>
   );
 }
