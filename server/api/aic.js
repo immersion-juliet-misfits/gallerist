@@ -12,9 +12,17 @@ Starting with Retrieving 2, will move up to 10 once working
 Need Fields: id, title, image_id (to construct url for displaying the image)
 */
 
-// V1: tested - pulls 1st 12 images from APIs page 1
+// V1: tested - pulls 1st 12 images from APIs page 1 - WORKS
+// const getAICart = () =>
+//   axios('https://api.artic.edu/api/v1/artworks?fields=id,title,image_id');
+
+// V1b: AIC wants "AIC-User-Agent header w/name of project & contact email* added to reqs
 const getAICart = () =>
-  axios('https://api.artic.edu/api/v1/artworks?fields=id,title,image_id');
+  axios('https://api.artic.edu/api/v1/artworks?fields=id,title,image_id', {
+    headers: {
+      'AIC-User-Agent': 'Gallerist - Senior Legacy Assignment (tremartin3003@gmail.com)'
+    }
+  });
 
 // V2: WIP them from a random page:
 /*

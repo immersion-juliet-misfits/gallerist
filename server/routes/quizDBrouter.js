@@ -50,22 +50,21 @@ quizRouter.get('/db/quizart', (req, res) => {
     });
 });
 
-// Delete - Remove Table that random Art & Titles were pulled to to avoid overloading DB
-// quizRouter.delete('/db/___?', (req, res) => {
-//   const {  } = req.params;
-//   ___.findOneAndDelete({  })
-//     .then(() => {
-//       if () {
-//         res.sendStatus(200);
-//       } else {
-//         res.sendStatus(404);
-//       }
-//     })
-//     .catch((err) => {
-//       console.error('Failed to: ', err);
-//       res.sendStatus(500);
-//     });
-// });
+// Delete - Empty the Art & Title collection to avoid overloading DB
+quizRouter.delete('/db/quizart', (req, res) => {
+  AICart.deleteMany({})
+    .then((deleted) => {
+      if (deleted.deletedCount > 0) {
+        res.status(200).send('Find & Deletion: Success');
+      } else {
+        res.status(404).send('Find: Failed');
+      }
+    })
+    .catch((err) => {
+      console.error('Deletion Attempt: Failed: ', err);
+      res.sendStatus(500);
+    });
+});
 
 // Retrieve 2: GET - User Profile info for access to their wallet
 // Use the function in the other file instead of trying to make another

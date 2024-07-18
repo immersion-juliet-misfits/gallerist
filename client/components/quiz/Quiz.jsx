@@ -12,7 +12,7 @@ import EndGame from './endGame';
 // import { getAICart } from '../../../server/api/aic';
 
 function Quiz() {
-  // State Start
+  //  ********** State Start
   // Old States
   const [wallet, setWallet] = useState(0); // Retrieve Users current bank total
   // Write all Axios res in this Parent then pass them down where needed
@@ -24,9 +24,9 @@ function Quiz() {
   const [endGame, setEndGame] = useState(false); // End View: defaults to false
   // State to store retrieved Art Data in
   const [aicArt, setAicArt] = useState([]);
-  // State End
+  // ********** State End
 
-  // Axios Requests Start -
+  // ********** Axios Requests Start
   // Re-Use: Function to Retrieve fund total of user's wallet and set wallet state
   function getWallet() {
     axios
@@ -37,53 +37,64 @@ function Quiz() {
       .catch((err) => console.error('Could not GET wallet amount: ', err));
   }
 
-  // This posts my fake data to the DB, how do I get it to post the API data to the DB
-  // Function to retrieve 10 images from AIC & their titles
+  // Retrieves art data from AIC API & saves to DB
   // To be invoked when User clicks "START?" in StartGame
   function getArt() {
-    // console.log('getArt invoked');
     // Must make 2 axios calls:
     // 1 to GET data from AIC API
     axios
       .get('/db/aicapi')
       .then((response) => {
         const artData = response.data;
-        console.log('GET-POST Combo Check', artData);
+        // console.log('GET-POST Combo Check', artData);
         // 1 (inside) to POST data to my DB
         return axios.post('/db/quizart', artData);
       })
       .then((postResponse) => {
-        console.log('AIC Art Add to DB: Success: ', postResponse.data);
+        // console.log('AIC Art Add to DB: Success: ', postResponse.data);
       })
       .catch((err) => {
         console.error('AIC Art Add to DB: Failed: ', err);
       });
   }
 
-  // Retrieve art from DB that above request saved
+  // Retrieve art from DB that getArt saved to DB & add it to State
   function pullArt() {
-    console.log('Pull Art Invoked');
+    // console.log('Pull Art Invoked');
     axios
       .get('/db/quizart')
       .then((data) => {
-        console.log('DB Art Retrieval: Success ', data.data);
+        // console.log('DB Art Retrieval: Success ', data.data);
         // Save retrieved data to state
         setAicArt(data.data);
       })
       .catch((err) => console.error('DB Art Retrieval: Failed ', err));
   }
 
-  useEffect(() => {
-    console.log('Quiz.jsx - Verify State whenever aicArt updates', aicArt);
-  }, [aicArt]);
+  // Delete art from DB
+  // To be invoked when User clicks "END GAME" in PlayGame
+  function delArt() {
+    // console.log('delArt has been invoked');
+    axios
+      .delete('/db/quizart')
+      .then((response) => {
+        if (response.status === 200) {
+          // console.log('Quiz Art Deletion: Success ');
+        } else if (response.status === 404) {
+          console.log('Quiz Art Deletion: None Found ');
+        }
+      })
+      .catch((err) => {
+        console.error('Quiz Art Deletion: Failed ', err);
+      });
+  }
 
-  // **********
-  // Axios Requests End
+  // ********** Axios Requests End
 
   // Click Handlers Start
   // Has "START?" been Clicked - pass down to StartGame
   const handleStartClick = () => {
-    console.log('Start Was Clicked');
+    // console.log('Start Was Clicked');
     setStartGame(false);
     setPlayGame(true);
     // getArt(); // Get art from AIC
@@ -110,16 +121,15 @@ function Quiz() {
   };
   // Click Handlers End
 
-  // Initial render useEffect
+  // useEffect for changes to wallet, and score
   useEffect(() => {
     getWallet();
+    // Placeholder for score retrieval
   }, []);
 
-  // useEffect executed every time user finishes a game
-  // and wallet funds reflect purchase
   useEffect(() => {
-    console.log('Quiz.jsx Use Effect Placeholder');
-  }, []);
+    // console.log('Quiz.jsx - Verify State whenever aicArt updates', aicArt);
+  }, [aicArt]);
 
   // Include ternary to control which view User is shown:
   // Start, Game, End
@@ -150,6 +160,7 @@ function Quiz() {
             onPlayClick={handlePlayClick}
             getArt={getArt}
             aicArt={aicArt}
+            delArt={delArt}
           />
         )}
         {endGame && <EndGame onEndClick={handleEndClick} />}

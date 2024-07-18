@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const express = require('express');
 const path = require('path');
 // const ensureLogIn = require('connect-ensure-login').ensureLoggedIn();
@@ -9,6 +10,7 @@ const { authRouter } = require('./routes/auth');
 const { apiRouter } = require('./routes/api');
 const { dbRouter } = require('./routes/database');
 const { quizRouter } = require('./routes/quizDBrouter');
+
 require('dotenv').config();
 
 const { EXPRESS_SECRET } = process.env;
@@ -30,16 +32,18 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(path.resolve(__dirname, '../client/dist')));
 
-app.use(session({
-  secret: EXPRESS_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.DB_URI,
-    ttl: 14 * 24 * 60 * 60,
-    autoRemove: 'native',
-  }),
-}));
+app.use(
+  session({
+    secret: EXPRESS_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.DB_URI,
+      ttl: 14 * 24 * 60 * 60,
+      autoRemove: 'native',
+    }),
+  })
+);
 app.use(passport.authenticate('session'));
 
 // Authentication Routes

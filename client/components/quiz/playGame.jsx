@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 // import Row from 'react-bootstrap/Row';
 
 // Pass in Axios requests from Quiz.jsx & state
-function PlayGame({ onPlayClick, aicArt }) {
+function PlayGame({ onPlayClick, aicArt, delArt }) {
   // State Start
 
   // State End
@@ -32,7 +32,7 @@ function PlayGame({ onPlayClick, aicArt }) {
                 src={aicArt[0].imageUrl}
                 alt={aicArt[0].title}
                 style={{
-                  maxWidth: '100%',
+                  maxWidth: '200px',
                   maxHeight: '300px',
                   objectFit: 'contain',
                 }}
@@ -45,7 +45,7 @@ function PlayGame({ onPlayClick, aicArt }) {
                   src={aicArt[2].imageUrl}
                   alt={aicArt[2].title}
                   style={{
-                    maxWidth: '100%',
+                    maxWidth: '200px',
                     maxHeight: '300px',
                     objectFit: 'contain',
                   }}
@@ -60,7 +60,10 @@ function PlayGame({ onPlayClick, aicArt }) {
       <Button
         style={{ width: '200px', height: '50px' }}
         variant='secondary'
-        onClick={onPlayClick}
+        onClick={() => {
+          onPlayClick();
+          delArt();
+        }}
       >
         END GAME
       </Button>
