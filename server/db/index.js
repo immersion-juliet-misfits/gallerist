@@ -36,6 +36,11 @@ const ArtSchema = new Schema({
   price: Number,
 });
 
+const WatchedSchema = new Schema({
+  isWatched: Boolean,
+  
+});
+
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
 

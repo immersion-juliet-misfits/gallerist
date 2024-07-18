@@ -2,7 +2,7 @@ const express = require('express');
 
 const { getArtImages, getArtObj } = require('../api/huam');
 const { sendMessage } = require('../api/message');
-const { User, Art } = require('../db/index');
+// const { User, Art } = require('../db/index');
 
 const apiRouter = express.Router();
 
