@@ -52,5 +52,5 @@ Fake Image URL & Id
 Real Image URL & Id
 */
 
-module.exports = getAICart;
+module.exports = { getAICart };
 // module.exports = { getAICart, mergeURL };

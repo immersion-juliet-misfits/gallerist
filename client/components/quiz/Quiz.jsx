@@ -38,8 +38,7 @@ function Quiz() {
   }
 
   // Function to retrieve 10 images from AIC & their titles
-  // (Make random after just successfully retrieving 10)
-  // Will be invoked when User clicks "START?" & pass State data to PlayGame
+  // To be invoked when User clicks "START?" in StartGame
   function getArt() {
     console.log('getArt invoked');
     // Invoke API req to AIC
@@ -60,11 +59,26 @@ function Quiz() {
       .then((data) => {
         console.log('AIC Retrieval: Success ', data.data);
         // Save retrieved data to state
-        setAicArt(data.data);
-        console.log('Quiz.jsx - Verify State', aicArt);
+        // setAicArt(data.data);
+        // console.log('Quiz.jsx - Verify State', aicArt);
       })
       .catch((err) => console.error('Could not GET AIC Art: ', err));
   }
+
+  // Retrieve art from DB that above request saved
+  function pullArt() {
+    console.log('Pull Art Invoked');
+    axios
+      .get('/db/quizart')
+      .then((data) => {
+        console.log('DB Art Retrieval: Success ', data.data);
+        // Save retrieved data to state
+        setAicArt(data.data);
+        console.log('Quiz.jsx - Verify State', aicArt);
+      })
+      .catch((err) => console.error('DB Art Retrieval: Failed ', err));
+  }
+
   // **********
   // Axios Requests End
 
@@ -74,7 +88,8 @@ function Quiz() {
     console.log('Start Was Clicked');
     setStartGame(false);
     setPlayGame(true);
-    getArt();
+    getArt(); // Get art from AIC
+    pullArt(); // Get Art from DB
   };
 
   // TEMP handler to pass down to PlayGame for testing End Game View swapping
@@ -120,10 +135,14 @@ function Quiz() {
       </Row>
       <Row>
         {startGame && (
-          <StartGame onStartClick={handleStartClick} getArt={getArt} />
+          <StartGame
+            onStartClick={handleStartClick}
+            getArt={getArt}
+            pullArt={pullArt}
+          />
         )}
         {/* PG button is Temporary  */}
-        {playGame && <PlayGame getArt={getArt} onPlayClick={handlePlayClick} />}
+        {playGame && <PlayGame onPlayClick={handlePlayClick} getArt={getArt} />}
         {endGame && <EndGame onEndClick={handleEndClick} />}
       </Row>
     </Container>
