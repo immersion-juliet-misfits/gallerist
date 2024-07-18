@@ -14,7 +14,11 @@ passport.use(new GoogleStrategy({
 }, ((accessToken, refreshToken, profile, cb) => {
   // Standardized profile that returns from Google, check it out with console log below
   // console.log(profile);
-  User.findOrCreate({ googleId: profile.id, name: profile.displayName })
+  User.findOrCreate({
+    googleId: profile.id,
+    name: profile.displayName,
+    email: profile.email,
+  })
     .then((data) => {
       cb(null, data);
 

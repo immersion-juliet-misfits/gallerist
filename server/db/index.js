@@ -16,6 +16,7 @@ const UserSchema = new Schema({
   // gallery: Array,
   friends: Array,
   wallet: Number,
+  email: String,
 });
 UserSchema.plugin(findOrCreate);
 

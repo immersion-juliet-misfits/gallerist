@@ -1,6 +1,8 @@
 const express = require('express');
 
 const { getArtImages, getArtObj } = require('../api/huam');
+const { sendMessage } = require('../api/message');
+const { User, Art } = require('../db/index');
 
 const apiRouter = express.Router();
 
@@ -41,6 +43,17 @@ apiRouter.get('/huam/object/:id', (req, res) => {
     })
     .catch((err) => {
       console.error('Cannot get ArtObj by id: ', err);
+      res.sendStatus(500);
+    });
+});
+
+apiRouter.post('/message', (req, res) => {
+  sendMessage()
+    .then(() => {
+
+    })
+    .catch((err) => {
+      console.error('Could not send message: ', err);
       res.sendStatus(500);
     });
 });
