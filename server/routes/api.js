@@ -52,7 +52,7 @@ apiRouter.get('/huam/object/:id', (req, res) => {
 // Then it will be passed to dbRouter.post('/db/quizart') in database.js
 apiRouter.get('/db/aicapi', (req, res) => {
   console.log('API Quiz Confirmation');
-  console.log('gAC Type', typeof getAICart);
+  // console.log('gAC Type', typeof getAICart); // Logs Function
   // Retrieve & store from AIC
   getAICart()
     .then((response) => {
@@ -62,7 +62,7 @@ apiRouter.get('/db/aicapi', (req, res) => {
         // console.log('AIC PH Check: ', gotArt.data); // Now logs the data I'm after
         res.status(200).send(gotArt.data);
       } else {
-        console.log('No Art Found');
+        // console.error('No Art Found');
         res.sendStatus(404);
       }
     })

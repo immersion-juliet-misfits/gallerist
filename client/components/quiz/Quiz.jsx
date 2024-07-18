@@ -12,19 +12,14 @@ import EndGame from './endGame';
 // import { getAICart } from '../../../server/api/aic';
 
 function Quiz() {
-  //  ********** State Start
   // Old States
   const [wallet, setWallet] = useState(0); // Retrieve Users current bank total
-  // Write all Axios res in this Parent then pass them down where needed
-  // Should all States be done the same way?
-
   // New States
   const [startGame, setStartGame] = useState(true); // Start View:  defaults to true
   const [playGame, setPlayGame] = useState(false); // Game View: defaults to false
   const [endGame, setEndGame] = useState(false); // End View: defaults to false
-  // State to store retrieved Art Data in
-  const [aicArt, setAicArt] = useState([]);
-  // ********** State End
+  const [aicArt, setAicArt] = useState([]); // Store retrieved Art Data
+  const [clickCount, setClickCount] = useState(0); // Tracks User click number on any art piece
 
   // ********** Axios Requests Start
   // Re-Use: Function to Retrieve fund total of user's wallet and set wallet state
@@ -41,16 +36,17 @@ function Quiz() {
   // To be invoked when User clicks "START?" in StartGame
   function getArt() {
     // Must make 2 axios calls:
-    // 1 to GET data from AIC API
+    // 1) GET data from AIC API
     axios
       .get('/db/aicapi')
       .then((response) => {
         const artData = response.data;
         // console.log('GET-POST Combo Check', artData);
-        // 1 (inside) to POST data to my DB
+        // 2) POST data to DB
+        // sTO to try & prevent browser POST error from logging
         return axios.post('/db/quizart', artData);
       })
-      .then((postResponse) => {
+      .then(() => {
         // console.log('AIC Art Add to DB: Success: ', postResponse.data);
       })
       .catch((err) => {
@@ -89,16 +85,11 @@ function Quiz() {
       });
   }
 
-  // ********** Axios Requests End
-
-  // Click Handlers Start
   // Has "START?" been Clicked - pass down to StartGame
   const handleStartClick = () => {
     // console.log('Start Was Clicked');
     setStartGame(false);
     setPlayGame(true);
-    // getArt(); // Get art from AIC
-    // pullArt(); // Get Art from DB
     // Need to keep pullArt from running before getArt is done
     getArt();
     setTimeout(() => {
@@ -110,7 +101,7 @@ function Quiz() {
   // Once 5 rounds have passed, view will automatically swap to END GAME view
   const handlePlayClick = () => {
     setPlayGame(false);
-    // Temp making EndGame visible on Start click for Testing
+    // Make EndGame visible on Start click for Testing
     setEndGame(true);
   };
 
@@ -118,8 +109,20 @@ function Quiz() {
   const handleEndClick = () => {
     setEndGame(false);
     setStartGame(true);
+    // Reset State to empty to pr3event old options from appearing on a new game
+    setAicArt([]);
+    // Reset click count to 0
+    setClickCount(0);
+    // Empty the Database to save space & prevent Duplicate errors
+    delArt();
   };
-  // Click Handlers End
+
+  // Handle tracking image click count for Art in PlayGame
+  const handleImageClick = (index) => {
+    setClickCount(clickCount + 1);
+    console.log(`Image ${index} clicked`);
+    console.log('Click Count: ', clickCount);
+  };
 
   // useEffect for changes to wallet, and score
   useEffect(() => {
@@ -149,21 +152,21 @@ function Quiz() {
       <Row>
         {startGame && (
           <StartGame
-            onStartClick={handleStartClick}
-            getArt={getArt}
-            pullArt={pullArt}
+            handleStartClick={handleStartClick}
+            // getArt={getArt}
+            // pullArt={pullArt}
           />
         )}
         {/* PG button is Temporary  */}
         {playGame && (
           <PlayGame
-            onPlayClick={handlePlayClick}
-            getArt={getArt}
+            handlePlayClick={handlePlayClick}
+            handleImageClick={handleImageClick}
             aicArt={aicArt}
-            delArt={delArt}
+            clickCount={clickCount}
           />
         )}
-        {endGame && <EndGame onEndClick={handleEndClick} />}
+        {endGame && <EndGame handleEndClick={handleEndClick} />}
       </Row>
     </Container>
   );

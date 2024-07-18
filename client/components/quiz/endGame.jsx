@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 // import Row from 'react-bootstrap/Row';
 
 // Pass in Axios requests from Quiz.jsx
-function EndGame({ onEndClick }) {
+function EndGame({ handleEndClick }) {
   // State Start
 
   // State End
@@ -21,7 +21,9 @@ function EndGame({ onEndClick }) {
       <Button
         style={{ width: '200px', height: '50px' }}
         variant='secondary'
-        onClick={onEndClick}
+        onClick={() => {
+          handleEndClick();
+        }}
       >
         Play Again?
       </Button>

@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable object-curly-newline */
 /* eslint-disable jsx-quotes */
 // import React, { useState, useEffect } from 'react';
 import React from 'react';
@@ -6,7 +9,12 @@ import Container from 'react-bootstrap/Container';
 // import Row from 'react-bootstrap/Row';
 
 // Pass in Axios requests from Quiz.jsx & state
-function PlayGame({ onPlayClick, aicArt, delArt }) {
+function PlayGame({
+  handlePlayClick,
+  handleImageClick,
+  aicArt,
+  clickCount,
+}) {
   // State Start
 
   // State End
@@ -16,9 +24,19 @@ function PlayGame({ onPlayClick, aicArt, delArt }) {
       style={{ maxWidth: '750px' }}
       className='d-flex flex-column align-items-center'
     >
-      <h1> Play Game </h1>
+      <h1 style={{ marginBottom: '30px' }}> Play Game </h1>
       {aicArt.length > 0 ? (
         <div>
+          <p
+            style={{
+              maxWidth: '400px',
+              textAlign: 'center',
+              marginBottom: '20px',
+              fontSize: '1.25rem',
+            }}
+          >
+            "{aicArt[0].title}"
+          </p>
           <div
             style={{
               display: 'flex',
@@ -27,29 +45,39 @@ function PlayGame({ onPlayClick, aicArt, delArt }) {
             }}
           >
             <div style={{ textAlign: 'center' }}>
-              <h3>{aicArt[0].title}</h3>
-              <img
-                src={aicArt[0].imageUrl}
-                alt={aicArt[0].title}
-                style={{
-                  maxWidth: '200px',
-                  maxHeight: '300px',
-                  objectFit: 'contain',
-                }}
-              />
-            </div>
-            {aicArt.length > 1 && (
-              <div style={{ textAlign: 'center' }}>
-                <h3>{aicArt[2].title}</h3>
+              <Button
+                variant='link'
+                onClick={() => handleImageClick(0)}
+                style={{ padding: 0 }}
+              >
                 <img
-                  src={aicArt[2].imageUrl}
-                  alt={aicArt[2].title}
+                  src={aicArt[0].imageUrl}
+                  alt='No cheating!'
                   style={{
                     maxWidth: '200px',
                     maxHeight: '300px',
                     objectFit: 'contain',
                   }}
                 />
+              </Button>
+            </div>
+            {aicArt.length > 1 && (
+              <div style={{ textAlign: 'center' }}>
+                <Button
+                  variant='link'
+                  onClick={() => handleImageClick(1)}
+                  style={{ padding: 0 }}
+                >
+                  <img
+                    src={aicArt[1].imageUrl}
+                    alt='No cheating!'
+                    style={{
+                      maxWidth: '200px',
+                      maxHeight: '300px',
+                      objectFit: 'contain',
+                    }}
+                  />
+                </Button>
               </div>
             )}
           </div>
@@ -60,9 +88,9 @@ function PlayGame({ onPlayClick, aicArt, delArt }) {
       <Button
         style={{ width: '200px', height: '50px' }}
         variant='secondary'
+        disabled={clickCount < 3}
         onClick={() => {
-          onPlayClick();
-          delArt();
+          handlePlayClick();
         }}
       >
         END GAME
