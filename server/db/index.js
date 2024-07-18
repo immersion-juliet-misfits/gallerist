@@ -36,9 +36,11 @@ const ArtSchema = new Schema({
 });
 
 const MemeSchema = new Schema({
-  name: String,
-  url: String,
+  title: String,
+  imageUrl: String,
   options: Object,
+  user_id: Number,
+  imageId: String,
 });
 
 const User = model('User', UserSchema);

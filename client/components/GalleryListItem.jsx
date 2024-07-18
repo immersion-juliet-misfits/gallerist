@@ -25,7 +25,6 @@ function GalleryListItem({ image }) {
       })
       .catch((err) => console.log(err, 'friend not added'));
   }
-
   return (
     <Container fluid>
       <Row>
