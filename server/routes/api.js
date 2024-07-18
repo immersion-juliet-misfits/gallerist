@@ -50,13 +50,16 @@ apiRouter.get('/huam/object/:id', (req, res) => {
 // This use methods in aic.js to retrieve data from the Art Institute of Chicago
 // GET already specifies & retrieves specific info I want
 // Then it will be passed to dbRouter.post('/db/quizart') in database.js
-apiRouter.get('/db/quizart', (req, res) => {
+apiRouter.get('/db/AICart', (req, res) => {
   console.log('API Quiz Confirmation');
   console.log('gAC Type', typeof getAICart);
   // Retrieve & store from AIC
   getAICart()
-    .then((response) => { // data is placeholder name for now
+    .then((response) => {
+
       const gotArt = response.data;
+
+      console.log('API.js RES DATA CHECK: ', gotArt);
       if (gotArt) {
         console.log('AIC PH Check: ', gotArt.data);
         res.status(200).send(gotArt.data);

@@ -315,7 +315,7 @@ dbRouter.post('/db/quizart', (req, res) => {
     typeof req,
     typeof res
   );
-  console.log('database.js req check', req.body); // No data or body
+  console.log('DB.js REQ Check', req.body); // No data or body
   // When req.body isn't empty, I need
   const artData = req.body;
   // This needs the data from AIC GET req to create a new entry in the table
@@ -332,7 +332,7 @@ dbRouter.post('/db/quizart', (req, res) => {
     });
 });
 
-// Retrieve: GET
+// Retrieve: GET Art data saved in DB
 dbRouter.get('/db/quizart', (req, res) => {
   console.log('Verifying GET request to /db/quizart');
 
