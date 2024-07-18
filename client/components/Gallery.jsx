@@ -75,6 +75,7 @@ function Gallery() {
         .then((result) => {
           setImages(result.data);
           setThreeMemes([result.data[0], result.data[1], result.data[2]]);
+          //  setThreeMemes([result.data[0]]);
           setMeme(true);
         }).catch((err) => {
           console.error('axios get request error in Gallery.jsx: ', err);
@@ -93,8 +94,10 @@ function Gallery() {
   const getThreeMemes = (num) => {
     if (num) {
       setThreeMemes([images?.[0 + num], images?.[1 + num], images?.[2 + num]]);
+      // setThreeMemes([images?.[0 + num]]);
     } else {
       setThreeMemes([images?.[0], images?.[1], images?.[2]]);
+      //  setThreeMemes([images?.[0]]);
     }
   };
 
@@ -173,14 +176,18 @@ function Gallery() {
           <button onClick={() => { changeNum(3); }}>{'>'}</button>
         </>
       )}
-      {meme === true && threeMemes.map((image, i) => (
-        <Col key={`${i}`}>
-          <MemeListItem
-            image={image}
-            num={i}
-          />
-        </Col>
-      ))}
+      {meme === true && threeMemes.map((image, i) => {
+        if (image !== undefined) {
+          return (
+            <Col key={`${i}`}>
+              <MemeListItem
+                image={image}
+                num={i}
+              />
+            </Col>
+          );
+        }
+      })}
     </Container>
 
   );

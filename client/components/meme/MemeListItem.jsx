@@ -9,13 +9,14 @@ function MemeListItem({ image, num }) {
 
   useEffect(() => {
     if (num === 0) {
-      setNumLeft(30);
+      setNumLeft(30); // original 30
     } else if (num === 1) {
       setNumLeft(540);
     } else if (num === 2) {
       setNumLeft(1080);
     }
   }, []);
+
   return (
 
     <Col key={image.imageId}>
@@ -42,9 +43,7 @@ function MemeListItem({ image, num }) {
         {image.options.str5 !== undefined && <div style={{ position: 'absolute', left: `${image.options.str5.left + numLeft}px`, top: `${image.options.str5.top + 280}px` }}>{image.options.str5.text}</div>}
         {image.options.str6 !== undefined && <div style={{ position: 'absolute', left: `${image.options.str6.left + numLeft}px`, top: `${image.options.str6.top + 280}px` }}>{image.options.str6.text}</div>}
 
-        {/* <div style={{ position: 'absolute', left: '728px', top: '285px' }}> hell </div>
-        <div style={{ position: 'absolute', left: '634px', top: '310px' }}> hel </div>
-        <div style={{ position: 'absolute', left: '824px', top: '323px' }}> he </div> */}
+        {/* <div style={{ position: 'absolute', left: '634px', top: '310px' }}> hel </div> */}
 
       </div>
       <br />
