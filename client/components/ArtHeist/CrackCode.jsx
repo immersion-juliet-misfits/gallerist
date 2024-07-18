@@ -5,7 +5,7 @@ import axios from 'axios';
 
 function CrackCode() {
   const [vaults, setVaults] = useState([]);
-  const [selectedVault, setSelectedVault] = useState({});
+  const [selectedVault, setSelectedVault] = useState('');
 //   function getOtherOwners() {
 //     axios.get('/db/artOwners/')
 //       .then(({ data }) => {
@@ -25,6 +25,22 @@ function CrackCode() {
       });
   }
 
+  function handleSelectChange(e) {
+    console.log(e.target.value);
+    if (e.target.value === 'Select a vault to heist') {
+      console.log('Back to default');
+    } else {
+      axios.get(`/db/vault/${e.target.value}`)
+        .then(({ data }) => {
+          console.log('YEA', data);
+        })
+        .catch(() => {
+          console.log(' NO');
+        });
+    }
+    setSelectedVault(e.target.value);
+  }
+
   useEffect(() => {
     // getOtherOwners();
     getOtherVaults();
@@ -39,13 +55,14 @@ function CrackCode() {
         <input type="button" value="Back to the Vault" />
       </Link>
       <br />
-      <select>
+      <select onChange={(e) => handleSelectChange(e)}>
         <option>Select a vault to heist</option>
         {vaults.map((vault) => (
-          <option key={vault._id}>{vault.name}</option>
+          <option key={vault._id} value={vault.owner}>{vault.name}</option>
         ))}
       </select>
-      {/* <h4></h4> */}
+      {selectedVault !== 'Select a vault to heist'
+      && <h4>{selectedVault}</h4>}
     </div>
   );
 }
