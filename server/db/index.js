@@ -38,10 +38,11 @@ const ArtSchema = new Schema({
 
 const WatchedSchema = new Schema({
   isWatched: Boolean,
-  
+
 });
 
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
+const Watch = model('Watch', WatchedSchema);
 
-module.exports = { User, Art };
+module.exports = { User, Art, Watch };
