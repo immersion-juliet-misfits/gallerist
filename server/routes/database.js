@@ -389,10 +389,27 @@ dbRouter.get('/db/vault/:owner', (req, res) => {
   Vault.findOne({ owner })
     .then((vault) => {
       // if (data.length > 0) {
-        res.send(vault);
+      res.send(vault);
       // } else {
       //   res.sendStatus(500);
       // }
+    });
+});
+
+dbRouter.post('/db/guess', (req, res) => {
+  const { owner, input } = req.body;
+  Vault.findOne({ owner, code: input })
+    .then((vault) => {
+      // console.log('attempted passcode', owner, input);
+      if (vault) {
+        // console.log(`successful login ${input}`);
+        res.status(200).send(vault);
+      } else {
+        res.sendStatus(500);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
     });
 });
 module.exports = { dbRouter };

@@ -49,13 +49,21 @@ function CrackCode() {
 
   function handleGuess() {
     console.log(input, 'guessed');
+    const { owner } = selectedVault;
+    axios.post('/db/guess', { owner, input })
+      .then(({ data }) => {
+        console.log(data, 'correct guess', input);
+      })
+      .catch(() => {
+        console.error('inncorrect pw', input);
+      });
   }
 
   useEffect(() => {
     // getOtherOwners();
     getOtherVaults();
     // console.log(vaults, 'state');
-    // console.log(selectedVault, 'state');
+    console.log(selectedVault._id, 'state');
     console.log(input, 'state');
     // console.log(passcode, 'passcode');
   }, [selectedVault, input]);
@@ -77,7 +85,7 @@ function CrackCode() {
       && <h4>{`${selectedVault.name}'s Vault`}</h4>}
       <br />
       <br />
-      <input type="text" placeholder="Guess vault passcode" onChange={(e) => handleInput(e)} />
+      <input type="text" maxLength="5" size="5" placeholder="Guess vault passcode" onChange={(e) => handleInput(e)} />
       <input type="button" value="Submit Guess" onClick={() => handleGuess()} />
     </div>
   );
