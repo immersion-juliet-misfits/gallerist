@@ -1,6 +1,7 @@
 const express = require('express');
 
 const { getArtImages, getArtObj } = require('../api/huam');
+const { getAICart } = require('../api/aic');
 
 const apiRouter = express.Router();
 
@@ -41,6 +42,31 @@ apiRouter.get('/huam/object/:id', (req, res) => {
     })
     .catch((err) => {
       console.error('Cannot get ArtObj by id: ', err);
+      res.sendStatus(500);
+    });
+});
+
+// Quiz External API Req
+// This use methods in aic.js to retrieve data from the Art Institute of Chicago
+// GET already specifies & retrieves specific info I want
+// Then it will be passed to dbRouter.post('/db/quizart') in database.js
+apiRouter.get('/db/quizart', (req, res) => {
+  console.log('API Quiz Confirmation');
+  console.log('gAC Type', typeof getAICart);
+  // Retrieve & store from AIC
+  getAICart()
+    .then((response) => { // data is placeholder name for now
+      const gotArt = response.data;
+      if (gotArt) {
+        console.log('AIC PH Check: ', gotArt.data);
+        res.status(200).send(gotArt.data);
+      } else {
+        console.log('No Art Found');
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error('AIC Art Retrieval Failed: ', err);
       res.sendStatus(500);
     });
 });

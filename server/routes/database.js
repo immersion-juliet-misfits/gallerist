@@ -1,8 +1,10 @@
+/* eslint-disable comma-dangle */
 const express = require('express');
 
 const dbRouter = express.Router();
 
-const { User, Art } = require('../db/index');
+const { User, Art, AICart } = require('../db/index');
+// const { User, Art } = require('../db/index');
 
 // GET: to return user's profile info upon load of Profile component (could be used elsewhere)
 dbRouter.get('/db/user/', (req, res) => {
@@ -147,12 +149,14 @@ dbRouter.post('/db/culture/:culture', (req, res) => {
         if (!name) {
           res.status(200).send(cultureArt);
         } else {
-          Art.find({ culture }).where({ 'userGallery.name': name })
+          Art.find({ culture })
+            .where({ 'userGallery.name': name })
             .then((bothArt) => {
               if (bothArt.length) {
                 res.status(200).send(bothArt);
               }
-            }).catch(() => res.sendStatus(404));
+            })
+            .catch(() => res.sendStatus(404));
         }
       } else {
         res.sendStatus(404);
@@ -176,7 +180,7 @@ dbRouter.put('/db/art/:imageId', (req, res) => {
   Art.findOneAndUpdate(
     { imageId },
     { ...fieldsToUpdate, userGallery: { name, googleId } },
-    { new: true },
+    { new: true }
   )
     .then((updObj) => {
       if (updObj) {
@@ -218,7 +222,7 @@ dbRouter.put('/db/friends/', (req, res) => {
         User.findByIdAndUpdate(
           user._id,
           { $push: { friends: friend } },
-          { new: true },
+          { new: true }
         ).then(() => {
           res.sendStatus(200);
         });
@@ -247,7 +251,7 @@ dbRouter.put('/db/unfriend/', (req, res) => {
       User.findOneAndUpdate(
         user._id,
         { friends: user.friends },
-        { new: true },
+        { new: true }
       ).then(() => {
         res.sendStatus(200);
       });
@@ -288,7 +292,8 @@ dbRouter.post('/db/art', (req, res) => {
       console.error('Failed to create Art document: ', err);
       res.sendStatus(500);
     });
-  /**
+});
+/**
    * All of these fields are available in art object returned from GET: 'huam/object/:id'
   title: String,
   artist: String,
@@ -299,6 +304,53 @@ dbRouter.post('/db/art', (req, res) => {
   imageUrl: String,
   isForSale: False, //initialize to false
   */
+// *** Quiz Routes Below Here ***
+
+// Create: POST create() - Create new table to store data pulled from AIC per game started
+// Create temp DB table that stores 10
+// This HANDLES the client POST request
+dbRouter.post('/db/quizart', (req, res) => {
+  console.log(
+    'database.js quizart POST invocation check',
+    typeof req,
+    typeof res
+  );
+  console.log('database.js req check', req.body); // No data or body
+  // When req.body isn't empty, I need
+  const artData = req.body;
+  // This needs the data from AIC GET req to create a new entry in the table
+  // How are the above methods retrieving data from the Harvard API
+
+  AICart.create(artData)
+    .then(() => {
+      console.log('AICart Create: Success');
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.error('Failed to Create Art document', err);
+      res.status(500).send('Failed 2.0');
+    });
+});
+
+// Retrieve: GET
+dbRouter.get('/db/quizart', (req, res) => {
+  console.log('Verifying GET request to /db/quizart');
+
+  AICart.find({})
+    .then((data) => {
+      if (data) {
+        console.log('Retrieve AIC Art from DB: Success ', data);
+        res.status(200).json(data); // Send retrieved data as JSON?
+        // res.status(200).send(data); //
+      } else {
+        console.log('AIC Art DB Empty');
+        res.status(404).send('AIC Art DB Empty');
+      }
+    })
+    .catch((err) => {
+      console.error('Retrieve AIC Art from DB: Failed ', err);
+      res.status(500).send('Internal Server Error');
+    });
 });
 
 module.exports = { dbRouter };

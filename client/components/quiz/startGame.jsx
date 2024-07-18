@@ -7,9 +7,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 // Pass in Axios requests from Quiz.jsx
+// function StartGame({ getArt, onStartClick }) {
 function StartGame({ onStartClick }) {
   // State Start
-
   // State End
 
   return (
@@ -35,6 +35,7 @@ function StartGame({ onStartClick }) {
         <Button
           style={{ width: '200px', height: '50px' }}
           variant='secondary'
+          // onClick={handleClick}
           onClick={onStartClick}
         >
           START?

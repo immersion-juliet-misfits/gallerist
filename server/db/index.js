@@ -5,7 +5,8 @@ const findOrCreate = require('mongoose-findorcreate');
 const { Schema, model } = mongoose;
 const db_uri = process.env.DB_URI;
 
-mongoose.connect(db_uri)
+mongoose
+  .connect(db_uri)
   .then(() => console.log('Connection to Database successful'))
   .catch((err) => console.log('Could not connect to database ', err));
 
@@ -35,7 +36,33 @@ const ArtSchema = new Schema({
   price: Number,
 });
 
+// *** Schemas for Quiz Game ***
+// Quiz Table will track all Users High score -
+// 1 User - 1 high score
+const GameSchema = new Schema({
+  id: { type: Number, required: true, unique: true },
+  userId: { type: Number, required: true, unique: true }, // How to ref UserIds?
+  highScore: { type: Number },
+});
+GameSchema.plugin(findOrCreate);
+
+// Will Create & Delete an entry in DB for each game
+// 1 User - 1 Game Table to pull assets from
+const AIC_Schema = new Schema({
+  id: { type: Number, required: true, unique: true },
+  imageId: { type: String, required: true },
+  title: { type: String, required: true },
+  imageUrl: { type: String, required: true },
+});
+
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
+const AICart = model('AICart', AIC_Schema);
+const GameScore = model('GameScore', GameSchema);
 
-module.exports = { User, Art };
+module.exports = {
+  User,
+  Art,
+  AICart,
+  GameScore,
+};

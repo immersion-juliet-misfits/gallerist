@@ -9,6 +9,7 @@ import Row from 'react-bootstrap/Row';
 import StartGame from './startGame';
 import PlayGame from './playGame';
 import EndGame from './endGame';
+// import { getAICart } from '../../../server/api/aic';
 
 function Quiz() {
   // State Start
@@ -21,6 +22,8 @@ function Quiz() {
   const [startGame, setStartGame] = useState(true); // Start View:  defaults to true
   const [playGame, setPlayGame] = useState(false); // Game View: defaults to false
   const [endGame, setEndGame] = useState(false); // End View: defaults to false
+  // State to store retrieved Art Data in
+  const [aicArt, setAicArt] = useState([]);
   // State End
 
   // Axios Requests Start -
@@ -37,22 +40,41 @@ function Quiz() {
   // Function to retrieve 10 images from AIC & their titles
   // (Make random after just successfully retrieving 10)
   // Will be invoked when User clicks "START?" & pass State data to PlayGame
-  // function getArt() {
-  //   axios
-  //     .get('/db/placeholder/')
-  //     .then(({ art }) => {
+  function getArt() {
+    console.log('getArt invoked');
+    // Invoke API req to AIC
+    // const results = getAICart();
+    // console.log('Client Side Check', results); // Logs Arr of Data from
+    // Test Data TBD
+    const artData = {
+      id: 51116, // Example ID
+      title: 'Example',
+      imageId: 'ExampleImageId',
+      imageUrl: 'https://example.com/image.jpg',
+    };
+    // Test Data TBD
 
-  //     })
-  //     .catch((err) => console.error('Could not GET wallet amount: ', err));
-  // }
+    // console.log('Quiz gAIC Check: ', gAIC);
+    axios
+      .post('/db/quizart', artData)
+      .then((data) => {
+        console.log('AIC Retrieval: Success ', data.data);
+        // Save retrieved data to state
+        setAicArt(data.data);
+        console.log('Quiz.jsx - Verify State', aicArt);
+      })
+      .catch((err) => console.error('Could not GET AIC Art: ', err));
+  }
   // **********
   // Axios Requests End
 
   // Click Handlers Start
   // Has "START?" been Clicked - pass down to StartGame
   const handleStartClick = () => {
+    console.log('Start Was Clicked');
     setStartGame(false);
     setPlayGame(true);
+    getArt();
   };
 
   // TEMP handler to pass down to PlayGame for testing End Game View swapping
@@ -91,17 +113,17 @@ function Quiz() {
             <h3>Wallet:</h3>
             <h3 className='ms-2'>{wallet ? `$${wallet}` : '$0.00'}</h3>
             <p style={{ marginLeft: '40px' }}>
-              {' '}
               Placeholder to display Users Previous High Score
-              {' '}
             </p>
           </div>
         </Col>
       </Row>
       <Row>
-        {startGame && <StartGame onStartClick={handleStartClick} />}
+        {startGame && (
+          <StartGame onStartClick={handleStartClick} getArt={getArt} />
+        )}
         {/* PG button is Temporary  */}
-        {playGame && <PlayGame onPlayClick={handlePlayClick} />}
+        {playGame && <PlayGame getArt={getArt} onPlayClick={handlePlayClick} />}
         {endGame && <EndGame onEndClick={handleEndClick} />}
       </Row>
     </Container>
