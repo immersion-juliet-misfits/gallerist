@@ -386,13 +386,13 @@ dbRouter.get('/db/vault', (req, res) => {
 
 dbRouter.get('/db/vault/:owner', (req, res) => {
   const { owner } = req.params;
-  Vault.find({ owner })
-    .then((data) => {
-      if (data.length > 0) {
-        res.send(data);
-      } else {
-        res.sendStatus(500);
-      }
+  Vault.findOne({ owner })
+    .then((vault) => {
+      // if (data.length > 0) {
+        res.send(vault);
+      // } else {
+      //   res.sendStatus(500);
+      // }
     });
 });
 module.exports = { dbRouter };

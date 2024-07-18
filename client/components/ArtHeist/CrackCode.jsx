@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function CrackCode() {
+  const [input, setInput] = useState('');
   const [vaults, setVaults] = useState([]);
-  const [selectedVault, setSelectedVault] = useState('');
+  const [selectedVault, setSelectedVault] = useState({});
 //   function getOtherOwners() {
 //     axios.get('/db/artOwners/')
 //       .then(({ data }) => {
@@ -32,21 +33,32 @@ function CrackCode() {
     } else {
       axios.get(`/db/vault/${e.target.value}`)
         .then(({ data }) => {
+          setSelectedVault(data);
           console.log('YEA', data);
         })
-        .catch(() => {
-          console.log(' NO');
+        .catch((err) => {
+          console.log(' NO', err);
         });
     }
-    setSelectedVault(e.target.value);
+    // setSelectedVault(e.target.value);
+  }
+
+  function handleInput(e) {
+    setInput(e.target.value);
+  }
+
+  function handleGuess() {
+    console.log(input, 'guessed');
   }
 
   useEffect(() => {
     // getOtherOwners();
     getOtherVaults();
-    console.log(vaults);
+    // console.log(vaults, 'state');
+    // console.log(selectedVault, 'state');
+    console.log(input, 'state');
     // console.log(passcode, 'passcode');
-  }, []);
+  }, [selectedVault, input]);
 
   return (
     <div>
@@ -61,8 +73,12 @@ function CrackCode() {
           <option key={vault._id} value={vault.owner}>{vault.name}</option>
         ))}
       </select>
-      {selectedVault !== 'Select a vault to heist'
-      && <h4>{selectedVault}</h4>}
+      {selectedVault.name
+      && <h4>{`${selectedVault.name}'s Vault`}</h4>}
+      <br />
+      <br />
+      <input type="text" placeholder="Guess vault passcode" onChange={(e) => handleInput(e)} />
+      <input type="button" value="Submit Guess" onClick={() => handleGuess()} />
     </div>
   );
 }
