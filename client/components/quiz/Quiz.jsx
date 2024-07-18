@@ -37,32 +37,27 @@ function Quiz() {
       .catch((err) => console.error('Could not GET wallet amount: ', err));
   }
 
+  // This posts my fake data to the DB, how do I get it to post the API data to the DB
   // Function to retrieve 10 images from AIC & their titles
   // To be invoked when User clicks "START?" in StartGame
   function getArt() {
-    console.log('getArt invoked');
-    // Invoke API req to AIC
-    // const results = getAICart();
-    // console.log('Client Side Check', results); // Logs Arr of Data from
-    // Test Data TBD
-    const artData = {
-      id: 51116, // Example ID
-      title: 'Example',
-      imageId: 'ExampleImageId',
-      imageUrl: 'https://example.com/image.jpg',
-    };
-    // Test Data TBD
-
-    // console.log('Quiz gAIC Check: ', gAIC);
+    // console.log('getArt invoked');
+    // Must make 2 axios calls:
+    // 1 to GET data from AIC API
     axios
-      .post('/db/quizart', artData)
-      .then((data) => {
-        console.log('AIC Retrieval: Success ', data.data);
-        // Save retrieved data to state
-        // setAicArt(data.data);
-        // console.log('Quiz.jsx - Verify State', aicArt);
+      .get('/db/aicapi')
+      .then((response) => {
+        const artData = response.data;
+        console.log('GET-POST Combo Check', artData);
+        // 1 (inside) to POST data to my DB
+        return axios.post('/db/quizart', artData);
       })
-      .catch((err) => console.error('Could not GET AIC Art: ', err));
+      .then((postResponse) => {
+        console.log('AIC Art Add to DB: Success: ', postResponse.data);
+      })
+      .catch((err) => {
+        console.error('AIC Art Add to DB: Failed: ', err);
+      });
   }
 
   // Retrieve art from DB that above request saved
@@ -74,10 +69,13 @@ function Quiz() {
         console.log('DB Art Retrieval: Success ', data.data);
         // Save retrieved data to state
         setAicArt(data.data);
-        console.log('Quiz.jsx - Verify State', aicArt);
       })
       .catch((err) => console.error('DB Art Retrieval: Failed ', err));
   }
+
+  useEffect(() => {
+    console.log('Quiz.jsx - Verify State whenever aicArt updates', aicArt);
+  }, [aicArt]);
 
   // **********
   // Axios Requests End
@@ -88,8 +86,13 @@ function Quiz() {
     console.log('Start Was Clicked');
     setStartGame(false);
     setPlayGame(true);
-    getArt(); // Get art from AIC
-    pullArt(); // Get Art from DB
+    // getArt(); // Get art from AIC
+    // pullArt(); // Get Art from DB
+    // Need to keep pullArt from running before getArt is done
+    getArt();
+    setTimeout(() => {
+      pullArt();
+    }, 1000);
   };
 
   // TEMP handler to pass down to PlayGame for testing End Game View swapping
@@ -142,7 +145,13 @@ function Quiz() {
           />
         )}
         {/* PG button is Temporary  */}
-        {playGame && <PlayGame onPlayClick={handlePlayClick} getArt={getArt} />}
+        {playGame && (
+          <PlayGame
+            onPlayClick={handlePlayClick}
+            getArt={getArt}
+            aicArt={aicArt}
+          />
+        )}
         {endGame && <EndGame onEndClick={handleEndClick} />}
       </Row>
     </Container>

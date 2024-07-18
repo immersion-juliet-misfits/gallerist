@@ -310,16 +310,12 @@ dbRouter.post('/db/art', (req, res) => {
 // Create temp DB table that stores 10
 // This HANDLES the client POST request
 dbRouter.post('/db/quizart', (req, res) => {
-  console.log(
-    'database.js quizart POST invocation check',
-    typeof req,
-    typeof res
-  );
-  console.log('DB.js REQ Check', req.body); // No data or body
-  // When req.body isn't empty, I need
-  const artData = req.body;
-  // This needs the data from AIC GET req to create a new entry in the table
-  // How are the above methods retrieving data from the Harvard API
+  console.log('Req Body Verified: ', req.body);
+  // const { id, image_id, title } = req.body;
+  const artData = req.body.map((art) => ({
+    ...art,
+    imageUrl: `https://www.artic.edu/iiif/2/${art.image_id}/full/843,/0/default.jpg`,
+  }));
 
   AICart.create(artData)
     .then(() => {
@@ -327,8 +323,8 @@ dbRouter.post('/db/quizart', (req, res) => {
       res.sendStatus(201);
     })
     .catch((err) => {
-      console.error('Failed to Create Art document', err);
-      res.status(500).send('Failed 2.0');
+      console.error('AICart Create: Failed', err);
+      res.status(500).send('AICart Create: Failed');
     });
 });
 

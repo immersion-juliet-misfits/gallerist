@@ -49,8 +49,8 @@ GameSchema.plugin(findOrCreate);
 // Will Create & Delete an entry in DB for each game
 // 1 User - 1 Game Table to pull assets from
 const AIC_Schema = new Schema({
-  id: { type: Number, required: true, unique: true },
-  imageId: { type: String, required: true },
+  id: { type: Number, required: true },
+  image_id: { type: String, required: true },
   title: { type: String, required: true },
   imageUrl: { type: String, required: true },
 });
