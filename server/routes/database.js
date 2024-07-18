@@ -371,4 +371,16 @@ dbRouter.patch('/db/vault/', (req, res) => {
       console.error(err);
     });
 });
+
+dbRouter.get('/db/vault', (req, res) => {
+  const { _id } = req.user.doc;
+  Vault.find({ owner: { $ne: _id } })
+    .then((owners) => {
+      console.log(owners);
+      res.status(200).send(owners);
+    })
+    .catch(() => {
+      res.sendStatus(500);
+    });
+});
 module.exports = { dbRouter };

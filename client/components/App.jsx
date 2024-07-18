@@ -11,6 +11,7 @@ import Home from './Home';
 import PhotoInfo from './PhotoInfo';
 import PalGallery from './PalGallery';
 import ArtHeist from './ArtHeist/ArtHeist';
+import CrackCode from './ArtHeist/CrackCode';
 
 const App = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const App = createBrowserRouter([
       {
         path: '/home/heist',
         element: <ArtHeist />,
+      },
+      {
+        path: '/home/planHeist',
+        element: <CrackCode />,
       },
     ],
   },

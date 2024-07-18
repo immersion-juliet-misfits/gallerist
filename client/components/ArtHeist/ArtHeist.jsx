@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function ArtHeist() {
   const [input, setInput] = useState('');
   const [passcode, setPasscode] = useState('');
 
-  function getArtOwners() {
-    axios.get('/db/artOwners/')
-      .then(({ data }) => {
-        console.log(data, 'others art');
-      })
-      .catch((err) => console.error('Could not GET users who currently own art', err));
-  }
+//   function getArtOwners() {
+//     axios.get('/db/artOwners/')
+//       .then(({ data }) => {
+//         console.log(data, 'others art');
+//       })
+//       .catch((err) => console.error('Could not GET users who currently own art', err));
+//   }
 
   function handleInput(e) {
     console.log(e.target.value);
@@ -42,7 +43,7 @@ function ArtHeist() {
   }
 
   useEffect(() => {
-    getArtOwners();
+    // getArtOwners();
     // console.log(input, 'input');
     // handleSetPasscode();
     handleVaultMount();
@@ -57,6 +58,9 @@ function ArtHeist() {
       <br />
       <br />
       <input type="button" value="Set Passcode" onClick={() => handleSetPasscode()} />
+      <Link to="/home/planHeist" relative="path">
+        <input type="button" value="Plan a Heist" />
+      </Link>
     </div>
   );
 }
