@@ -9,7 +9,7 @@ function MemeMaker() {
   const [memesImg, setMemeImg] = useState('');
   const [memesId, setMemeId] = useState('');
   const [memeName, setMemeName] = useState('');
-  const [title, setTitle] = useState('none');
+  const [title, setTitle] = useState('title');
   const [show, setShow] = useState(false);
   const [str1, setStr1] = useState({});
   const [str2, setStr2] = useState({});
@@ -97,7 +97,9 @@ function MemeMaker() {
       imageId: randomTemplate.name,
     };
     axios.post('/meme/post', obj)
-      .then((data) => { })
+      .then((data) => {
+        get();
+      })
       .catch((err) => { console.error('ERROR can\'t make meme: ', err); });
   };
 
@@ -183,16 +185,16 @@ function MemeMaker() {
 
   return (
     <div>
-      <button onClick={() => { getRandomMeme(); }} style={{ position: 'absolute', left: '10px', top: '50px' }}>get Random Template</button>
-      <button onClick={() => { addMeme(); }} style={{ position: 'absolute', left: '180px', top: '50px' }}>create Meme</button>
-      <button onClick={() => { flip(); }} style={{ position: 'absolute', left: '281px', top: '50px' }}>change</button>
-      <input onChange={(e) => { giveTitle(e.target.value); placeholder = 'title'; }} />
-      {str1?.left !== undefined && <input onChange={(e) => { editText('1', e.target.value); }} placeholder="fill me in" />}
-      {str2?.left !== undefined && <input onChange={(e) => { editText('2', e.target.value); }} placeholder="fill me in" />}
-      {str3?.left !== undefined && <input onChange={(e) => { editText('2', e.target.value); }} placeholder="fill me in" />}
-      {str4?.left !== undefined && <input onChange={(e) => { editText('2', e.target.value); }} placeholder="fill me in" />}
-      {str5?.left !== undefined && <input onChange={(e) => { editText('2', e.target.value); }} placeholder="fill me in" />}
-      {str6?.left !== undefined && <input onChange={(e) => { editText('2', e.target.value); }} placeholder="fill me in" />}
+      <button onClick={() => { getRandomMeme(); }} style={{ position: 'absolute', left: '219px', top: '250px' }}>get Random Template</button>
+      <button onClick={() => { addMeme(); }} style={{ position: 'absolute', left: '150px', top: '220px' }}>create Meme ❤️</button>
+      <button onClick={() => { flip(); }} style={{ position: 'absolute', left: '980px', top: '150px' }}>change</button>
+      <input onChange={(e) => { giveTitle(e.target.value); }} value={title} style={{ left: '30px', top: '250px', position: 'absolute' }} />
+      {str1?.left !== undefined && <input onChange={(e) => { editText('1', e.target.value); }} placeholder="fill me in" style={{ left: '380px', top: '280px', position: 'absolute' }} />}
+      {str2?.left !== undefined && <input onChange={(e) => { editText('2', e.target.value); }} placeholder="fill me in" style={{ left: '380px', top: '310px', position: 'absolute' }} />}
+      {str3?.left !== undefined && <input onChange={(e) => { editText('3', e.target.value); }} placeholder="fill me in" style={{ left: '380px', top: '340px', position: 'absolute' }} />}
+      {str4?.left !== undefined && <input onChange={(e) => { editText('4', e.target.value); }} placeholder="fill me in" style={{ left: '380px', top: '370px', position: 'absolute' }} />}
+      {str5?.left !== undefined && <input onChange={(e) => { editText('5', e.target.value); }} placeholder="fill me in" style={{ left: '380px', top: '400px', position: 'absolute' }} />}
+      {str6?.left !== undefined && <input onChange={(e) => { editText('6', e.target.value); }} placeholder="fill me in" style={{ left: '380px', top: '430px', position: 'absolute' }} />}
 
       {show === false && (
         <Image
@@ -204,21 +206,25 @@ function MemeMaker() {
       )}
       {show === true && (
         <div>
-          <button onClick={() => {
-            edit();
-            flip();
-          }}
+          <button
+            onClick={() => {
+              edit();
+              flip();
+            }}
+            style={{ position: 'absolute', left: '920px', top: '150px' }}
           >
             update
           </button>
-          <button onClick={() => {
-            remove();
-            flip();
-          }}
+          <button
+            onClick={() => {
+              remove();
+              flip();
+            }}
+            style={{ position: 'absolute', left: '1040px', top: '150px' }}
           >
             delete
           </button>
-          <select onChange={(e) => { pick(e.target.value); }}>{memes.map((meme, i) => <option key={i}>{meme.title}</option>)}</select>
+          <select onChange={(e) => { pick(e.target.value); }} style={{ position: 'absolute', left: '930px', top: '178px' }}>{memes.map((meme, i) => <option key={i}>{meme.title}</option>)}</select>
           <Image
             style={{
               width: '350px', height: 'auto', left: '30px', top: '280px', position: 'absolute', border: 'solid',

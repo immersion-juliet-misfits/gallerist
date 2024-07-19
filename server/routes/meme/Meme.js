@@ -39,7 +39,12 @@ MemeRouter.get('/meme/api', (req, res) => {
 });
 
 MemeRouter.post('/meme/post', (req, res) => {
-  Meme.create(req.body)
+  const {
+    title, imageUrl, options, imageId,
+  } = req.body;
+  Meme.create({
+    title, imageUrl, options, imageId, user_id: req.user.doc._id,
+  })
     .then((result) => {
       res.send(result).status(201);
     })

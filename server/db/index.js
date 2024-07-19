@@ -39,7 +39,7 @@ const MemeSchema = new Schema({
   title: String,
   imageUrl: String,
   options: Object,
-  user_id: Number,
+  user_id: String,
   imageId: String,
 });
 
