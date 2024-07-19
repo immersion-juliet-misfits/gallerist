@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-quotes */
 // Top level container for the Quiz
 import React, { useState, useEffect } from 'react';
@@ -20,6 +21,9 @@ function Quiz() {
   const [endGame, setEndGame] = useState(false); // End View: defaults to false
   const [aicArt, setAicArt] = useState([]); // Store retrieved Art Data
   const [clickCount, setClickCount] = useState(0); // Tracks User click number on any art piece
+  const [maxRounds, setMaxRounds] = useState(3); // Tracks Rounds so I only have to change it here
+  const [currScore, setcurrScore] = useState(0); // Track score of current Game Session
+  const [leftRight, setLeftRight] = useState([0, 1]); // State for what is displayed each round
 
   // ********** Axios Requests Start
   // Re-Use: Function to Retrieve fund total of user's wallet and set wallet state
@@ -105,6 +109,15 @@ function Quiz() {
     setEndGame(true);
   };
 
+  // Handle tracking image click count for Art in PlayGame
+  const handleImageClick = (index) => {
+    setClickCount(clickCount + 1);
+    setLeftRight([leftRight[0] + 2, leftRight[1] + 2]);
+    console.log(`Image ${index} clicked`);
+    console.log('Click Count: ', clickCount);
+    console.log('Left Right: ', leftRight);
+  };
+
   // Has "END GAME" been Clicked - pass down to EndGame
   const handleEndClick = () => {
     setEndGame(false);
@@ -115,13 +128,6 @@ function Quiz() {
     setClickCount(0);
     // Empty the Database to save space & prevent Duplicate errors
     delArt();
-  };
-
-  // Handle tracking image click count for Art in PlayGame
-  const handleImageClick = (index) => {
-    setClickCount(clickCount + 1);
-    console.log(`Image ${index} clicked`);
-    console.log('Click Count: ', clickCount);
   };
 
   // useEffect for changes to wallet, and score
@@ -137,15 +143,15 @@ function Quiz() {
   // Include ternary to control which view User is shown:
   // Start, Game, End
   return (
-    <Container style={{ maxWidth: '1000px' }}>
+    <Container
+      style={{ height: '600px', maxWidth: '1000px', marginBottom: '40px' }}
+    >
       <Row className='d-flex align-items-center'>
         <Col>
           <div className='d-flex'>
             <h3>Wallet:</h3>
             <h3 className='ms-2'>{wallet ? `$${wallet}` : '$0.00'}</h3>
-            <p style={{ marginLeft: '40px' }}>
-              Placeholder to display Users Previous High Score
-            </p>
+            <h3 style={{ marginLeft: '40px' }}>High Score: Placeholder</h3>
           </div>
         </Col>
       </Row>
@@ -153,8 +159,7 @@ function Quiz() {
         {startGame && (
           <StartGame
             handleStartClick={handleStartClick}
-            // getArt={getArt}
-            // pullArt={pullArt}
+            maxRounds={maxRounds}
           />
         )}
         {/* PG button is Temporary  */}
@@ -164,6 +169,9 @@ function Quiz() {
             handleImageClick={handleImageClick}
             aicArt={aicArt}
             clickCount={clickCount}
+            maxRounds={maxRounds}
+            currScore={currScore}
+            leftRight={leftRight}
           />
         )}
         {endGame && <EndGame handleEndClick={handleEndClick} />}
