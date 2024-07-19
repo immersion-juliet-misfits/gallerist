@@ -86,9 +86,6 @@ function CrackCode() {
   return (
     <div>
       <h4>Crack the Code</h4>
-      <Link to="/home/heist" relative="path">
-        <input type="button" value="Back to the Vault" />
-      </Link>
       <br />
       <select onChange={(e) => handleSelectChange(e)}>
         <option>Select a vault to heist</option>
@@ -101,9 +98,14 @@ function CrackCode() {
       <br />
       <br />
       <input type="text" maxLength="5" size="5" placeholder="Guess vault passcode" onChange={(e) => handleInput(e)} />
+      <br />
+      <br />
       <input type="button" value="Submit Guess" onClick={() => handleGuess()} />
-      {/* {result &&} */ <HeistSuccess selectedVault={selectedVault} />}
+      {result && <HeistSuccess selectedVault={selectedVault} />}
       {!result && result !== null && <h2>Failed Attempt</h2>}
+      <Link to="/home/heist" relative="path">
+        <input type="button" value="Back to the Vault" />
+      </Link>
     </div>
   );
 }
