@@ -422,4 +422,21 @@ dbRouter.post('/db/guess', (req, res) => {
       console.log(err);
     });
 });
+
+dbRouter.get('/db/heistVault/:_id', (req, res) => {
+  const { _id } = req.params;
+  Vault.findById(_id)
+    .then((vault) => {
+      if (!vault) {
+        res.sendStatus(500);
+      } else {
+        // res.send(vault.artGallery)
+        return Promise.all(vault.artGallery.map((art) => Art.findById(art)));
+        // res.json(test)
+      }
+    })
+    .then((artData) => {
+      res.status(200).send(artData);
+    });
+});
 module.exports = { dbRouter };
