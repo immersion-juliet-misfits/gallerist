@@ -439,4 +439,27 @@ dbRouter.get('/db/heistVault/:_id', (req, res) => {
       res.status(200).send(artData);
     });
 });
+
+dbRouter.post('/db/stealArt/:_id', (req, res) => {
+  const { _id } = req.params;
+  // const { owner } = req.body;
+  // console.log(artId)
+
+  // find selected artwork
+  Art.findById(_id)
+    .then((artwork) => {
+      // res.send(data);
+      console.log(artwork);
+      // take out the corresponding artwork out of prev. owner gallery
+      Vault.findOneAndUpdate({ artGallery: _id }, { $pull: { artGallery: _id } })
+        .then(() => {
+        // res.send('Updated');
+        // add art to new owner
+          Vault.findOneAndUpdate({ owner: req.user.doc._id }, { $push: { artGallery: _id } })
+            .then(() => {
+              res.send('updated my friend');
+            });
+        });
+    });
+});
 module.exports = { dbRouter };

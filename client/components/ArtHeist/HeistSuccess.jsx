@@ -7,7 +7,7 @@ import HeistArt from './HeistArt';
 
 function HeistSuccess({ selectedVault }) {
 //   const [] = useState();
-console.log(selectedVault._id)
+  console.log(selectedVault._id);
   const [art, setArt] = useState([]);
 
   // useEffect(() => {
