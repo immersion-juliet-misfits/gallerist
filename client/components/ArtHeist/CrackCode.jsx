@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import HeistSuccess from './HeistSuccess';
 
 import axios from 'axios';
 
@@ -101,7 +102,7 @@ function CrackCode() {
       <br />
       <input type="text" maxLength="5" size="5" placeholder="Guess vault passcode" onChange={(e) => handleInput(e)} />
       <input type="button" value="Submit Guess" onClick={() => handleGuess()} />
-      {result && <h2>Successful Attempt</h2>}
+      {/* {result &&} */ <HeistSuccess selectedVault={selectedVault} />}
       {!result && result !== null && <h2>Failed Attempt</h2>}
     </div>
   );

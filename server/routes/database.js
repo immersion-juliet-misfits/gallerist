@@ -350,7 +350,14 @@ dbRouter.post('/db/vault', (req, res) => {
                 res.sendStatus(500);
               });
           } else {
-            res.status(200).send(vault);
+            // res.status(200).send(vault);
+            Vault.findOneAndUpdate({ owner: req.user.doc }, { artGallery: userArt })
+              .then(() => {
+                console.log('Data updated');
+              })
+              .catch((err) => {
+                console.log(err, 'issue with update');
+              });
           }
         })
         .catch((err) => {
@@ -393,6 +400,9 @@ dbRouter.get('/db/vault/:owner', (req, res) => {
       // } else {
       //   res.sendStatus(500);
       // }
+    })
+    .catch(() => {
+      res.sendStatus(500);
     });
 });
 
