@@ -12,13 +12,15 @@ import Row from 'react-bootstrap/Row';
 
 // Pass in Axios requests from Quiz.jsx & state
 function PlayGame({
-  handlePlayClick,
   handleImageClick,
+  handlePlayClick,
   aicArt,
   clickCount,
-  maxRounds,
+  // displayedTitle,
   currScore,
   leftRight,
+  maxRounds,
+  titleRound,
 }) {
   return (
     <Container
@@ -60,7 +62,7 @@ function PlayGame({
                 fontSize: '1.5rem',
               }}
             >
-              "{aicArt[0].title}"
+              "{aicArt[leftRight[titleRound]].title}"
             </p>
           </Row>
           <div
@@ -73,7 +75,10 @@ function PlayGame({
             <div style={{ textAlign: 'center' }}>
               <Button
                 variant='link'
-                onClick={() => handleImageClick(0)}
+                onClick={() => {
+                  console.log('1st Title:', aicArt[leftRight[0]].title);
+                  handleImageClick(0, aicArt[leftRight[0]].title);
+                }}
                 style={{ padding: 0 }}
                 disabled={clickCount >= maxRounds}
               >
@@ -92,7 +97,10 @@ function PlayGame({
               <div style={{ textAlign: 'center' }}>
                 <Button
                   variant='link'
-                  onClick={() => handleImageClick(1)}
+                  onClick={() => {
+                    console.log('2nd Title:', aicArt[leftRight[1]].title);
+                    handleImageClick(1, aicArt[leftRight[1]].title);
+                  }}
                   style={{ padding: 0 }}
                   disabled={clickCount >= maxRounds}
                 >

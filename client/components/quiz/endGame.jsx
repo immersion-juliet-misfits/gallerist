@@ -17,7 +17,8 @@ function EndGame({ handleEndClick }) {
       className='d-flex flex-column align-items-center'
     >
       <h1>End Of Game</h1>
-      <h3>Display Current Score, HighScore, & Add Money</h3>
+      <h3>Display Final Current Score & Money Earned</h3>
+      <p>Update Money & Highscore if its higher than previous</p>
       <Button
         style={{ width: '200px', height: '50px' }}
         variant='secondary'

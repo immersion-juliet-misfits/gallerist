@@ -21,9 +21,12 @@ function Quiz() {
   const [endGame, setEndGame] = useState(false); // End View: defaults to false
   const [aicArt, setAicArt] = useState([]); // Store retrieved Art Data
   const [clickCount, setClickCount] = useState(0); // Tracks User click number on any art piece
-  const [maxRounds, setMaxRounds] = useState(3); // Tracks Rounds so I only have to change it here
-  const [currScore, setcurrScore] = useState(0); // Track score of current Game Session
+  const [maxRounds, setMaxRounds] = useState(5); // Tracks Rounds so I only have to change it here
+  const [currScore, setCurrScore] = useState(0); // Track score of current Game Session
   const [leftRight, setLeftRight] = useState([0, 1]); // State for what is displayed each round
+  const [titleRound, setTitleRound] = useState(0); // Which Title will display each round
+
+  const displayedTitle = aicArt[leftRight[titleRound]]?.title; // Variable for displayed title
 
   // ********** Axios Requests Start
   // Re-Use: Function to Retrieve fund total of user's wallet and set wallet state
@@ -110,24 +113,31 @@ function Quiz() {
   };
 
   // Handle tracking image click count for Art in PlayGame
-  const handleImageClick = (index) => {
+  const handleImageClick = (index, title) => {
     setClickCount(clickCount + 1);
     setLeftRight([leftRight[0] + 2, leftRight[1] + 2]);
-    console.log(`Image ${index} clicked`);
-    console.log('Click Count: ', clickCount);
-    console.log('Left Right: ', leftRight);
+    setTitleRound(Math.floor(Math.random() * 2));
+    // console.log(`Image ${index} clicked`);
+    // console.log('Click Count: ', clickCount);
+    // console.log('Left Right: ', leftRight);
+    // Function to increase score if correct title is clicked
+    if (title === displayedTitle) {
+      console.log('CORRECT!!!');
+      setCurrScore(currScore + 10); // Update score or perform any other action
+    } else {
+      console.log('Sorry...');
+    }
   };
 
   // Has "END GAME" been Clicked - pass down to EndGame
   const handleEndClick = () => {
-    setEndGame(false);
-    setStartGame(true);
-    // Reset State to empty to pr3event old options from appearing on a new game
-    setAicArt([]);
-    // Reset click count to 0
-    setClickCount(0);
-    // Empty the Database to save space & prevent Duplicate errors
-    delArt();
+    setEndGame(false); // Hide End Game button
+    setStartGame(true); // Show Start Game button
+    setAicArt([]); // Reset State to empty to prevent old opt from appearing in new game
+    setClickCount(0); // Reset click count to 0
+    delArt(); // Empty the Database to save space & prevent Duplicate errors
+    setLeftRight([0, 1]); // Reset leftRight count
+    setCurrScore(0); // Reset Current Score (still need to handle HS check)
   };
 
   // useEffect for changes to wallet, and score
@@ -172,6 +182,8 @@ function Quiz() {
             maxRounds={maxRounds}
             currScore={currScore}
             leftRight={leftRight}
+            titleRound={titleRound}
+            // displayedTitle={displayedTitle}
           />
         )}
         {endGame && <EndGame handleEndClick={handleEndClick} />}
