@@ -39,6 +39,19 @@ function Quiz() {
       .catch((err) => console.error('Could not GET wallet amount: ', err));
   }
 
+  // Give User money based on score at end of game
+  const updateWallet = (name, score) => {
+    axios
+      .put(`/db/giveMoney/${name}`, { price: score })
+      .then(() => {
+        getWallet();
+        console.log('Reward: Success');
+      })
+      .catch((err) => {
+        console.error('Reward: Failed ', err);
+      });
+  };
+
   // Retrieves art data from AIC API & saves to DB
   // To be invoked when User clicks "START?" in StartGame
   function getArt() {
@@ -110,6 +123,7 @@ function Quiz() {
     setPlayGame(false);
     // Make EndGame visible on Start click for Testing
     setEndGame(true);
+    updateWallet('Trelana Martin', currScore); // Reward: need way to target current User's name
   };
 
   // Handle tracking image click count for Art in PlayGame
@@ -184,9 +198,12 @@ function Quiz() {
             leftRight={leftRight}
             titleRound={titleRound}
             // displayedTitle={displayedTitle}
+            // handleEndClick={handleEndClick}
           />
         )}
-        {endGame && <EndGame handleEndClick={handleEndClick} />}
+        {endGame && (
+          <EndGame handleEndClick={handleEndClick} currScore={currScore} />
+        )}
       </Row>
     </Container>
   );

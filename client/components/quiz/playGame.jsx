@@ -24,14 +24,12 @@ function PlayGame({
 }) {
   return (
     <Container
-      style={{ maxWidth: '750px' }}
+      style={{ height: '600px', maxWidth: '750px' }}
       className='d-flex flex-column align-items-center'
     >
       {/* <h1 style={{ marginBottom: '30px' }}> Play Game </h1> */}
-      <Container
-        style={{ height: '600', marginBottom: '30px', marginTop: '20px' }}
-      >
-        <Row>
+      <Container style={{ marginBottom: '30px', marginTop: '20px' }}>
+        <Row className='d-flex justify-content-center text-center'>
           <Col>
             <p style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
               Current Round: {clickCount}
