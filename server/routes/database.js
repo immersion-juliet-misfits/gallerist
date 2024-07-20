@@ -2,7 +2,7 @@ const express = require('express');
 
 const dbRouter = express.Router();
 
-const { User, Art } = require('../db/index');
+const { User, Art, Watch } = require('../db/index');
 
 // GET: to return user's profile info upon load of Profile component (could be used elsewhere)
 dbRouter.get('/db/user/', (req, res) => {
@@ -300,5 +300,56 @@ dbRouter.post('/db/art', (req, res) => {
   isForSale: False, //initialize to false
   */
 });
+
+// GET request to get all the watchers name and email by the art title
+dbRouter.get('db/watch/:title', (req, res) => {
+  const { title } = req.params;
+  Watch.findById(title)
+    .then((watches) => {
+      res.status(201).send(watches);
+    })
+    .catch((err) => {
+      console.error('Failed to find the art being watched: ', err);
+    });
+});
+
+// POST request to add the User name and email, and the Art title to the db
+dbRouter.post('/db/watch/:title', (req, res) => {
+  // destructure relevant user info from request
+  const { name, email } = req.user.doc;
+  // const { name, email } = req.body;
+  const { title } = req.params;
+
+  Art.findOne({ title })
+    .then(() => {
+      Watch.create({ name, email, title })
+        .then((data) => {
+          res.status(201).send(data);
+        })
+        .catch((err) => {
+          console.error('Failed to create Watch document: ', err);
+          res.sendStatus(500);
+        });
+    });
+});
+
+// // Delete request to remove user from the watch list
+// dbRouter.patch('/db/watch/:title', (req, res) => {
+//   const { name, email } = req.user.doc;
+//   const { title } = req.params;
+
+//   Watch.findOneAndUpdate({ title })
+//     .then((deleteObj) => {
+//       if (deleteObj) {
+//         res.sendStatus(200);
+//       } else {
+//         res.sendStatus(404);
+//       }
+//     })
+//     .catch((err) => {
+//       console.error('Failed to Delete from watchlist: ', err);
+//       res.sendStatus(500);
+//     });
+// });
 
 module.exports = { dbRouter };

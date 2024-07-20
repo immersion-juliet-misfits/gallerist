@@ -49,8 +49,9 @@ apiRouter.get('/huam/object/:id', (req, res) => {
 
 apiRouter.post('/message', (req, res) => {
   sendMessage()
-    .then(() => {
-
+    .then((data) => {
+      console.log('data', data);
+      res.status(200).send(data);
     })
     .catch((err) => {
       console.error('Could not send message: ', err);

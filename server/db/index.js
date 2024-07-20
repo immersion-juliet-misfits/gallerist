@@ -37,8 +37,19 @@ const ArtSchema = new Schema({
 });
 
 const WatchedSchema = new Schema({
-  isWatched: Boolean,
-
+  name: {
+    type: Schema.Types.Array,
+    ref: 'User',
+  },
+  email: {
+    type: Schema.Types.Array,
+    ref: 'User',
+  },
+  title: {
+    type: Schema.Types.String,
+    ref: 'Art',
+  },
+  message: String,
 });
 
 const User = model('User', UserSchema);
