@@ -41,11 +41,11 @@ const WatchedSchema = new Schema({
   userData: [
     {
       email: {
-        type: Schema.Types.Array,
+        type: Schema.Types.String,
         ref: 'User',
       },
       name: {
-        type: Schema.Types.Array,
+        type: Schema.Types.String,
         ref: 'User',
       },
     },

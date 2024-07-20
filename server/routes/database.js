@@ -316,9 +316,10 @@ dbRouter.get('db/watch/:title', (req, res) => {
 // POST request to add the User name and email, and the Art title to the db
 dbRouter.post('/db/watch/:title', (req, res) => {
   // destructure relevant user info from request
-  const { name, email } = req.user.doc;
-  // const { name, email } = req.body;
+  // const { name, email } = req.user.doc;
+  const { name, email } = req.body;
   const { title } = req.params;
+  console.log('title', title);
 
   Art.findOne({ title })
     .then(() => {
