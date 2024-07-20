@@ -4,17 +4,11 @@ import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
-import { Eye, EyeSlashFill } from 'react-bootstrap-icons';
+import WatchItem from './Watch';
 
 function SearchItem({ image, idSearch }) {
   // modal state variable
   const [lgShow, setLgShow] = useState(false);
-  // eye state
-  const [showPass, setShowPass] = useState(false);
-  const clickHandler = () => {
-    console.log('sp', showPass);
-    setShowPass((prev) => !prev);
-  };
 
   return (
     <Col key={image.id}>
@@ -53,12 +47,7 @@ function SearchItem({ image, idSearch }) {
       >
         ❤️
       </Button>
-      <Button
-        variant="outline"
-        style={{ paddingBottom: '20px' }}
-      >
-        {showPass ? <EyeSlashFill onClick={clickHandler} /> : <Eye onClick={clickHandler} />}
-      </Button>
+      <WatchItem />
     </Col>
   );
 }

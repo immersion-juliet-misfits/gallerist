@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import WatchItem from './Watch';
 
 function GalleryListItem({ image }) {
   // set up modal for friend request
@@ -51,6 +52,7 @@ function GalleryListItem({ image }) {
             <Button variant="primary" value={image.userGallery.name} onClick={addFriend}>
               Add Friend
             </Button>
+            <WatchItem />
           </div>
           <Link to={`/home/art/${image.imageId}`}>Click here for more details...</Link>
           <br />
