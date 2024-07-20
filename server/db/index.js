@@ -35,6 +35,14 @@ const ArtSchema = new Schema({
   price: Number,
 });
 
+const MemeSchema = new Schema({
+  title: String,
+  imageUrl: String,
+  options: Object,
+  user_id: String,
+  imageId: String,
+});
+
 const VaultSchema = new Schema({
   name: String,
   owner: {
@@ -53,6 +61,9 @@ const VaultSchema = new Schema({
 
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
+const Meme = model('Meme', MemeSchema);
+
+module.exports = { User, Art, Meme };
 const Vault = model('Vault', VaultSchema);
 
 module.exports = { User, Art, Vault };
