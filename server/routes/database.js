@@ -340,10 +340,10 @@ dbRouter.post('/db/vault', (req, res) => {
         .then((vault) => {
           if (!vault) {
           // console.log('macaroni')
-            console.log('req doc', req.user.doc);
+            // console.log('req doc', req.user.doc);
             Vault.create({ owner: req.user.doc, artGallery: userArt, name })
               .then((newVault) => {
-                console.log(newVault, 'data created');
+                // console.log(newVault, 'data created');
                 res.status(201).send(newVault);
               })
               .catch(() => {
@@ -353,7 +353,7 @@ dbRouter.post('/db/vault', (req, res) => {
             // res.status(200).send(vault);
             Vault.findOneAndUpdate({ owner: req.user.doc }, { artGallery: userArt })
               .then(() => {
-                console.log('Data updated');
+                // console.log('Data updated');
               })
               .catch((err) => {
                 console.log(err, 'issue with update');
@@ -384,7 +384,7 @@ dbRouter.get('/db/vault', (req, res) => {
   const { _id } = req.user.doc;
   Vault.find({ owner: { $ne: _id } })
     .then((owners) => {
-      console.log(owners);
+      // console.log(owners);
       res.status(200).send(owners);
     })
     .catch(() => {
@@ -450,7 +450,7 @@ dbRouter.post('/db/stealArt/:_id', (req, res) => {
   Art.findById(_id)
     .then((artwork) => {
       // res.send(data);
-      console.log(artwork);
+      // console.log(artwork);
       // take out the corresponding artwork out of prev. owner gallery
       Vault.findOneAndUpdate({ artGallery: _id }, { $pull: { artGallery: _id } })
         .then(() => {

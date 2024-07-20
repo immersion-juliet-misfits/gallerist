@@ -25,7 +25,7 @@ function HeistSuccess({ selectedVault }) {
   function handleGetRewards() {
     axios.get(`/db/heistVault/${selectedVault._id}`)
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
         setArt(data);
       });
   }

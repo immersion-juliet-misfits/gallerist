@@ -31,23 +31,23 @@ function CrackCode() {
   function getOtherVaults() {
     axios.get('/db/vault')
       .then(({ data }) => {
-        console.log('vaults', data);
+        // console.log('vaults', data);
         setVaults(data);
       });
   }
 
   function handleSelectChange(e) {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     if (e.target.value === 'Select a vault to heist') {
       console.log('Back to default');
     } else {
       axios.get(`/db/vault/${e.target.value}`)
         .then(({ data }) => {
           setSelectedVault(data);
-          console.log('YEA', data);
+          // console.log('YEA', data);
         })
         .catch((err) => {
-          console.log(' NO', err);
+          console.log(err);
         });
     }
     // setSelectedVault(e.target.value);
@@ -63,7 +63,7 @@ function CrackCode() {
     setAttempts(attempts + 1);
     axios.post('/db/guess', { owner, input })
       .then(({ data }) => {
-        console.log(data.code, 'correct guess', input);
+        // console.log(data.code, 'correct guess', input);
         setPrevious(input);
         setResult(true);
       })
@@ -74,7 +74,7 @@ function CrackCode() {
           setResult(false);
           axios.put('/db/deductWallet', { price: 50 })
             .then(() => {
-              console.log('You were fined for theft. -$50');
+              console.log('You were fined for theft. - $50');
             })
             .catch(() => {
               console.error('You got away with the theft attemp...');
@@ -96,7 +96,7 @@ function CrackCode() {
     getOtherVaults();
     // console.log(vaults, 'state');
     // console.log(selectedVault._id, 'state');
-    console.log(previous, 'state');
+    // console.log(previous, 'state');
     // console.log(passcode, 'passcode');
   }, [selectedVault, input, previous]);
 

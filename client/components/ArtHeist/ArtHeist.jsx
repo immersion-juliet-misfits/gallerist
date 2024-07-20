@@ -22,12 +22,12 @@ function ArtHeist() {
 //   }
 
   function handleInput(e) {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setInput(e.target.value);
   }
 
   function handleSetPasscode() {
-    console.log(input.split(''), 'box setup');
+    // console.log(input.split(''), 'box setup');
     setPasscode(input);
     axios.patch('/db/vault/', { code: input })
       .then(() => {
@@ -42,7 +42,7 @@ function ArtHeist() {
     // console.log()
     axios.post('/db/vault')
       .then((vault) => {
-        console.log(vault, 'attempt');
+        // console.log(vault, 'attempt');
       })
       .catch((err) => {
         console.error('Vault could not be found or created.', err);
@@ -54,7 +54,7 @@ function ArtHeist() {
     // console.log(input, 'input');
     // handleSetPasscode();
     handleVaultMount();
-    console.log(passcode, 'passcode');
+    // console.log(passcode, 'passcode');
   }, [passcode]);
 
   return (

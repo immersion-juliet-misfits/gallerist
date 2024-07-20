@@ -7,13 +7,13 @@ import Image from 'react-bootstrap/Image';
 import { Link } from 'react-router-dom';
 
 function HeistArt({ artwork }) {
-  console.log(artwork);
+  // console.log(artwork);
   //   const [] = useState();
 
   function handleTheft() {
     axios.post(`/db/stealArt/${artwork._id}`)
       .then(({ data }) => {
-        console.log('ust tryna see sum', data);
+        console.log('Art stolen', data);
       })
       .catch(() => {
         console.error('Error stealing artwork');
