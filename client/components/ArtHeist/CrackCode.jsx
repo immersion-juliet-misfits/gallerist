@@ -57,7 +57,7 @@ function CrackCode() {
     setAttempts(attempts + 1);
     axios.post('/db/guess', { owner, input })
       .then(({ data }) => {
-        console.log(data, 'correct guess', input);
+        console.log(data.code, 'correct guess', input);
         setResult(true);
       })
       .catch(() => {
@@ -93,10 +93,33 @@ function CrackCode() {
     // console.log(passcode, 'passcode');
   }, [selectedVault, input, previous]);
 
+  function showColors(letter, i) {
+    if (letter === selectedVault.code[i]) {
+      return 'green';
+    }
+    if (letter === selectedVault.code.split('')[i - 1] || letter === selectedVault.code.split('')[i + 1]) {
+      // console.log('test here ', i, selectedVault.code[i + 1], selectedVault.code[i - 1])
+      return 'yellow';
+    }
+    return 'black';
+  }
+
   return (
     <div>
       <h4>Crack the Code</h4>
-      <h4>{previous}</h4>
+      <h4 style={{ color: 'red' }}>{previous}</h4>
+      {/* {previous.split('').map((letter) => (
+        <>
+          <h3>{letter}</h3>
+        </>
+      ))} */}
+      {previous && (
+      <div>
+        {previous.split('').map((letter, i) => (
+          <h3 key={i} style={{ color: showColors(letter, i) }}>{letter}</h3>
+        ))}
+      </div>
+      )}
       <br />
       <select onChange={(e) => handleSelectChange(e)}>
         <option>Select a vault to heist</option>
