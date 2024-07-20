@@ -113,7 +113,7 @@ function CrackCode() {
 
   return (
     <Container className="text-center">
-      <h4>Crack the Code</h4>
+      <h1>Crack the Code</h1>
       {/* <h4 style={{ color: 'red' }}>{previous}</h4> */}
       {/* {previous.split('').map((letter) => (
         <>
@@ -146,9 +146,8 @@ function CrackCode() {
           <option key={vault._id} value={vault.owner}>{vault.name}</option>
         ))}
       </select> */}
-      <Col md={7}>
+      <Col md={7} className="mx-auto">
         <div className="dropdown">
-          <h3 className="section-header text-center">Crack the Code</h3>
           <Form.Select defaultValue="" onChange={(e) => handleSelectChange(e)}>
             <option>Select a vault to heist</option>
             {vaults.map((vault) => (
@@ -161,7 +160,7 @@ function CrackCode() {
       && <h4>{`${selectedVault.name}'s Vault`}</h4>}
       <br />
       <br />
-      <input type="text" maxLength="5" size="5" placeholder="Guess vault passcode" onChange={(e) => handleInput(e)} />
+      <input type="text" className="form-control mx-auto" maxLength="5" size="5" placeholder="Guess vault passcode" onChange={(e) => handleInput(e)} />
       <br />
       <br />
       <Button onClick={() => handleGuess()}>Submit Guess</Button>

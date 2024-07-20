@@ -32,7 +32,8 @@ function HeistSuccess({ selectedVault }) {
 
   return (
     <div>
-      <h3>You did it!</h3>
+      <h3>You're in. Take a piece of art, quick!</h3>
+      <h3>{`${selectedVault.name}'s Art Vault`}</h3>
       <input type="button" value="Show Rewards" onClick={() => handleGetRewards()} />
       <Row>
         {Array.isArray(selectedVault.artGallery)

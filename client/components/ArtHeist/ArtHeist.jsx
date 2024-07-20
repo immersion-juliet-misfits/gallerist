@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import Image from 'react-bootstrap/Image';
+import Form from 'react-bootstrap/Form';
 
 function ArtHeist() {
   const [input, setInput] = useState('');
@@ -52,7 +58,7 @@ function ArtHeist() {
   }, [passcode]);
 
   return (
-    <div>
+    <Container className="text-center">
       <h1>Art Heist</h1>
       <h5>Set code</h5>
       <input type="text" maxLength="5" size="5" onChange={(e) => handleInput(e)} />
@@ -62,7 +68,7 @@ function ArtHeist() {
       <Link to="/home/planHeist" relative="path">
         <Button variant="dark">Plan a Heist</Button>
       </Link>
-    </div>
+    </Container>
   );
 }
 
