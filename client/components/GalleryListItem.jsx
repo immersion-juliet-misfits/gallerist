@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import WatchItem from './Watch';
 
-function GalleryListItem({ image }) {
+function GalleryListItem({ image, isForSale }) {
   // set up modal for friend request
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -52,7 +52,7 @@ function GalleryListItem({ image }) {
             <Button variant="primary" value={image.userGallery.name} onClick={addFriend}>
               Add Friend
             </Button>
-            <WatchItem />
+            <WatchItem imgTitle={image.title} isForSale={image.isForSale} />
           </div>
           <Link to={`/home/art/${image.imageId}`}>Click here for more details...</Link>
           <br />

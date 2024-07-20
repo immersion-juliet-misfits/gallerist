@@ -3,33 +3,51 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import { Eye, EyeSlashFill } from 'react-bootstrap-icons';
 
-function WatchItem() {
+function WatchItem({ imgTitle, isForSale }) {
   // eye state
-  const [showPass, setShowPass] = useState(false);
+  const [showPass, setShowPass] = useState(true);
   // watcher state
   const [watchers, setWatchers] = useState([]);
   // isForSale state
   const [forSale, setSale] = useState(true);
 
+  // Function to send notification
+  function sendMessage() {
+    watchers.userData.map(({ name, email }) => {
+      axios
+        .post('/messages', { name, email, imgTitle })
+        .then((message) => {
+          console.log('Message sent: ', message);
+        })
+        .catch((err) => {
+          console.error('Failed to send message: ', err);
+        });
+    });
+  }
 
   function getWatchers() {
     axios
-      .get('/db/watch/${})
-      .then((data) => {
-        console.log(data)
-        // setWatchers(watchers);
+      .get(`/db/watch/${imgTitle}`)
+      .then(() => {
+        setWatchers(watchers);
+      })
+      .then(() => {
+        if (showPass === true && isForSale === true) { sendMessage(); }
       })
       .catch((err) => {
         console.error('Could not GET the watchers', err);
       });
   }
 
-  // function sendMessage() {
-  //   watchers.userData.map((user) => {
-  //     axios.post('/messages', {user.name, user.email, watchers.title});
-
-  //   })
-  // };
+  function sendWatchers() {
+    axios
+      .post(`/db/watch/${imgTitle}`)
+      .then(() => {
+      })
+      .catch((err) => {
+        console.error('Failed to POST watchers: ', err);
+      });
+  }
 
   // Function to get array of all art objects where isForSale === true
   function getAuction() {
@@ -43,8 +61,7 @@ function WatchItem() {
 
   const clickHandler = () => {
     setShowPass((prev) => !prev);
-    console.log('watchers', watchers)
-    // if (showPass === true && forSale === true) { sendMessage(); }
+    if (showPass === true) sendWatchers();
   };
 
   useEffect(() => {
@@ -53,11 +70,11 @@ function WatchItem() {
   }, [forSale, watchers]);
 
   return (
-    <Button variant='outline' style={{ paddingBottom: '20px' }}>
+    <Button variant="outline" style={{ paddingBottom: '20px' }}>
       {showPass ? (
-        <Eye onClick={clickHandler} />
-      ) : (
         <EyeSlashFill onClick={clickHandler} />
+      ) : (
+        <Eye onClick={clickHandler} />
       )}
     </Button>
   );

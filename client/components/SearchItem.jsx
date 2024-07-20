@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import WatchItem from './Watch';
 
-function SearchItem({ image, idSearch }) {
+function SearchItem({ image, idSearch, isForSale }) {
   // modal state variable
   const [lgShow, setLgShow] = useState(false);
 
@@ -47,7 +47,7 @@ function SearchItem({ image, idSearch }) {
       >
         ❤️
       </Button>
-      <WatchItem />
+      <WatchItem imgTitle={image.title} isForSale={image.isForSale} />
     </Col>
   );
 }

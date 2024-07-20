@@ -2,7 +2,7 @@ const express = require('express');
 
 const dbRouter = express.Router();
 
-const { User, Art, Vault, Watch } = require('../db/index');
+const { User, Art, Watch } = require('../db/index');
 
 // GET: to return user's profile info upon load of Profile component (could be used elsewhere)
 dbRouter.get('/db/user/', (req, res) => {
@@ -147,12 +147,14 @@ dbRouter.post('/db/culture/:culture', (req, res) => {
         if (!name) {
           res.status(200).send(cultureArt);
         } else {
-          Art.find({ culture }).where({ 'userGallery.name': name })
+          Art.find({ culture })
+            .where({ 'userGallery.name': name })
             .then((bothArt) => {
               if (bothArt.length) {
                 res.status(200).send(bothArt);
               }
-            }).catch(() => res.sendStatus(404));
+            })
+            .catch(() => res.sendStatus(404));
         }
       } else {
         res.sendStatus(404);
@@ -176,7 +178,7 @@ dbRouter.put('/db/art/:imageId', (req, res) => {
   Art.findOneAndUpdate(
     { imageId },
     { ...fieldsToUpdate, userGallery: { name, googleId } },
-    { new: true },
+    { new: true }
   )
     .then((updObj) => {
       if (updObj) {
@@ -218,7 +220,7 @@ dbRouter.put('/db/friends/', (req, res) => {
         User.findByIdAndUpdate(
           user._id,
           { $push: { friends: friend } },
-          { new: true },
+          { new: true }
         ).then(() => {
           res.sendStatus(200);
         });
@@ -247,7 +249,7 @@ dbRouter.put('/db/unfriend/', (req, res) => {
       User.findOneAndUpdate(
         user._id,
         { friends: user.friends },
-        { new: true },
+        { new: true }
       ).then(() => {
         res.sendStatus(200);
       });
@@ -302,11 +304,13 @@ dbRouter.post('/db/art', (req, res) => {
 });
 
 // GET request to get all the watchers name and email by the art title
-dbRouter.get('db/watch/:title', (req, res) => {
+dbRouter.get('/db/watch/:title', (req, res) => {
   const { title } = req.params;
-  Watch.findById(title)
-    .then((watches) => {
-      res.status(201).send(watches);
+  console.log('title', title)
+  Watch.find({ title })
+    .then((watchers) => {
+      console.log('watches', watchers);
+      res.status(201).send(watchers);
     })
     .catch((err) => {
       console.error('Failed to find the art being watched: ', err);
@@ -316,21 +320,23 @@ dbRouter.get('db/watch/:title', (req, res) => {
 // POST request to add the User name and email, and the Art title to the db
 dbRouter.post('/db/watch/:title', (req, res) => {
   // destructure relevant user info from request
-  const { name, email } = req.user.doc;
-  // const { name, email } = req.body;
+  // const { name, email } = req.user.doc;
+  const { name, email } = req.body;
   const { title } = req.params;
 
-  Art.findOne({ title })
-    .then(() => {
-      Watch.create({ userData: [{ email, name }], title })
-        .then((data) => {
-          res.status(201).send(data);
-        })
-        .catch((err) => {
-          console.error('Failed to create Watch document: ', err);
-          res.sendStatus(500);
-        });
+  // if(!Watch.find({title})){
+  Watch.create({ userData: [{ email, name }], title })
+    .then((data) => {
+      res.status(201).send(data);
+    })
+    .catch((err) => {
+      console.error('Failed to create Watch document: ', err);
+      res.sendStatus(500);
     });
+  // } else {
+  //   console.log('title already there')
+  // }
+  // });
 });
 
 // // Delete request to remove user from the watch list
@@ -384,37 +390,39 @@ dbRouter.get('/db/randomArt/:googleId', (req, res) => {
 dbRouter.post('/db/vault', (req, res) => {
   const { name, googleId } = req.user.doc;
 
-  Art.find({ 'userGallery.googleId': googleId })
-    .then((userArt) => {
-      // console.log('ART DATA', data);
-      Vault.findOne({ owner: req.user.doc })
-        .then((vault) => {
-          if (!vault) {
+  Art.find({ 'userGallery.googleId': googleId }).then((userArt) => {
+    // console.log('ART DATA', data);
+    Vault.findOne({ owner: req.user.doc })
+      .then((vault) => {
+        if (!vault) {
           // console.log('macaroni')
-            // console.log('req doc', req.user.doc);
-            Vault.create({ owner: req.user.doc, artGallery: userArt, name })
-              .then((newVault) => {
-                // console.log(newVault, 'data created');
-                res.status(201).send(newVault);
-              })
-              .catch(() => {
-                res.sendStatus(500);
-              });
-          } else {
-            // res.status(200).send(vault);
-            Vault.findOneAndUpdate({ owner: req.user.doc }, { artGallery: userArt })
-              .then(() => {
-                // console.log('Data updated');
-              })
-              .catch((err) => {
-                console.log(err, 'issue with update');
-              });
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    });
+          // console.log('req doc', req.user.doc);
+          Vault.create({ owner: req.user.doc, artGallery: userArt, name })
+            .then((newVault) => {
+              // console.log(newVault, 'data created');
+              res.status(201).send(newVault);
+            })
+            .catch(() => {
+              res.sendStatus(500);
+            });
+        } else {
+          // res.status(200).send(vault);
+          Vault.findOneAndUpdate(
+            { owner: req.user.doc },
+            { artGallery: userArt }
+          )
+            .then(() => {
+              // console.log('Data updated');
+            })
+            .catch((err) => {
+              console.log(err, 'issue with update');
+            });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
 });
 
 dbRouter.patch('/db/vault/', (req, res) => {
@@ -498,20 +506,23 @@ dbRouter.post('/db/stealArt/:_id', (req, res) => {
   // console.log(artId)
 
   // find selected artwork
-  Art.findById(_id)
-    .then((artwork) => {
-      // res.send(data);
-      // console.log(artwork);
-      // take out the corresponding artwork out of prev. owner gallery
-      Vault.findOneAndUpdate({ artGallery: _id }, { $pull: { artGallery: _id } })
-        .then(() => {
-        // res.send('Updated');
-        // add art to new owner
-          Vault.findOneAndUpdate({ owner: req.user.doc._id }, { $push: { artGallery: _id } })
-            .then(() => {
-              res.send('updated my friend');
-            });
-        });
+  Art.findById(_id).then((artwork) => {
+    // res.send(data);
+    // console.log(artwork);
+    // take out the corresponding artwork out of prev. owner gallery
+    Vault.findOneAndUpdate(
+      { artGallery: _id },
+      { $pull: { artGallery: _id } }
+    ).then(() => {
+      // res.send('Updated');
+      // add art to new owner
+      Vault.findOneAndUpdate(
+        { owner: req.user.doc._id },
+        { $push: { artGallery: _id } }
+      ).then(() => {
+        res.send('updated my friend');
+      });
     });
+  });
 });
 module.exports = { dbRouter };
