@@ -59,14 +59,19 @@ MemeRouter.patch('/meme/update/:id', (req, res) => {
     res.status(404).json({ error: 'bad id' });
   }
 
-  Meme.findOneAndUpdate({ _id: id }, req.body)
-    .then((result) => {
-      res.send(result).status(200);
-    })
-    .catch((err) => {
-      console.error('Meme routes error update: ', err);
-      res.sendStatus(500);
-    });
+  if (req.user.doc._id === req.body.user_id) {
+    Meme.findOneAndUpdate({ _id: id }, req.body)
+      .then((result) => {
+        res.send(result).status(200);
+      })
+      .catch((err) => {
+        console.error('Meme routes error update: ', err);
+        res.sendStatus(500);
+      });
+  } else {
+    console.error('you are not the owner of this meme');
+    res.sendStatus(500);
+  }
 });
 
 MemeRouter.delete('/meme/delete/:id', (req, res) => {
@@ -75,15 +80,19 @@ MemeRouter.delete('/meme/delete/:id', (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(404).json({ error: 'bad id' });
   }
-
-  Meme.findOneAndDelete({ _id: id }, req.body)
-    .then((result) => {
-      res.send(result).status(200);
-    })
-    .catch((err) => {
-      console.error('Meme routes error update: ', err);
-      res.sendStatus(500);
-    });
+  if (req.user.doc._id === req.body.user_id) {
+    Meme.findOneAndDelete({ _id: id }, req.body)
+      .then((result) => {
+        res.send(result).status(200);
+      })
+      .catch((err) => {
+        console.error('Meme routes error update: ', err);
+        res.sendStatus(500);
+      });
+  } else {
+    console.error('you are not the owner of this meme');
+    res.sendStatus(500);
+  }
 });
 
 module.exports = { MemeRouter };

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'react-bootstrap/Image';
+import Button from 'react-bootstrap/Button';
 
 function MemeMaker() {
-  const [template, setTemplate] = useState({});
   const [randomTemplate, setRandomTemplate] = useState({});
   const [memes, setMemes] = useState([]);
   const [memesImg, setMemeImg] = useState('');
   const [memesId, setMemeId] = useState('');
   const [memeName, setMemeName] = useState('');
+  const [user, setUser] = useState('');
   const [title, setTitle] = useState('title');
   const [show, setShow] = useState(false);
   const [str1, setStr1] = useState({});
@@ -126,6 +127,7 @@ function MemeMaker() {
         setMemeImg(memes?.[i].imageUrl);
         setMemeId(memes?.[i]._id);
         setMemeName(memes?.[i].imageId);
+        setUser(memes?.[i].user_id);
       }
     }
   };
@@ -151,7 +153,7 @@ function MemeMaker() {
       options: {
         str1, str2, str3, str4, str5, str6,
       },
-      user_id: 0,
+      user_id: user,
       imageId: memeName,
     };
     axios.patch(`/meme/update/${memesId}`, obj)
@@ -168,7 +170,7 @@ function MemeMaker() {
       options: {
         str1, str2, str3, str4, str5, str6,
       },
-      user_id: 0,
+      user_id: user,
       imageId: memeName,
     };
     axios.delete(`/meme/delete/${memesId}`, obj)
@@ -185,9 +187,9 @@ function MemeMaker() {
 
   return (
     <div>
-      <button onClick={() => { getRandomMeme(); }} style={{ position: 'absolute', left: '219px', top: '250px' }}>get Random Template</button>
-      <button onClick={() => { addMeme(); }} style={{ position: 'absolute', left: '150px', top: '220px' }}>create Meme ❤️</button>
-      <button onClick={() => { flip(); }} style={{ position: 'absolute', left: '980px', top: '150px' }}>change</button>
+      <Button variant="dark" size="sm" onClick={() => { getRandomMeme(); }} style={{ position: 'absolute', left: '219px', top: '250px' }}>get Random Template</Button>
+      <Button variant="dark" size="sm" onClick={() => { addMeme(); }} style={{ position: 'absolute', left: '150px', top: '220px' }}>create Meme ❤️</Button>
+      <Button variant="dark" size="sm" onClick={() => { flip(); }} style={{ position: 'absolute', left: '980px', top: '150px' }}>change</Button>
       <input onChange={(e) => { giveTitle(e.target.value); }} value={title} style={{ left: '30px', top: '250px', position: 'absolute' }} />
       {str1?.left !== undefined && <input onChange={(e) => { editText('1', e.target.value); }} placeholder="fill me in" style={{ left: '380px', top: '280px', position: 'absolute' }} />}
       {str2?.left !== undefined && <input onChange={(e) => { editText('2', e.target.value); }} placeholder="fill me in" style={{ left: '380px', top: '310px', position: 'absolute' }} />}
@@ -206,25 +208,29 @@ function MemeMaker() {
       )}
       {show === true && (
         <div>
-          <button
+          <Button
             onClick={() => {
               edit();
               flip();
             }}
-            style={{ position: 'absolute', left: '920px', top: '150px' }}
+            style={{ position: 'absolute', left: '918px', top: '150px' }}
+            variant="dark"
+            size="sm"
           >
             update
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => {
               remove();
               flip();
             }}
-            style={{ position: 'absolute', left: '1040px', top: '150px' }}
+            style={{ position: 'absolute', left: '1043px', top: '150px' }}
+            variant="dark"
+            size="sm"
           >
             delete
-          </button>
-          <select onChange={(e) => { pick(e.target.value); }} style={{ position: 'absolute', left: '930px', top: '178px' }}>{memes.map((meme, i) => <option key={i}>{meme.title}</option>)}</select>
+          </Button>
+          <select onChange={(e) => { pick(e.target.value); }} style={{ position: 'absolute', left: '930px', top: '180px' }}>{memes.map((meme, i) => <option key={i}>{meme.title}</option>)}</select>
           <Image
             style={{
               width: '350px', height: 'auto', left: '30px', top: '280px', position: 'absolute', border: 'solid',
