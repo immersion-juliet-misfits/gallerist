@@ -22,9 +22,6 @@ function NavBar() {
             <Nav.Link as={NavLink} eventKey="profile" to="profile">
               Profile
             </Nav.Link>
-            <Nav.Link as={NavLink} eventKey="meme" to="meme">
-              MemeMaker
-            </Nav.Link>
             <Nav.Link as={NavLink} eventKey="gallery" to="gallery">
               Gallery
             </Nav.Link>

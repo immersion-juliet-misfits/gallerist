@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 import GalleryListItem from './GalleryListItem';
-import MemeListItem from './meme/MemeListItem';
 
 function Gallery() {
   // use useState to define an images array and method to store and update gallery images
@@ -17,12 +16,6 @@ function Gallery() {
   const [cultures, setCulturesArray] = useState([]);
   // add in a curr user to state for accessing user in culture/user filter
   const [currUser, setCurrUser] = useState('');
-  // add meme check
-  const [meme, setMeme] = useState(false);
-  // hold three memes
-  const [threeMemes, setThreeMemes] = useState([]);
-  // hold number used for checking data
-  const [number, setNumber] = useState(0);
 
   // send a request to get all users in the db
   const getAllUsers = () => {
@@ -67,21 +60,9 @@ function Gallery() {
   };
   // send a request to filter by culture
   const getImagesByCulture = (filter) => {
-    if (!filter || filter === '') {
-      setMeme(false);
+    if (!filter) {
       getAllImages();
-    } else if (filter === 'meme') {
-      axios.get('/meme/get')
-        .then((result) => {
-          setImages(result.data);
-          setThreeMemes([result.data[0], result.data[1], result.data[2]]);
-          //  setThreeMemes([result.data[0]]);
-          setMeme(true);
-        }).catch((err) => {
-          console.error('axios get request error in Gallery.jsx: ', err);
-        });
     } else {
-      setMeme(false);
       axios.post(`/db/culture/${filter}`, { name: currUser })
         .then((art) => {
           setImages(art.data);
@@ -89,26 +70,6 @@ function Gallery() {
         .catch((err) => console.log('get images by culture failed', err));
     }
   };
-
-  // set the three memes to render
-  const getThreeMemes = (num) => {
-    if (num) {
-      setThreeMemes([images?.[0 + num], images?.[1 + num], images?.[2 + num]]);
-      // setThreeMemes([images?.[0 + num]]);
-    } else {
-      setThreeMemes([images?.[0], images?.[1], images?.[2]]);
-      //  setThreeMemes([images?.[0]]);
-    }
-  };
-
-  // check num to see what need to be render
-  const changeNum = (num) => {
-    if (images.length > number + num && number + num >= 0) {
-      setNumber(number + num);
-      getThreeMemes(number + num);
-    }
-  };
-
   // create a userList to populate user dropdown
   const userList = usersArray.map((user, i) => (
     <option
@@ -118,7 +79,6 @@ function Gallery() {
       {user.name}
     </option>
   ));
-
   // create the option tags for cultures dropdown
   const culturesList = cultures.map((culture, i) => (
     <option
@@ -132,7 +92,6 @@ function Gallery() {
   useEffect(() => {
     getAllImages();
     getAllUsers();
-    getThreeMemes();
   }, []);
 
   return (
@@ -155,14 +114,13 @@ function Gallery() {
             <h3 className="section-header text-center">Cultures</h3>
             <Form.Select defaultValue="" onChange={(e) => getImagesByCulture(e.target.value)}>
               <option value="" key="296573">All</option>
-              <option key="21meme">meme</option>
               {culturesList}
             </Form.Select>
           </div>
         </Col>
       </Row>
       <Row>
-        {meme === false && images.map((image, i) => (
+        {images.map((image, i) => (
           <Col key={`${image.imageId}-${i}`}>
             <GalleryListItem
               image={image}
@@ -170,24 +128,6 @@ function Gallery() {
           </Col>
         ))}
       </Row>
-      {meme === true && (
-        <>
-          <button onClick={() => { changeNum(-3); }}>{'<'}</button>
-          <button onClick={() => { changeNum(3); }}>{'>'}</button>
-        </>
-      )}
-      {meme === true && threeMemes.map((image, i) => {
-        if (image !== undefined) {
-          return (
-            <Col key={`${i}`}>
-              <MemeListItem
-                image={image}
-                num={i}
-              />
-            </Col>
-          );
-        }
-      })}
     </Container>
 
   );

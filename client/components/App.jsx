@@ -10,7 +10,6 @@ import Profile from './Profile';
 import Home from './Home';
 import PhotoInfo from './PhotoInfo';
 import PalGallery from './PalGallery';
-import MemeMaker from './meme/MemeMaker';
 import ArtHeist from './ArtHeist/ArtHeist';
 import CrackCode from './ArtHeist/CrackCode';
 
@@ -54,10 +53,6 @@ const App = createBrowserRouter([
       {
         path: '/home/art/:imageId',
         element: <PhotoInfo />,
-      },
-      {
-        path: '/home/meme',
-        element: <MemeMaker />,
       },
       {
         path: '/home/heist',
