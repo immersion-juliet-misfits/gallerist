@@ -2,20 +2,17 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable object-curly-newline */
 /* eslint-disable jsx-quotes */
-// import React, { useState, useEffect } from 'react';
 import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
-// Pass in Axios requests from Quiz.jsx & state
 function PlayGame({
   handleImageClick,
   handlePlayClick,
   aicArt,
   clickCount,
-  // displayedTitle,
   currScore,
   leftRight,
   maxRounds,
@@ -32,7 +29,6 @@ function PlayGame({
       style={{ height: '600px', maxWidth: '750px' }}
       className='d-flex flex-column align-items-center'
     >
-      {/* <h1 style={{ marginBottom: '30px' }}> Play Game </h1> */}
       <Container style={{ marginBottom: '30px', marginTop: '20px' }}>
         <Row className='d-flex justify-content-center text-center'>
           <Col>
@@ -89,7 +85,6 @@ function PlayGame({
                   src={aicArt[leftRight[0]].imageUrl}
                   alt='No cheating!'
                   style={{
-                    // maxWidth: '200px',
                     maxHeight: '300px',
                     objectFit: 'contain',
                   }}
@@ -111,7 +106,6 @@ function PlayGame({
                     src={aicArt[leftRight[1]].imageUrl}
                     alt='No cheating!'
                     style={{
-                      // maxWidth: '200px',
                       maxHeight: '300px',
                       objectFit: 'contain',
                     }}
@@ -124,16 +118,6 @@ function PlayGame({
       ) : (
         <p>Loading...</p>
       )}
-      {/* <Button
-        style={{ width: '200px', height: '50px' }}
-        variant='secondary'
-        disabled={clickCount < maxRounds}
-        onClick={() => {
-          handlePlayClick();
-        }}
-      >
-        END GAME
-      </Button> */}
     </Container>
   );
 }

@@ -82,8 +82,8 @@ The REAL way to test & use this is via client side Axios requests and: const { _
 // STOP using the same Endpoints as other route files
 // This function is currently returning the entire user OBJ
 quizRouter.get('/db/userScore/', (req, res) => {
-    // console.log('User Req Params: ', req.params); // Empty
-    // console.log('User Req Body: ', req.body); // Logs the ID I entered in my PM req
+  // console.log('User Req Params: ', req.params); // Empty
+  // console.log('User Req Body: ', req.body); // Logs the ID I entered in my PM req
   const { _id } = req.body; // Using this to test in PM since there is no client
   // const { _id } = req.user.doc; // Required for Production
   User.findById(_id) // Targets the User using the browser currently
@@ -105,8 +105,7 @@ quizRouter.get('/db/userScore/', (req, res) => {
     });
 });
 
-// Update: PUT/PATCH - Update the Users High Score if they have surpassed it
-//
+// Update: PUT - Update Users current High Score if they have surpassed it
 quizRouter.put('/db/userScore', (req, res) => {
   const { _id } = req.user.doc;
   const { quizHighScore } = req.body;
@@ -125,24 +124,23 @@ quizRouter.put('/db/userScore', (req, res) => {
     });
 });
 
-/*
-Reference to write req handler for creating & updating Users high score
-why do they use PUT instead of PATCH
+// Update: PUT - Update Users Total Running Quiz Score
+quizRouter.put('/db/userRunningScore', (req, res) => {
+  const { _id } = req.user.doc;
+  const { currScore } = req.body;
 
-For pricing feature, to pay owner of art and increment wallet
-dbRouter.put('/db/giveMoney/:name', (req, res) => {
-  const { name } = req.params;
-  const { price } = req.body;
-  User.findOneAndUpdate({ name }, { $inc: { wallet: price } }, { new: true })
-    .then(() => {
-      res.sendStatus(200);
+  User.findByIdAndUpdate(_id, { $inc: { quizTotalScore: currScore } }, { new: true })
+    .then((updateScore) => {
+      if (updateScore) {
+        res.status(200).send(updateScore);
+      } else {
+        res.status(404).send('Running Score Not Found');
+      }
     })
     .catch((err) => {
-      console.error('Failed to pay wallet of user: ', err);
+      console.error('Quiz Running Score Update: Failed ', err);
       res.sendStatus(500);
     });
 });
-
-*/
 
 module.exports = { quizRouter };

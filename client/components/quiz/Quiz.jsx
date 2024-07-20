@@ -1,3 +1,5 @@
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-quotes */
 import React, { useState, useEffect } from 'react';
@@ -20,9 +22,9 @@ function Quiz() {
   const [maxRounds, setMaxRounds] = useState(5); // Tracks Rounds so I only have to change it here
   const [currScore, setCurrScore] = useState(0); // Track score of current Game Session
   const [highScore, setHighScore] = useState(0); // Track score of current Game Session
+  const [runScore, setRunScore] = useState(0); // Track Users total tunning score
   const [leftRight, setLeftRight] = useState([0, 1]); // State for what is displayed each round
   const [titleRound, setTitleRound] = useState(0); // Which Title will display each round
-
 
   const displayedTitle = aicArt[leftRight[titleRound]]?.title; // Variable for displayed title
 
@@ -40,50 +42,84 @@ function Quiz() {
   // Give User money based on score at end of game
   const updateWallet = (name, score) => {
     axios
-    .put(`/db/giveMoney/${name}`, { price: score })
-    .then(() => {
-      getWallet();
-      console.log('Reward: Success');
-    })
-    .catch((err) => {
-      console.error('Reward: Failed ', err);
-    });
+      .put(`/db/giveMoney/${name}`, { price: score })
+      .then(() => {
+        getWallet();
+        console.log('Reward: Success');
+      })
+      .catch((err) => {
+        console.error('Reward: Failed ', err);
+      });
   };
 
   // Sets initial High Score value and retrieves it
-    const getScore = () => {
+  const getScore = () => {
+    axios
+      .get('/db/user/')
+      .then(({ data }) => {
+        if (data.quizHighScore === undefined) {
+          axios
+            .put(`/db/user/${data._id}`, { quizHighScore: 0 })
+            .then(() => {
+              setHighScore(0);
+            })
+            .catch((err) => console.error('POST High Score: Failed ', err));
+        } else {
+          setHighScore(data.quizHighScore);
+        }
+      })
+      .catch((err) => console.error('GET High Score: Failed ', err));
+  };
+
+  // Updates High Score if currScore is more than previous
+  const updateScore = () => {
+    if (currScore > highScore) {
       axios
         .get('/db/user/')
         .then(({ data }) => {
-          if (data.quizHighScore === undefined) {
-            axios.put(`/db/user/${data._id}`, { quizHighScore: 0 })
-              .then(() => {
-                setHighScore(0);
-              })
-              .catch((err) => console.error('POST High Score: Failed ', err));
-          } else {
-            setHighScore(data.quizHighScore);
-          }
+          axios
+            .put(`/db/user/${data._id}`, { quizHighScore: currScore })
+            .then(() => {
+              setHighScore(currScore);
+            })
+            .catch((err) => console.error('High Score Update: Failed ', err));
         })
-        .catch((err) => console.error('GET High Score: Failed ', err));
-    };
+        .catch((err) => console.error('GET User ID: Failed ', err));
+    }
+  };
 
-// Updates High Score if currScore is more than previous
-    const updateScore = () => {
-      if (currScore > highScore) {
-        axios.get('/db/user/')
-          .then(({ data }) => {
-            axios
-              .put(`/db/user/${data._id}`, { quizHighScore: currScore })
-              .then(() => {
-                setHighScore(currScore);
-              })
-              .catch((err) => console.error('High Score Update: Failed ', err));
-          })
-          .catch((err) => console.error('GET User ID: Failed ', err));
-      }
-    };
+  // ****************************
 
+  // Sets initial Running Score value and retrieves it
+  const getRunScore = () => {
+    axios
+      .get('/db/user/')
+      .then(({ data }) => {
+        if (data.quizTotalScore === undefined) {
+          axios
+            .put(`/db/user/${data._id}`, { quizTotalScore: 0 })
+            .then(() => {
+              setRunScore(0);
+            })
+            .catch((err) => console.error('POST High Score: Failed ', err));
+        } else {
+          setRunScore(data.quizTotalScore);
+        }
+      })
+      .catch((err) => console.error('GET Running Total Score: Failed ', err));
+  };
+
+  // Updates Running Score by adding currScore to running total
+  const updateRunScore = () => {
+    axios
+      .put('/db/userRunningScore', { currScore })
+      .then((newScore) => {
+        setRunScore(newScore.data.quizTotalScore);
+      })
+      .catch((err) => console.error('Running Total Score Update: Failed ', err));
+  };
+
+  // ****************************
 
   // Retrieves art data from AIC API & saves to DB
   const getArt = () => {
@@ -103,7 +139,7 @@ function Quiz() {
       .catch((err) => {
         console.error('AIC Art Add to DB: Failed: ', err);
       });
-  }
+  };
 
   // Retrieve art from DB that getArt saved to DB & add it to State
   function pullArt() {
@@ -152,10 +188,11 @@ function Quiz() {
   // Once 5 rounds have passed, view will automatically swap to END GAME view
   const handlePlayClick = () => {
     setPlayGame(false);
-    // Make EndGame visible on Start click for Testing
     setEndGame(true);
     updateWallet('Trelana Martin', currScore); // Reward: need way to target current User's name
-    updateScore(); // Update High Score if needed
+    updateScore();
+    // Need to update Running Score
+    updateRunScore();
   };
 
   // Handle tracking image click count for Art in PlayGame
@@ -180,21 +217,19 @@ function Quiz() {
     setClickCount(0); // Reset click count to 0
     delArt(); // Empty the Database to save space & prevent Duplicate errors
     setLeftRight([0, 1]); // Reset leftRight count
-    setCurrScore(0); // Reset Current Score (still need to handle HS check)
+    setCurrScore(0); // Reset Current Score
   };
 
   // useEffect for changes to wallet, and score
   useEffect(() => {
     getWallet();
     getScore();
+    getRunScore();
   }, []);
 
-  useEffect(() => {
-    // console.log('Quiz.jsx - Verify State whenever aicArt updates', aicArt);
-  }, [aicArt]);
+  // Can I merge this with above?
+  useEffect(() => {}, [aicArt]);
 
-  // Include ternary to control which view User is shown:
-  // Start, Game, End
   return (
     <Container
       style={{ height: '600px', maxWidth: '1000px', marginBottom: '40px' }}
@@ -204,7 +239,10 @@ function Quiz() {
           <div className='d-flex'>
             <h3>Wallet:</h3>
             <h3 className='ms-2'>{wallet ? `$${wallet}` : '$0.00'}</h3>
-            <h3 style={{ marginLeft: '40px' }}>High Score: {highScore}</h3>
+            <h3 style={{ marginLeft: '50px' }}>High Score: {highScore}</h3>
+            <h3 style={{ marginLeft: '50px' }}>
+              Running Reward Total: {runScore}
+            </h3>
           </div>
         </Col>
       </Row>
@@ -226,8 +264,6 @@ function Quiz() {
             currScore={currScore}
             leftRight={leftRight}
             titleRound={titleRound}
-            // displayedTitle={displayedTitle}
-            // handleEndClick={handleEndClick}
           />
         )}
         {endGame && (

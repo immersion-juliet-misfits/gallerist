@@ -18,6 +18,7 @@ const UserSchema = new Schema({
   friends: Array,
   wallet: Number,
   quizHighScore: Number,
+  quizTotalScore: Number,
 });
 UserSchema.plugin(findOrCreate);
 
