@@ -301,33 +301,6 @@ dbRouter.post('/db/art', (req, res) => {
   */
 });
 
-// GET to receive all art data of only those || no conditional logic yet
-dbRouter.get('/db/artOwners', (req, res) => {
-  const { googleId } = req.user.doc;
-
-  Art.find({ 'userGallery.googleId': { $ne: googleId } })
-    .then((pieces) => {
-      // if (data.length >= 0) {
-      res.status(200).send(pieces);
-      // }
-    })
-    .catch(() => {
-      res.sendStatus(500);
-    });
-});
-
-// GET random art piece from a user's collection
-dbRouter.get('/db/randomArt/:googleId', (req, res) => {
-  const { googleId } = req.params;
-  Art.find({ 'userGallery.googleId': googleId })
-    .then((data) => {
-      res.send(data[Math.floor(data.length * Math.random())]);
-    })
-    .catch(() => {
-      res.sendStatus(500);
-    });
-});
-
 // GET creates a vault for user's that don't have one setup...
 // ...otherwise send back existing vault data
 dbRouter.post('/db/vault', (req, res) => {
@@ -339,21 +312,16 @@ dbRouter.post('/db/vault', (req, res) => {
       Vault.findOne({ owner: req.user.doc })
         .then((vault) => {
           if (!vault) {
-          // console.log('macaroni')
-            // console.log('req doc', req.user.doc);
             Vault.create({ owner: req.user.doc, artGallery: userArt, name })
               .then((newVault) => {
-                // console.log(newVault, 'data created');
                 res.status(201).send(newVault);
               })
               .catch(() => {
                 res.sendStatus(500);
               });
           } else {
-            // res.status(200).send(vault);
             Vault.findOneAndUpdate({ owner: req.user.doc }, { artGallery: userArt })
               .then(() => {
-                // console.log('Data updated');
               })
               .catch((err) => {
                 console.log(err, 'issue with update');
@@ -379,12 +347,10 @@ dbRouter.patch('/db/vault/', (req, res) => {
     });
 });
 
-// **NOT UPDATING UNTIL SOMEONE VISITS HEIST PAGE CURRENTLY**
 dbRouter.get('/db/vault', (req, res) => {
   const { _id } = req.user.doc;
   Vault.find({ owner: { $ne: _id } })
     .then((owners) => {
-      // console.log(owners);
       res.status(200).send(owners);
     })
     .catch(() => {
@@ -396,11 +362,7 @@ dbRouter.get('/db/vault/:owner', (req, res) => {
   const { owner } = req.params;
   Vault.findOne({ owner })
     .then((vault) => {
-      // if (data.length > 0) {
       res.send(vault);
-      // } else {
-      //   res.sendStatus(500);
-      // }
     })
     .catch(() => {
       res.sendStatus(500);
@@ -411,9 +373,7 @@ dbRouter.post('/db/guess', (req, res) => {
   const { owner, input } = req.body;
   Vault.findOne({ owner, code: input })
     .then((vault) => {
-      // console.log('attempted passcode', owner, input);
       if (vault) {
-        // console.log(`successful login ${input}`);
         res.status(200).send(vault);
       } else {
         res.sendStatus(500);
@@ -431,9 +391,7 @@ dbRouter.get('/db/heistVault/:_id', (req, res) => {
       if (!vault) {
         res.sendStatus(500);
       } else {
-        // res.send(vault.artGallery)
         return Promise.all(vault.artGallery.map((art) => Art.findById(art)));
-        // res.json(test)
       }
     })
     .then((artData) => {
@@ -443,24 +401,32 @@ dbRouter.get('/db/heistVault/:_id', (req, res) => {
 
 dbRouter.post('/db/stealArt/:_id', (req, res) => {
   const { _id } = req.params;
-  // const { owner } = req.body;
-  // console.log(artId)
+  const { googleId } = req.user.doc;
 
-  // find selected artwork
   Art.findById(_id)
-    .then((artwork) => {
-      // res.send(data);
-      // console.log(artwork);
-      // take out the corresponding artwork out of prev. owner gallery
+    .then(() => {
       Vault.findOneAndUpdate({ artGallery: _id }, { $pull: { artGallery: _id } })
         .then(() => {
-        // res.send('Updated');
-        // add art to new owner
           Vault.findOneAndUpdate({ owner: req.user.doc._id }, { $push: { artGallery: _id } })
             .then(() => {
-              res.send('updated my friend');
+              Art.findByIdAndUpdate(_id, { userGallery: { name: req.user.doc.name, googleId } })
+                .then((data) => {
+                  res.send(data);
+                })
+                .catch((err) => {
+                  console.error('Could not update Art userGallery', err);
+                });
+            })
+            .catch((err) => {
+              console.error('Could not add art from loot', err);
             });
+        })
+        .catch(() => {
+          console.error('Could not take art from user');
         });
+    })
+    .catch(() => {
+      console.error('Could not locate art');
     });
 });
 module.exports = { dbRouter };

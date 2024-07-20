@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function HeistFailure() {
-//   const [] = useState();
   return (
     <div>
       <h3>Caught!</h3>
