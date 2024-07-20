@@ -322,7 +322,7 @@ dbRouter.post('/db/watch/:title', (req, res) => {
 
   Art.findOne({ title })
     .then(() => {
-      Watch.create({ name, email, title })
+      Watch.create({ userData: [{ email, name }], title })
         .then((data) => {
           res.status(201).send(data);
         })

@@ -5,7 +5,8 @@ const findOrCreate = require('mongoose-findorcreate');
 const { Schema, model } = mongoose;
 const db_uri = process.env.DB_URI;
 
-mongoose.connect(db_uri)
+mongoose
+  .connect(db_uri)
   .then(() => console.log('Connection to Database successful'))
   .catch((err) => console.log('Could not connect to database ', err));
 
@@ -37,14 +38,19 @@ const ArtSchema = new Schema({
 });
 
 const WatchedSchema = new Schema({
-  name: {
-    type: Schema.Types.Array,
-    ref: 'User',
-  },
-  email: {
-    type: Schema.Types.Array,
-    ref: 'User',
-  },
+  userData: [
+    {
+      email: {
+        type: Schema.Types.Array,
+        ref: 'User',
+      },
+      name: {
+        type: Schema.Types.Array,
+        ref: 'User',
+      },
+    },
+  ],
+
   title: {
     type: Schema.Types.String,
     ref: 'Art',
