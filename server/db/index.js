@@ -38,6 +38,30 @@ const ArtSchema = new Schema({
   price: Number,
 });
 
+const MemeSchema = new Schema({
+  title: String,
+  imageUrl: String,
+  options: Object,
+  user_id: String,
+  imageId: String,
+});
+
+const VaultSchema = new Schema({
+  name: String,
+  owner: {
+    // **mongoose references other schemas like this**
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  code: {
+    type: String,
+  },
+  artGallery: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Art',
+  }],
+});
+
 // Will Create & Delete an entry in DB for each game
 // 1 User - 1 Game Table to pull assets from
 const AIC_Schema = new Schema({
@@ -49,10 +73,10 @@ const AIC_Schema = new Schema({
 
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
+const Meme = model('Meme', MemeSchema);
+const Vault = model('Vault', VaultSchema);
 const AICart = model('AICart', AIC_Schema);
 
 module.exports = {
-  User,
-  Art,
-  AICart,
+  User, Art, Meme, Vault, AICart,
 };
