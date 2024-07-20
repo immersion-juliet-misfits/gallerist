@@ -35,7 +35,24 @@ const ArtSchema = new Schema({
   price: Number,
 });
 
+const VaultSchema = new Schema({
+  name: String,
+  owner: {
+    // **mongoose references other schemas like this**
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  code: {
+    type: String,
+  },
+  artGallery: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Art',
+  }],
+});
+
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
+const Vault = model('Vault', VaultSchema);
 
-module.exports = { User, Art };
+module.exports = { User, Art, Vault };
