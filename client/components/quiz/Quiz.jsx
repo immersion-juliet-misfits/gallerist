@@ -24,13 +24,13 @@ function Quiz() {
   const [currScore, setCurrScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [runScore, setRunScore] = useState(0);
-  const [streak, setStreak] = useState(0);
+  const [streak, setStreak] = useState(1);
   const [leftRight, setLeftRight] = useState([0, 1]);
   const [titleRound, setTitleRound] = useState(0);
 
   const displayedTitle = aicArt[leftRight[titleRound]]?.title;
 
-  const getWallet = () => {
+  const getUserData = () => {
     axios
       .get('/db/user/')
       .then(({ data }) => {
@@ -44,7 +44,7 @@ function Quiz() {
     axios
       .put(`/db/giveMoney/${name}`, { price: score })
       .then(() => {
-        getWallet();
+        getUserData();
         console.log('Reward: Success');
       })
       .catch((err) => {
@@ -73,12 +73,12 @@ function Quiz() {
   const updateCurrScore = (title) => {
     if (title === displayedTitle) {
       console.log('CORRECT!!!');
-      const newStreak = streak + 1;
+      const newStreak = streak * 2;
       setStreak(newStreak);
       setCurrScore(currScore + 5 * newStreak);
     } else {
       console.log('Sorry...');
-      setStreak(0);
+      setStreak(1);
     }
   };
 
@@ -179,7 +179,6 @@ function Quiz() {
     updateWallet(userName, currScore);
     updateScore();
     updateRunScore();
-    // setAicArt([]);
   };
 
   const handleImageClick = (index, title) => {
@@ -192,22 +191,18 @@ function Quiz() {
   const handleEndClick = () => {
     setEndGame(false);
     setStartGame(true);
-    // setAicArt([]);
     setClickCount(0);
     delArt();
     setLeftRight([0, 1]);
     setCurrScore(0);
-    setStreak(0);
+    setStreak(1);
   };
 
   useEffect(() => {
-    getWallet();
+    getUserData();
     getScore();
     getRunScore();
   }, []);
-
-  // Can I merge this with above?
-  useEffect(() => {}, [aicArt]);
 
   return (
     <Container
