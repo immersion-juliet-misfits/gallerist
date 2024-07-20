@@ -59,7 +59,7 @@ function ArtHeist() {
 
   return (
     <Container className="text-center">
-      <h1>Art Heist</h1>
+      <h1><strong>Art Heist</strong></h1>
       <h5>Set code</h5>
       <input type="text" maxLength="5" size="5" onChange={(e) => handleInput(e)} />
       <br />

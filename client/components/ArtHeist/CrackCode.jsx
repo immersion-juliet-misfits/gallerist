@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import HeistSuccess from './HeistSuccess';
+import HeistFailure from './HeistFailure';
 import { Button } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -17,6 +18,9 @@ function CrackCode() {
   const [result, setResult] = useState(null);
   const [attempts, setAttempts] = useState(0);
   const [previous, setPrevious] = useState('');
+  const [disableDrop, setDisableDrop] = useState(false);
+  const [disableInput, setDisableInput] = useState(true);
+  const [disableGuess, setDisableGuess] = useState(false);
 //   function getOtherOwners() {
 //     axios.get('/db/artOwners/')
 //       .then(({ data }) => {
@@ -38,12 +42,14 @@ function CrackCode() {
 
   function handleSelectChange(e) {
     // console.log(e.target.value);
+    setDisableInput(() => !disableInput);
     if (e.target.value === 'Select a vault to heist') {
       console.log('Back to default');
     } else {
       axios.get(`/db/vault/${e.target.value}`)
         .then(({ data }) => {
           setSelectedVault(data);
+          setDisableDrop(true);
           // console.log('YEA', data);
         })
         .catch((err) => {
@@ -72,6 +78,7 @@ function CrackCode() {
         setPrevious(input);
         if (attempts === 3) {
           setResult(false);
+          setDisableInput(() => !disableInput);
           axios.put('/db/deductWallet', { price: 50 })
             .then(() => {
               console.log('You were fined for theft. - $50');
@@ -113,13 +120,15 @@ function CrackCode() {
 
   return (
     <Container className="text-center">
-      <h1>Crack the Code</h1>
+      <h1><strong>Crack the Code</strong></h1>
       {/* <h4 style={{ color: 'red' }}>{previous}</h4> */}
       {/* {previous.split('').map((letter) => (
         <>
           <h3>{letter}</h3>
-        </>
-      ))} */}
+          </>
+          ))} */}
+      {selectedVault.name
+      && <h4>{`${selectedVault.name}'s Vault`}</h4>}
       {previous && (
       <Row>
         {previous.split('').map((letter, i) => (
@@ -148,7 +157,7 @@ function CrackCode() {
       </select> */}
       <Col md={7} className="mx-auto">
         <div className="dropdown">
-          <Form.Select defaultValue="" onChange={(e) => handleSelectChange(e)}>
+          <Form.Select defaultValue="" disabled={disableDrop} onChange={(e) => handleSelectChange(e)}>
             <option>Select a vault to heist</option>
             {vaults.map((vault) => (
               <option key={vault._id} value={vault.owner}>{vault.name}</option>
@@ -156,19 +165,17 @@ function CrackCode() {
           </Form.Select>
         </div>
       </Col>
-      {selectedVault.name
-      && <h4>{`${selectedVault.name}'s Vault`}</h4>}
       <br />
       <br />
-      <input type="text" className="form-control mx-auto" maxLength="5" size="5" placeholder="Guess vault passcode" onChange={(e) => handleInput(e)} />
+      <input type="text" disabled={disableInput} className="form-control mx-auto" maxLength="5" size="5" placeholder="Guess vault passcode" onChange={(e) => handleInput(e)} />
       <br />
       <br />
-      <Button onClick={() => handleGuess()}>Submit Guess</Button>
+      <Button disabled={disableInput} onClick={() => handleGuess()}>Submit Guess</Button>
       {result && <HeistSuccess selectedVault={selectedVault} />}
-      {!result && result !== null && <h2>Failed Attempt</h2>}
-      <Link to="/home/heist" relative="path">
+      {!result && result !== null && <HeistFailure selectedVault={selectedVault} />}
+      {/* <Link to="/home/heist" relative="path"> */}
         <Button>Back to Vault</Button>
-      </Link>
+      {/* </Link> */}
     </Container>
   );
 }
