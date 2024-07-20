@@ -26,7 +26,7 @@ function Quiz() {
   const [highScore, setHighScore] = useState(0);
   const [runScore, setRunScore] = useState(0);
   const [streak, setStreak] = useState(1);
-  const [leftRight, setLeftRight] = useState([0, 2]);
+  const [leftRight, setLeftRight] = useState([0, 1]);
   const [titleRound, setTitleRound] = useState(0);
 
   const displayedTitle = aicArt[leftRight[titleRound]]?.title;
@@ -129,7 +129,7 @@ function Quiz() {
   };
 
   const getArt = () => {
-    for (let x = 0; x < 4; x++) {
+    for (let x = 0; x < 5; x++) {
       axios
         .get('/db/aicapi')
         .then((response) => {
@@ -174,7 +174,7 @@ function Quiz() {
     getArt();
     setTimeout(() => {
       pullArt();
-    }, 2000);
+    }, 3000);
   };
 
   const handlePlayClick = () => {
@@ -197,7 +197,7 @@ function Quiz() {
     setStartGame(true);
     setClickCount(0);
     delArt();
-    setLeftRight([0, 2]);
+    setLeftRight([0, 1]);
     setCurrScore(0);
     setStreak(1);
   };
