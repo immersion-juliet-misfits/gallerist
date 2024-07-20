@@ -379,6 +379,7 @@ dbRouter.patch('/db/vault/', (req, res) => {
     });
 });
 
+// **NOT UPDATING UNTIL SOMEONE VISITS HEIST PAGE CURRENTLY**
 dbRouter.get('/db/vault', (req, res) => {
   const { _id } = req.user.doc;
   Vault.find({ owner: { $ne: _id } })

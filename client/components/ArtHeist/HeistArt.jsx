@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
+import { Link } from 'react-router-dom';
 
 function HeistArt({ artwork }) {
   console.log(artwork);
@@ -11,7 +12,7 @@ function HeistArt({ artwork }) {
 
   function handleTheft() {
     axios.post(`/db/stealArt/${artwork._id}`)
-      .then((data) => {
+      .then(({ data }) => {
         console.log('ust tryna see sum', data);
       })
       .catch(() => {
@@ -26,13 +27,15 @@ function HeistArt({ artwork }) {
         <Row>
           <Col className="gallery-item" key={artwork.imageId}>
             <div>
-              <Image
-                style={{ width: '250px', height: 'auto' }}
-                src={artwork.imageUrl}
-                id={artwork.imageId}
-                alt={artwork.title}
-                onClick={() => handleTheft()}
-              />
+              <Link to="/home/heist" relative="path">
+                <Image
+                  style={{ width: '250px', height: 'auto' }}
+                  src={artwork.imageUrl}
+                  id={artwork.imageId}
+                  alt={artwork.title}
+                  onClick={() => handleTheft()}
+                />
+              </Link>
               <br />
               <div className="gallery-title">
                 {artwork.title}
