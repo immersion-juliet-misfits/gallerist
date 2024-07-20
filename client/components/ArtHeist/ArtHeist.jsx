@@ -13,14 +13,6 @@ function ArtHeist() {
   const [input, setInput] = useState('');
   const [passcode, setPasscode] = useState('');
 
-//   function getArtOwners() {
-//     axios.get('/db/artOwners/')
-//       .then(({ data }) => {
-//         console.log(data, 'others art');
-//       })
-//       .catch((err) => console.error('Could not GET users who currently own art', err));
-//   }
-
   function handleInput(e) {
     // console.log(e.target.value);
     setInput(e.target.value);

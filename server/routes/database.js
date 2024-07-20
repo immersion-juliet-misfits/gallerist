@@ -301,21 +301,6 @@ dbRouter.post('/db/art', (req, res) => {
   */
 });
 
-// GET to receive all art data of only those || no conditional logic yet
-dbRouter.get('/db/artOwners', (req, res) => {
-  const { googleId } = req.user.doc;
-
-  Art.find({ 'userGallery.googleId': { $ne: googleId } })
-    .then((pieces) => {
-      // if (data.length >= 0) {
-      res.status(200).send(pieces);
-      // }
-    })
-    .catch(() => {
-      res.sendStatus(500);
-    });
-});
-
 // GET random art piece from a user's collection
 dbRouter.get('/db/randomArt/:googleId', (req, res) => {
   const { googleId } = req.params;
