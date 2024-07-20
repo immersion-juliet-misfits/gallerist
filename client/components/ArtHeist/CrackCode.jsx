@@ -9,6 +9,8 @@ function CrackCode() {
   const [vaults, setVaults] = useState([]);
   const [selectedVault, setSelectedVault] = useState({});
   const [result, setResult] = useState(null);
+  const [attempts, setAttempts] = useState(0);
+  const [previous, setPrevious] = useState('');
 //   function getOtherOwners() {
 //     axios.get('/db/artOwners/')
 //       .then(({ data }) => {
@@ -52,6 +54,7 @@ function CrackCode() {
   function handleGuess() {
     console.log(input, 'guessed');
     const { owner } = selectedVault;
+    setAttempts(attempts + 1);
     axios.post('/db/guess', { owner, input })
       .then(({ data }) => {
         console.log(data, 'correct guess', input);
@@ -59,16 +62,23 @@ function CrackCode() {
       })
       .catch(() => {
         console.error('inncorrect pw', input);
-        setResult(false);
-        axios.put('/db/deductWallet', { price: 50 })
-          .then(() => {
-            console.log('You were fined for theft. -$50');
-          })
-          .catch(() => {
-            console.error('You got away with the theft attemp...');
-          });
+        setPrevious(input);
+        if (attempts === 3) {
+          setResult(false);
+          axios.put('/db/deductWallet', { price: 50 })
+            .then(() => {
+              console.log('You were fined for theft. -$50');
+            })
+            .catch(() => {
+              console.error('You got away with the theft attemp...');
+            });
+        }
       });
   }
+
+  // function handleAttempt() {
+  //   setAttempts(attempts + 1);
+  // }
 
 //   useEffect(() => {
     
@@ -78,14 +88,15 @@ function CrackCode() {
     // getOtherOwners();
     getOtherVaults();
     // console.log(vaults, 'state');
-    console.log(selectedVault._id, 'state');
-    console.log(input, 'state');
+    // console.log(selectedVault._id, 'state');
+    console.log(previous, 'state');
     // console.log(passcode, 'passcode');
-  }, [selectedVault, input]);
+  }, [selectedVault, input, previous]);
 
   return (
     <div>
       <h4>Crack the Code</h4>
+      <h4>{previous}</h4>
       <br />
       <select onChange={(e) => handleSelectChange(e)}>
         <option>Select a vault to heist</option>
