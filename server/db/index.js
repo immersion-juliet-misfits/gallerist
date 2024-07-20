@@ -17,6 +17,7 @@ const UserSchema = new Schema({
   // gallery: Array,
   friends: Array,
   wallet: Number,
+  quizHighScore: Number,
 });
 UserSchema.plugin(findOrCreate);
 
@@ -37,6 +38,7 @@ const ArtSchema = new Schema({
 });
 
 // *** Schemas for Quiz Game ***
+// Instead of a new Table, add to the Users table
 // Quiz Table will track all Users High score -
 // 1 User - 1 high score
 const GameSchema = new Schema({

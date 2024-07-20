@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-// import Row from 'react-bootstrap/Row';
 
 // Pass in Axios requests from Quiz.jsx & state
 function PlayGame({
@@ -32,7 +31,7 @@ function PlayGame({
         <Row className='d-flex justify-content-center text-center'>
           <Col>
             <p style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
-              Current Round: {clickCount}
+              Current Round: { clickCount + 1 }
             </p>
           </Col>
           <Col>

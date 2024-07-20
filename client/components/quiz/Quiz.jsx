@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-quotes */
-// Top level container for the Quiz
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 // import Button from 'react-bootstrap/Button';
@@ -10,12 +9,9 @@ import Row from 'react-bootstrap/Row';
 import StartGame from './startGame';
 import PlayGame from './playGame';
 import EndGame from './endGame';
-// import { getAICart } from '../../../server/api/aic';
 
 function Quiz() {
-  // Old States
   const [wallet, setWallet] = useState(0); // Retrieve Users current bank total
-  // New States
   const [startGame, setStartGame] = useState(true); // Start View:  defaults to true
   const [playGame, setPlayGame] = useState(false); // Game View: defaults to false
   const [endGame, setEndGame] = useState(false); // End View: defaults to false
@@ -23,21 +19,45 @@ function Quiz() {
   const [clickCount, setClickCount] = useState(0); // Tracks User click number on any art piece
   const [maxRounds, setMaxRounds] = useState(5); // Tracks Rounds so I only have to change it here
   const [currScore, setCurrScore] = useState(0); // Track score of current Game Session
+  const [highScore, setHighScore] = useState(0); // Track score of current Game Session
   const [leftRight, setLeftRight] = useState([0, 1]); // State for what is displayed each round
   const [titleRound, setTitleRound] = useState(0); // Which Title will display each round
+
 
   const displayedTitle = aicArt[leftRight[titleRound]]?.title; // Variable for displayed title
 
   // ********** Axios Requests Start
   // Re-Use: Function to Retrieve fund total of user's wallet and set wallet state
-  function getWallet() {
+  const getWallet = () => {
     axios
       .get('/db/user/')
       .then(({ data }) => {
         setWallet(data.wallet);
       })
       .catch((err) => console.error('Could not GET wallet amount: ', err));
-  }
+  };
+
+// Sets initial High Score value and retrieves it
+// Like getWallet in 
+  const getScore = () => {
+    axios
+      .get('/db/user/')
+      .then(({ data }) => {
+        if (data.quizHighScore === undefined) {
+          axios.put(`/db/user/${data._id}`, { quizHighScore: 0 })
+            .then(() => {
+              setHighScore(0);
+            })
+            .catch((err) => console.error('POST High Score: Failed ', err));
+        } else {
+          setHighScore(data.quizHighScore);
+        }
+      })
+      .catch((err) => console.error('GET High Score: Failed ', err));
+  };
+
+
+
 
   // Give User money based on score at end of game
   const updateWallet = (name, score) => {
@@ -53,9 +73,7 @@ function Quiz() {
   };
 
   // Retrieves art data from AIC API & saves to DB
-  // To be invoked when User clicks "START?" in StartGame
   function getArt() {
-    // Must make 2 axios calls:
     // 1) GET data from AIC API
     axios
       .get('/db/aicapi')
@@ -157,7 +175,7 @@ function Quiz() {
   // useEffect for changes to wallet, and score
   useEffect(() => {
     getWallet();
-    // Placeholder for score retrieval
+    getScore();
   }, []);
 
   useEffect(() => {
@@ -175,7 +193,7 @@ function Quiz() {
           <div className='d-flex'>
             <h3>Wallet:</h3>
             <h3 className='ms-2'>{wallet ? `$${wallet}` : '$0.00'}</h3>
-            <h3 style={{ marginLeft: '40px' }}>High Score: Placeholder</h3>
+            <h3 style={{ marginLeft: '40px' }}>High Score: {highScore}</h3>
           </div>
         </Col>
       </Row>
