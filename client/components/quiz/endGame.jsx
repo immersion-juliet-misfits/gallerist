@@ -21,7 +21,6 @@ function EndGame({ handleEndClick, currScore }) {
       <h3>Final Score: {currScore}</h3>
       <ul>
         2DO:
-        <li>Update High Score if its higher than previous.</li>
         <li>
           Stretch 1: Keep track of how much $$$ total has been earned here.
         </li>

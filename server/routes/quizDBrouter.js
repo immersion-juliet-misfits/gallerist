@@ -105,44 +105,25 @@ quizRouter.get('/db/userScore/', (req, res) => {
     });
 });
 
-/*
-Reference to write GET to retrieve Users high score
+// Update: PUT/PATCH - Update the Users High Score if they have surpassed it
+//
+quizRouter.put('/db/userScore', (req, res) => {
+  const { _id } = req.user.doc;
+  const { quizHighScore } = req.body;
 
-GET all art based on :user Filter, returns all art documents of user
-*** based on 'name' property of userGallery obj ***
-dbRouter.get('/db/art/:user', (req, res) => {
-  const { user } = req.params;
-  Art.find({ 'userGallery.name': user })
-    .then((userArt) => {
-      if (userArt.length) {
-        res.status(200).send(userArt);
+  User.findByIdAndUpdate(_id, { quizHighScore }, { new: true })
+    .then((newScore) => {
+      if (newScore) {
+        res.status(200).send(newScore);
       } else {
-        res.sendStatus(404);
+        res.status(404).send('Score Not Found');
       }
     })
     .catch((err) => {
-      console.error(`Failed to find ${user}'s artwork: `, err);
+      console.error('Quiz High Score Update: Failed ', err);
       res.sendStatus(500);
     });
 });
-
- */
-
-// Update: PATCH - Update the Users High Score if they have surpassed it
-// quizRouter.patch('/db/quizscore', (req, res) => {
-// const { } = req.params;
-// const { } = req.body;
-// console.log('Score Patch Param Check', req.params);
-// console.log('Score Patch Body Check', req.body);
-// User.findOneAndUpdate({ name }, { objWith: Score_data }, { new: true })
-//   .then(() => {
-//     res.sendStatus(200);
-//   })
-//   .catch((err) => {
-//     console.error('Failed to Update Users high score: ', err);
-//     res.sendStatus(500);
-//   });
-// });
 
 /*
 Reference to write req handler for creating & updating Users high score

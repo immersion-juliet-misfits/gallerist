@@ -3,7 +3,7 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable jsx-quotes */
 // import React, { useState, useEffect } from 'react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -21,6 +21,12 @@ function PlayGame({
   maxRounds,
   titleRound,
 }) {
+  useEffect(() => {
+    if (clickCount === maxRounds) {
+      handlePlayClick();
+    }
+  }, [clickCount, maxRounds, handlePlayClick]);
+
   return (
     <Container
       style={{ height: '600px', maxWidth: '750px' }}
@@ -31,7 +37,7 @@ function PlayGame({
         <Row className='d-flex justify-content-center text-center'>
           <Col>
             <p style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
-              Current Round: { clickCount + 1 }
+              Current Round: {clickCount + 1}
             </p>
           </Col>
           <Col>
@@ -118,7 +124,7 @@ function PlayGame({
       ) : (
         <p>Loading...</p>
       )}
-      <Button
+      {/* <Button
         style={{ width: '200px', height: '50px' }}
         variant='secondary'
         disabled={clickCount < maxRounds}
@@ -127,7 +133,7 @@ function PlayGame({
         }}
       >
         END GAME
-      </Button>
+      </Button> */}
     </Container>
   );
 }

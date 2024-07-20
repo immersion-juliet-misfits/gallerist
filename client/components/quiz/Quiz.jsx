@@ -37,43 +37,56 @@ function Quiz() {
       .catch((err) => console.error('Could not GET wallet amount: ', err));
   };
 
-// Sets initial High Score value and retrieves it
-// Like getWallet in 
-  const getScore = () => {
-    axios
-      .get('/db/user/')
-      .then(({ data }) => {
-        if (data.quizHighScore === undefined) {
-          axios.put(`/db/user/${data._id}`, { quizHighScore: 0 })
-            .then(() => {
-              setHighScore(0);
-            })
-            .catch((err) => console.error('POST High Score: Failed ', err));
-        } else {
-          setHighScore(data.quizHighScore);
-        }
-      })
-      .catch((err) => console.error('GET High Score: Failed ', err));
-  };
-
-
-
-
   // Give User money based on score at end of game
   const updateWallet = (name, score) => {
     axios
-      .put(`/db/giveMoney/${name}`, { price: score })
-      .then(() => {
-        getWallet();
-        console.log('Reward: Success');
-      })
-      .catch((err) => {
-        console.error('Reward: Failed ', err);
-      });
+    .put(`/db/giveMoney/${name}`, { price: score })
+    .then(() => {
+      getWallet();
+      console.log('Reward: Success');
+    })
+    .catch((err) => {
+      console.error('Reward: Failed ', err);
+    });
   };
 
+  // Sets initial High Score value and retrieves it
+    const getScore = () => {
+      axios
+        .get('/db/user/')
+        .then(({ data }) => {
+          if (data.quizHighScore === undefined) {
+            axios.put(`/db/user/${data._id}`, { quizHighScore: 0 })
+              .then(() => {
+                setHighScore(0);
+              })
+              .catch((err) => console.error('POST High Score: Failed ', err));
+          } else {
+            setHighScore(data.quizHighScore);
+          }
+        })
+        .catch((err) => console.error('GET High Score: Failed ', err));
+    };
+
+// Updates High Score if currScore is more than previous
+    const updateScore = () => {
+      if (currScore > highScore) {
+        axios.get('/db/user/')
+          .then(({ data }) => {
+            axios
+              .put(`/db/user/${data._id}`, { quizHighScore: currScore })
+              .then(() => {
+                setHighScore(currScore);
+              })
+              .catch((err) => console.error('High Score Update: Failed ', err));
+          })
+          .catch((err) => console.error('GET User ID: Failed ', err));
+      }
+    };
+
+
   // Retrieves art data from AIC API & saves to DB
-  function getArt() {
+  const getArt = () => {
     // 1) GET data from AIC API
     axios
       .get('/db/aicapi')
@@ -142,6 +155,7 @@ function Quiz() {
     // Make EndGame visible on Start click for Testing
     setEndGame(true);
     updateWallet('Trelana Martin', currScore); // Reward: need way to target current User's name
+    updateScore(); // Update High Score if needed
   };
 
   // Handle tracking image click count for Art in PlayGame
@@ -149,13 +163,10 @@ function Quiz() {
     setClickCount(clickCount + 1);
     setLeftRight([leftRight[0] + 2, leftRight[1] + 2]);
     setTitleRound(Math.floor(Math.random() * 2));
-    // console.log(`Image ${index} clicked`);
-    // console.log('Click Count: ', clickCount);
-    // console.log('Left Right: ', leftRight);
     // Function to increase score if correct title is clicked
     if (title === displayedTitle) {
       console.log('CORRECT!!!');
-      setCurrScore(currScore + 10); // Update score or perform any other action
+      setCurrScore(currScore + 10); // Update score
     } else {
       console.log('Sorry...');
     }

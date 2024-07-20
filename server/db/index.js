@@ -37,17 +37,6 @@ const ArtSchema = new Schema({
   price: Number,
 });
 
-// *** Schemas for Quiz Game ***
-// Instead of a new Table, add to the Users table
-// Quiz Table will track all Users High score -
-// 1 User - 1 high score
-const GameSchema = new Schema({
-  id: { type: Number, required: true, unique: true },
-  userId: { type: Number, required: true, unique: true }, // How to ref UserIds?
-  highScore: { type: Number },
-});
-GameSchema.plugin(findOrCreate);
-
 // Will Create & Delete an entry in DB for each game
 // 1 User - 1 Game Table to pull assets from
 const AIC_Schema = new Schema({
@@ -60,11 +49,9 @@ const AIC_Schema = new Schema({
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
 const AICart = model('AICart', AIC_Schema);
-const GameScore = model('GameScore', GameSchema);
 
 module.exports = {
   User,
   Art,
   AICart,
-  GameScore,
 };
