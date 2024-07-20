@@ -21,10 +21,26 @@ Need the fields: id, title, image_id (to construct url for displaying the image)
    });
 */
 
-// V2: WIP them from a random page:
+// V2: GETs results from a random page:
+// const getAICart = () => {
+//   // Generate random page number
+//   const rando = Math.floor(Math.random() * 400) + 1;
+//   // console.log('RandoNum Check: ', rando);
+//   return axios(
+//     `https://api.artic.edu/api/v1/artworks?page=${rando}&fields=id,title,image_id`,
+//     {
+//       headers: {
+//         'AIC-User-Agent':
+//           'Gallerist - Senior Legacy Assignment (tremartin3003@gmail.com)',
+//       },
+//     }
+//   );
+// };
+
+// V3: Pulls from 3 random pages:
 const getAICart = () => {
   // Generate random page number
-  const rando = Math.floor(Math.random() * 400) + 1;
+  const rando = Math.floor(Math.random() * 600) + 1;
   // console.log('RandoNum Check: ', rando);
   return axios(
     `https://api.artic.edu/api/v1/artworks?page=${rando}&fields=id,title,image_id`,

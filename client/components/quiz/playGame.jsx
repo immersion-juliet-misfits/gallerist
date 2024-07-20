@@ -57,13 +57,18 @@ function PlayGame({
           >
             <p
               style={{
-                maxWidth: '400px',
+                height: '100px',
+                maxWidth: '720px',
                 textAlign: 'center',
-                marginBottom: '20px',
                 fontSize: '1.5rem',
+                marginBottom: '10px',
               }}
             >
               "{aicArt[leftRight[titleRound]].title}"
+              {console.log(
+                'Displayed Title:',
+                aicArt[leftRight[titleRound]].title
+              )}
             </p>
           </Row>
           <div
@@ -73,7 +78,14 @@ function PlayGame({
               width: '100%',
             }}
           >
-            <div style={{ textAlign: 'center' }}>
+            <div
+              style={{
+                textAlign: 'center',
+                width: '500px',
+                height: '400px',
+                overflow: 'hidden',
+              }}
+            >
               <Button
                 variant='link'
                 onClick={() => {
@@ -94,7 +106,14 @@ function PlayGame({
               </Button>
             </div>
             {aicArt.length > 1 && (
-              <div style={{ textAlign: 'center' }}>
+              <div
+                style={{
+                  textAlign: 'center',
+                  width: '500px',
+                  height: '400px',
+                  overflow: 'hidden',
+                }}
+              >
                 <Button
                   variant='link'
                   onClick={() => {

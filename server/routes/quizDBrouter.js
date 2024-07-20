@@ -10,11 +10,15 @@ const { AICart, User } = require('../db/index');
 // Create temp DB table that stores enough data for 1 game session
 // Req handler for client POST req to retrieve data from AIC & save it
 quizRouter.post('/db/quizart', (req, res) => {
-  console.log('Req Body Verified: ', req.body);
-  // const { id, image_id, title } = req.body;
-  const artData = req.body.map((art) => ({
+  // Filter entries to verify they have the data I need
+  const filteredData = req.body.filter(
+    (art) => art.id && art.image_id && art.title
+  );
+console.log('FILTER CHECK', filteredData);
+
+  const artData = filteredData.map((art) => ({
     ...art,
-    imageUrl: `https://www.artic.edu/iiif/2/${art.image_id}/full/843,/0/default.jpg`,
+    imageUrl: `https://www.artic.edu/iiif/2/${art.image_id}/full/500,/0/default.jpg`,
   }));
 
   AICart.create(artData)
@@ -129,7 +133,11 @@ quizRouter.put('/db/userRunningScore', (req, res) => {
   const { _id } = req.user.doc;
   const { currScore } = req.body;
 
-  User.findByIdAndUpdate(_id, { $inc: { quizTotalScore: currScore } }, { new: true })
+  User.findByIdAndUpdate(
+    _id,
+    { $inc: { quizTotalScore: currScore } },
+    { new: true }
+  )
     .then((updateScore) => {
       if (updateScore) {
         res.status(200).send(updateScore);

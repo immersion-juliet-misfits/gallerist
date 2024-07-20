@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable function-paren-newline */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable react/jsx-one-expression-per-line */
@@ -25,7 +26,7 @@ function Quiz() {
   const [highScore, setHighScore] = useState(0);
   const [runScore, setRunScore] = useState(0);
   const [streak, setStreak] = useState(1);
-  const [leftRight, setLeftRight] = useState([0, 1]);
+  const [leftRight, setLeftRight] = useState([0, 2]);
   const [titleRound, setTitleRound] = useState(0);
 
   const displayedTitle = aicArt[leftRight[titleRound]]?.title;
@@ -128,16 +129,18 @@ function Quiz() {
   };
 
   const getArt = () => {
-    axios
-      .get('/db/aicapi')
-      .then((response) => {
-        const artData = response.data;
-        return axios.post('/db/quizart', artData);
-      })
-      .then(() => {})
-      .catch((err) => {
-        console.error('AIC Art Add to DB: Failed: ', err);
-      });
+    for (let x = 0; x < 4; x++) {
+      axios
+        .get('/db/aicapi')
+        .then((response) => {
+          const artData = response.data;
+          return axios.post('/db/quizart', artData);
+        })
+        .then(() => {})
+        .catch((err) => {
+          console.error('AIC Art Add to DB: Failed: ', err);
+        });
+    }
   };
 
   function pullArt() {
@@ -156,7 +159,7 @@ function Quiz() {
         if (response.status === 200) {
           // console.log('Quiz Art Deletion: Success ');
         } else if (response.status === 404) {
-          console.log('Quiz Art Deletion: None Found ');
+          console.error('Quiz Art Deletion: None Found ');
         }
       })
       .catch((err) => {
@@ -165,12 +168,13 @@ function Quiz() {
   }
 
   const handleStartClick = () => {
+    setAicArt([]);
     setStartGame(false);
     setPlayGame(true);
     getArt();
     setTimeout(() => {
       pullArt();
-    }, 1000);
+    }, 2000);
   };
 
   const handlePlayClick = () => {
@@ -193,7 +197,7 @@ function Quiz() {
     setStartGame(true);
     setClickCount(0);
     delArt();
-    setLeftRight([0, 1]);
+    setLeftRight([0, 2]);
     setCurrScore(0);
     setStreak(1);
   };
@@ -202,7 +206,8 @@ function Quiz() {
     getUserData();
     getScore();
     getRunScore();
-  }, []);
+    console.log('aicArt state updated:', aicArt);
+  }, [aicArt]);
 
   return (
     <Container

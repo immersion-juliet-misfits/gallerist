@@ -23,10 +23,11 @@ function EndGame({ handleEndClick, currScore }) {
       <h1>{currScore}</h1>
       <Button
         style={{
-          width: '200px',
-          height: '50px',
-          fontSize: '30px',
+          fontSize: '25px',
+          width: '300px',
+          height: '100px',
           marginTop: '15px',
+          marginBottom: '15px',
         }}
         variant='secondary'
         onClick={() => {
