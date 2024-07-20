@@ -6,20 +6,21 @@ const MemeRouter = express.Router();
 
 const { Meme } = require('../../db/index');
 
-MemeRouter.get('/meme/get', (req, res) => {
+MemeRouter.get('/get', (req, res) => {
   Meme.find({})
     .then((result) => {
-      res.send(result).status(200);
+      console.log(result);
+      res.status(200).send(result);
     })
     .catch((err) => {
       console.error('Meme routes error: ', err);
       res.sendStatus(500);
     });
 });
-MemeRouter.get('/meme/owner', (req, res) => {
+MemeRouter.get('/owner', (req, res) => {
   res.send(req.user.doc._id).status(200);
 });
-MemeRouter.get('/meme/get/:id', (req, res) => {
+MemeRouter.get('/get/:id', (req, res) => {
   const { id } = req.params;
   Meme.find({ _id: id })
     .then((result) => {
@@ -31,7 +32,7 @@ MemeRouter.get('/meme/get/:id', (req, res) => {
     });
 });
 
-MemeRouter.get('/meme/api', (req, res) => {
+MemeRouter.get('/api', (req, res) => {
   axios.get('https://api.imgflip.com/get_memes')
     .then((result) => {
       res.send(result.data.data);
@@ -41,7 +42,7 @@ MemeRouter.get('/meme/api', (req, res) => {
     });
 });
 
-MemeRouter.post('/meme/post', (req, res) => {
+MemeRouter.post('/post', (req, res) => {
   const {
     title, imageUrl, options, imageId,
   } = req.body;
@@ -56,7 +57,7 @@ MemeRouter.post('/meme/post', (req, res) => {
     });
 });
 
-MemeRouter.patch('/meme/update/:id', (req, res) => {
+MemeRouter.patch('/update/:id', (req, res) => {
   const { id } = req.params;
   console.log(req.body);
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -78,7 +79,7 @@ MemeRouter.patch('/meme/update/:id', (req, res) => {
   }
 });
 
-MemeRouter.delete('/meme/delete/:id', (req, res) => {
+MemeRouter.delete('/delete/:id', (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(404).json({ error: 'bad id' });

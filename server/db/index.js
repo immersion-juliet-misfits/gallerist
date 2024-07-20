@@ -62,8 +62,8 @@ const VaultSchema = new Schema({
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
 const Meme = model('Meme', MemeSchema);
-
-module.exports = { User, Art, Meme };
 const Vault = model('Vault', VaultSchema);
 
-module.exports = { User, Art, Vault };
+module.exports = {
+  User, Art, Meme, Vault,
+};

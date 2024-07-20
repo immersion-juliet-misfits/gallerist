@@ -52,7 +52,7 @@ app.use('/', apiRouter);
 app.use('/', dbRouter);
 
 // meme Routes
-app.use('/', MemeRouter);
+app.use('/meme', MemeRouter);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
