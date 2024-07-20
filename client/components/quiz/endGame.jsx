@@ -18,14 +18,16 @@ function EndGame({ handleEndClick, currScore }) {
       style={{ maxWidth: '750px', marginTop: '20px' }}
       className='d-flex flex-column align-items-center'
     >
-      <h1>End Of Game!!</h1>
-      <h3>{`Here's Your Final Score:`} {currScore}</h3>
-      <ul>
-        2DO:
-        <li>Stretch 2: Implement multiplier for Correct answers in a row.</li>
-      </ul>
+      <h2>Great Job!</h2>
+      <h2>Heres Your Final Score!!</h2>
+      <h1>{currScore}</h1>
       <Button
-        style={{ width: '200px', height: '50px' }}
+        style={{
+          width: '200px',
+          height: '50px',
+          fontSize: '30px',
+          marginTop: '15px',
+        }}
         variant='secondary'
         onClick={() => {
           handleEndClick();

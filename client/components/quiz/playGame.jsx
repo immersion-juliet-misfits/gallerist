@@ -16,11 +16,13 @@ function PlayGame({
   currScore,
   leftRight,
   maxRounds,
+  setAicArt,
   titleRound,
 }) {
   useEffect(() => {
     if (clickCount === maxRounds) {
       handlePlayClick();
+      setAicArt([]);
     }
   }, [clickCount, maxRounds, handlePlayClick]);
 
