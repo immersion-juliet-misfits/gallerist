@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import HeistSuccess from './HeistSuccess';
-
+import { Button } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import Image from 'react-bootstrap/Image';
+import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 
 function CrackCode() {
@@ -58,6 +64,7 @@ function CrackCode() {
     axios.post('/db/guess', { owner, input })
       .then(({ data }) => {
         console.log(data.code, 'correct guess', input);
+        setPrevious(input);
         setResult(true);
       })
       .catch(() => {
@@ -95,38 +102,61 @@ function CrackCode() {
 
   function showColors(letter, i) {
     if (letter === selectedVault.code[i]) {
-      return 'green';
+      return 'lime';
     }
     if (letter === selectedVault.code.split('')[i - 1] || letter === selectedVault.code.split('')[i + 1]) {
       // console.log('test here ', i, selectedVault.code[i + 1], selectedVault.code[i - 1])
       return 'yellow';
     }
-    return 'black';
+    return 'white';
   }
 
   return (
-    <div>
+    <Container className="text-center">
       <h4>Crack the Code</h4>
-      <h4 style={{ color: 'red' }}>{previous}</h4>
+      {/* <h4 style={{ color: 'red' }}>{previous}</h4> */}
       {/* {previous.split('').map((letter) => (
         <>
           <h3>{letter}</h3>
         </>
       ))} */}
       {previous && (
-      <div>
+      <Row>
         {previous.split('').map((letter, i) => (
-          <h3 key={i} style={{ color: showColors(letter, i) }}>{letter}</h3>
+          <Col key={i}>
+            <Card
+              style={{
+                width: '200px',
+                backgroundColor: 'black',
+                color: showColors(letter, i),
+                fontSize: '50px',
+                border: !result ? '3px solid black' : '3px solid lime',
+              }}
+            >
+              {letter}
+            </Card>
+          </Col>
         ))}
-      </div>
+      </Row>
       )}
       <br />
-      <select onChange={(e) => handleSelectChange(e)}>
+      {/* <select onChange={(e) => handleSelectChange(e)}>
         <option>Select a vault to heist</option>
         {vaults.map((vault) => (
           <option key={vault._id} value={vault.owner}>{vault.name}</option>
         ))}
-      </select>
+      </select> */}
+      <Col md={7}>
+        <div className="dropdown">
+          <h3 className="section-header text-center">Crack the Code</h3>
+          <Form.Select defaultValue="" onChange={(e) => handleSelectChange(e)}>
+            <option>Select a vault to heist</option>
+            {vaults.map((vault) => (
+              <option key={vault._id} value={vault.owner}>{vault.name}</option>
+            ))}
+          </Form.Select>
+        </div>
+      </Col>
       {selectedVault.name
       && <h4>{`${selectedVault.name}'s Vault`}</h4>}
       <br />
@@ -134,13 +164,13 @@ function CrackCode() {
       <input type="text" maxLength="5" size="5" placeholder="Guess vault passcode" onChange={(e) => handleInput(e)} />
       <br />
       <br />
-      <input type="button" value="Submit Guess" onClick={() => handleGuess()} />
+      <Button onClick={() => handleGuess()}>Submit Guess</Button>
       {result && <HeistSuccess selectedVault={selectedVault} />}
       {!result && result !== null && <h2>Failed Attempt</h2>}
       <Link to="/home/heist" relative="path">
-        <input type="button" value="Back to the Vault" />
+        <Button>Back to Vault</Button>
       </Link>
-    </div>
+    </Container>
   );
 }
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 
 function ArtHeist() {
   const [input, setInput] = useState('');
@@ -57,9 +58,9 @@ function ArtHeist() {
       <input type="text" maxLength="5" size="5" onChange={(e) => handleInput(e)} />
       <br />
       <br />
-      <input type="button" value="Set Passcode" onClick={() => handleSetPasscode()} />
+      <Button onClick={() => handleSetPasscode()}>Set Passcode</Button>
       <Link to="/home/planHeist" relative="path">
-        <input type="button" value="Plan a Heist" />
+        <Button variant="dark">Plan a Heist</Button>
       </Link>
     </div>
   );
