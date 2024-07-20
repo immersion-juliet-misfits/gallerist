@@ -37,6 +37,22 @@ const ArtSchema = new Schema({
   price: Number,
 });
 
+const VaultSchema = new Schema({
+  name: String,
+  owner: {
+    // **mongoose references other schemas like this**
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  code: {
+    type: String,
+  },
+  artGallery: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Art',
+  }],
+});
+
 const WatchedSchema = new Schema({
   userData: [
     {
@@ -60,6 +76,7 @@ const WatchedSchema = new Schema({
 
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
+const Vault = model('Vault', VaultSchema);
 const Watch = model('Watch', WatchedSchema);
 
-module.exports = { User, Art, Watch };
+module.exports = { User, Art, Vault, Watch };
