@@ -443,24 +443,50 @@ dbRouter.get('/db/heistVault/:_id', (req, res) => {
 
 dbRouter.post('/db/stealArt/:_id', (req, res) => {
   const { _id } = req.params;
-  // const { owner } = req.body;
+  const { googleId } = req.user.doc;
   // console.log(artId)
 
   // find selected artwork
+  // Art.findById(_id)
+  //   .then((artwork) => {
+  //     // res.send(data);
+  //     // console.log(artwork);
+  //     // take out the corresponding artwork out of prev. owner gallery
+  //     Vault.findOneAndUpdate({ artGallery: _id }, { $pull: { artGallery: _id } })
+  //       .then(() => {
+  //       // res.send('Updated');
+  //       // add art to new owner
+  //         Vault.findOneAndUpdate({ owner: req.user.doc._id }, { $push: { artGallery: _id } })
+  //           .then(() => {
+  //             res.send('updated my friend');
+  //           });
+  //       });
+  //   });
+
   Art.findById(_id)
-    .then((artwork) => {
-      // res.send(data);
-      // console.log(artwork);
-      // take out the corresponding artwork out of prev. owner gallery
+    .then(() => {
       Vault.findOneAndUpdate({ artGallery: _id }, { $pull: { artGallery: _id } })
         .then(() => {
-        // res.send('Updated');
-        // add art to new owner
           Vault.findOneAndUpdate({ owner: req.user.doc._id }, { $push: { artGallery: _id } })
             .then(() => {
-              res.send('updated my friend');
+              Art.findByIdAndUpdate(_id, { userGallery: { name: req.user.doc.name, googleId } })
+                .then((data) => {
+                  res.send(data);
+                })
+                .catch((err) => {
+                  console.error('Could not update Art userGallery', err);
+                });
+            })
+            .catch((err) => {
+              console.error('Could not add art from loot', err);
             });
+        })
+        .catch(() => {
+          console.error('Could not take art from user');
         });
+    })
+    .catch(() => {
+      console.error('Could not locate art');
     });
 });
 module.exports = { dbRouter };
