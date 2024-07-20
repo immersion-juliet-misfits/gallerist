@@ -1,3 +1,4 @@
+/* eslint-disable function-paren-newline */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-unused-vars */
@@ -71,6 +72,16 @@ function Quiz() {
       .catch((err) => console.error('GET High Score: Failed ', err));
   };
 
+  // Update Temporary Current score for each session
+  const updateCurrScore = (title) => {
+    if (title === displayedTitle) {
+      console.log('CORRECT!!!');
+      setCurrScore(currScore + 10);
+    } else {
+      console.log('Sorry...');
+    }
+  };
+
   // Updates High Score if currScore is more than previous
   const updateScore = () => {
     if (currScore > highScore) {
@@ -87,8 +98,6 @@ function Quiz() {
         .catch((err) => console.error('GET User ID: Failed ', err));
     }
   };
-
-  // ****************************
 
   // Sets initial Running Score value and retrieves it
   const getRunScore = () => {
@@ -116,10 +125,10 @@ function Quiz() {
       .then((newScore) => {
         setRunScore(newScore.data.quizTotalScore);
       })
-      .catch((err) => console.error('Running Total Score Update: Failed ', err));
+      .catch((err) => {
+        console.error('Running Total Score Update: Failed ', err);
+      });
   };
-
-  // ****************************
 
   // Retrieves art data from AIC API & saves to DB
   const getArt = () => {
@@ -200,13 +209,7 @@ function Quiz() {
     setClickCount(clickCount + 1);
     setLeftRight([leftRight[0] + 2, leftRight[1] + 2]);
     setTitleRound(Math.floor(Math.random() * 2));
-    // Function to increase score if correct title is clicked
-    if (title === displayedTitle) {
-      console.log('CORRECT!!!');
-      setCurrScore(currScore + 10); // Update score
-    } else {
-      console.log('Sorry...');
-    }
+    updateCurrScore(title); // Function to increase score if correct title is clicked
   };
 
   // Has "END GAME" been Clicked - pass down to EndGame

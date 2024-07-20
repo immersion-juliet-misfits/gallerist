@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-quotes */
 // import React, { useState, useEffect } from 'react';
@@ -17,18 +18,11 @@ function EndGame({ handleEndClick, currScore }) {
       style={{ maxWidth: '750px', marginTop: '20px' }}
       className='d-flex flex-column align-items-center'
     >
-      <h1>End Of Game</h1>
-      <h3>Final Score: {currScore}</h3>
+      <h1>End Of Game!!</h1>
+      <h3>{`Here's Your Final Score:`} {currScore}</h3>
       <ul>
         2DO:
-        <li>
-          Stretch 1: Keep track of how much $$$ total has been earned here.
-        </li>
         <li>Stretch 2: Implement multiplier for Correct answers in a row.</li>
-        <li>
-          Stretch 3: Some other variable that determines score to avoid max
-          being 50-ish.
-        </li>
       </ul>
       <Button
         style={{ width: '200px', height: '50px' }}

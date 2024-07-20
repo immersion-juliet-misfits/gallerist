@@ -24,7 +24,7 @@ Need the fields: id, title, image_id (to construct url for displaying the image)
 // V2: WIP them from a random page:
 const getAICart = () => {
   // Generate random page number
-  const rando = Math.floor(Math.random() * 200) + 1;
+  const rando = Math.floor(Math.random() * 400) + 1;
   // console.log('RandoNum Check: ', rando);
   return axios(
     `https://api.artic.edu/api/v1/artworks?page=${rando}&fields=id,title,image_id`,
@@ -37,16 +37,4 @@ const getAICart = () => {
   );
 };
 
-// *****************************************************
-/*
- Placeholder for Nookipedia API request if access is granted in time
- const getACArt = (imageid) => axios(
-   `https://api.harvardartmuseums.org/object?q=images.imageid:${imageid}&apikey=${APIKEY}`,
- );
-
-Fake Image URL & Id
-Real Image URL & Id
-*/
-
 module.exports = { getAICart };
-// module.exports = { getAICart, mergeURL };
