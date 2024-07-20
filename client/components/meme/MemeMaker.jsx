@@ -173,11 +173,19 @@ function MemeMaker() {
       user_id: user,
       imageId: memeName,
     };
-    axios.delete(`/meme/delete/${memesId}`, obj)
-      .then(() => {
-        get();
+    axios.get('/meme/owner')
+      .then(({ data }) => {
+        if (data === user) {
+          axios.delete(`/meme/delete/${memesId}`, obj)
+            .then(() => {
+              get();
+            })
+            .catch((err) => { console.error('ERROR  can\'t update meme: ', err); });
+        }
       })
-      .catch((err) => { console.error('ERROR  can\'t update meme: ', err); });
+      .catch((err) => {
+        console.error('can\'t find owner ', err);
+      });
   };
 
   useEffect(() => {

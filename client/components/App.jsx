@@ -11,6 +11,8 @@ import Home from './Home';
 import PhotoInfo from './PhotoInfo';
 import PalGallery from './PalGallery';
 import MemeMaker from './meme/MemeMaker';
+import ArtHeist from './ArtHeist/ArtHeist';
+import CrackCode from './ArtHeist/CrackCode';
 
 const App = createBrowserRouter([
   {
@@ -56,6 +58,14 @@ const App = createBrowserRouter([
       {
         path: '/home/meme',
         element: <MemeMaker />,
+      },
+      {
+        path: '/home/heist',
+        element: <ArtHeist />,
+      },
+      {
+        path: '/home/planHeist',
+        element: <CrackCode />,
       },
     ],
   },

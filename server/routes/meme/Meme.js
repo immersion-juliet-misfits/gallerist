@@ -4,7 +4,7 @@ const axios = require('axios');
 
 const MemeRouter = express.Router();
 
-const { User, Meme } = require('../../db/index');
+const { Meme } = require('../../db/index');
 
 MemeRouter.get('/meme/get', (req, res) => {
   Meme.find({})
@@ -15,6 +15,9 @@ MemeRouter.get('/meme/get', (req, res) => {
       console.error('Meme routes error: ', err);
       res.sendStatus(500);
     });
+});
+MemeRouter.get('/meme/owner', (req, res) => {
+  res.send(req.user.doc._id).status(200);
 });
 MemeRouter.get('/meme/get/:id', (req, res) => {
   const { id } = req.params;
@@ -55,6 +58,7 @@ MemeRouter.post('/meme/post', (req, res) => {
 
 MemeRouter.patch('/meme/update/:id', (req, res) => {
   const { id } = req.params;
+  console.log(req.body);
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(404).json({ error: 'bad id' });
   }
@@ -76,23 +80,18 @@ MemeRouter.patch('/meme/update/:id', (req, res) => {
 
 MemeRouter.delete('/meme/delete/:id', (req, res) => {
   const { id } = req.params;
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(404).json({ error: 'bad id' });
   }
-  if (req.user.doc._id === req.body.user_id) {
-    Meme.findOneAndDelete({ _id: id }, req.body)
-      .then((result) => {
-        res.send(result).status(200);
-      })
-      .catch((err) => {
-        console.error('Meme routes error update: ', err);
-        res.sendStatus(500);
-      });
-  } else {
-    console.error('you are not the owner of this meme');
-    res.sendStatus(500);
-  }
+
+  Meme.findOneAndDelete({ _id: id }, req.body)
+    .then((result) => {
+      res.send(result).status(200);
+    })
+    .catch((err) => {
+      console.error('Meme routes error update: ', err);
+      res.sendStatus(500);
+    });
 });
 
 module.exports = { MemeRouter };
