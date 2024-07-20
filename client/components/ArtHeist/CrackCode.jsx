@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import HeistSuccess from './HeistSuccess';
-import HeistFailure from './HeistFailure';
 import { Button } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
-import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
+import HeistSuccess from './HeistSuccess';
+import HeistFailure from './HeistFailure';
 
 function CrackCode() {
   const [input, setInput] = useState('');
@@ -20,7 +19,6 @@ function CrackCode() {
   const [previous, setPrevious] = useState('');
   const [disableDrop, setDisableDrop] = useState(false);
   const [disableInput, setDisableInput] = useState(true);
-  const [disableGuess, setDisableGuess] = useState(false);
 
   function getOtherVaults() {
     axios.get('/db/vault')
@@ -77,7 +75,7 @@ function CrackCode() {
 
   useEffect(() => {
     getOtherVaults();
-  }, [selectedVault, input, previous]);
+  }, []);
 
   function showColors(letter, i) {
     if (letter === selectedVault.code[i]) {

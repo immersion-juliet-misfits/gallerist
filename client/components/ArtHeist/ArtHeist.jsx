@@ -14,12 +14,10 @@ function ArtHeist() {
   const [passcode, setPasscode] = useState('');
 
   function handleInput(e) {
-    // console.log(e.target.value);
     setInput(e.target.value);
   }
 
   function handleSetPasscode() {
-    // console.log(input.split(''), 'box setup');
     setPasscode(input);
     axios.patch('/db/vault/', { code: input })
       .then(() => {
@@ -31,10 +29,9 @@ function ArtHeist() {
   }
 
   function handleVaultMount() {
-    // console.log()
     axios.post('/db/vault')
-      .then((vault) => {
-        // console.log(vault, 'attempt');
+      .then(() => {
+        console.log('Vaults mounted');
       })
       .catch((err) => {
         console.error('Vault could not be found or created.', err);
@@ -42,11 +39,7 @@ function ArtHeist() {
   }
 
   useEffect(() => {
-    // getArtOwners();
-    // console.log(input, 'input');
-    // handleSetPasscode();
     handleVaultMount();
-    // console.log(passcode, 'passcode');
   }, [passcode]);
 
   return (
