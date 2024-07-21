@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 const mongoose = require('mongoose');
 const findOrCreate = require('mongoose-findorcreate');
 
@@ -62,8 +61,6 @@ const VaultSchema = new Schema({
   }],
 });
 
-// Will Create & Delete an entry in DB for each game
-// 1 User - 1 Game Table to pull assets from
 const AIC_Schema = new Schema({
   id: { type: Number, required: true },
   image_id: { type: String, required: true },

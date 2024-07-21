@@ -1,17 +1,10 @@
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable jsx-quotes */
-// Top level container for the Quiz
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
-// Pass in Axios requests from Quiz.jsx
 function StartGame({ handleStartClick, maxRounds }) {
-  // State Start
-  // State End
-
   return (
     <Container
       style={{ maxWidth: '750px' }}

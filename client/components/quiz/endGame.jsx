@@ -1,18 +1,8 @@
-/* eslint-disable quotes */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable jsx-quotes */
-// import React, { useState, useEffect } from 'react';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-// import Row from 'react-bootstrap/Row';
 
-// Pass in Axios requests from Quiz.jsx
 function EndGame({ handleEndClick, currScore }) {
-  // State Start
-
-  // State End
-
   return (
     <Container
       style={{ maxWidth: '750px', marginTop: '20px' }}

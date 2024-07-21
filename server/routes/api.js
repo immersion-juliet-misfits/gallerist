@@ -46,23 +46,14 @@ apiRouter.get('/huam/object/:id', (req, res) => {
     });
 });
 
-// Quiz External API Req
-// This use methods in aic.js to retrieve data from the Art Institute of Chicago
-// GET already specifies & retrieves specific info I want
-// Then it will be passed to dbRouter.post('/db/quizart') in database.js
 apiRouter.get('/db/aicapi', (req, res) => {
-  console.log('API Quiz Confirmation');
-  // console.log('gAC Type', typeof getAICart); // Logs Function
-  // Retrieve & store from AIC
   getAICart()
     .then((response) => {
       const gotArt = response.data;
-      // console.log('API.js RES DATA CHECK: ', gotArt);
       if (gotArt) {
-        // console.log('AIC PH Check: ', gotArt.data); // Now logs the data I'm after
         res.status(200).send(gotArt.data);
       } else {
-        // console.error('No Art Found');
+        console.error('No Art Found');
         res.sendStatus(404);
       }
     })

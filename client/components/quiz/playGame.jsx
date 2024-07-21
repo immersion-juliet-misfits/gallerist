@@ -1,7 +1,3 @@
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable object-curly-newline */
-/* eslint-disable jsx-quotes */
 import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -14,6 +10,8 @@ function PlayGame({
   aicArt,
   clickCount,
   currScore,
+  feedback,
+  feedbackStyle,
   leftRight,
   maxRounds,
   setAicArt,
@@ -38,6 +36,11 @@ function PlayGame({
               Current Round: {clickCount + 1}
             </p>
           </Col>
+          <Col style={feedbackStyle}>
+            <p style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
+              Previous Answer: {feedback}
+            </p>
+          </Col>
           <Col>
             <p style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
               Current Winnings: {currScore}
@@ -45,7 +48,6 @@ function PlayGame({
           </Col>
         </Row>
       </Container>
-
       {aicArt.length > 0 ? (
         <div>
           <Row
@@ -65,10 +67,6 @@ function PlayGame({
               }}
             >
               "{aicArt[leftRight[titleRound]].title}"
-              {console.log(
-                'Displayed Title:',
-                aicArt[leftRight[titleRound]].title
-              )}
             </p>
           </Row>
           <div
@@ -89,7 +87,6 @@ function PlayGame({
               <Button
                 variant='link'
                 onClick={() => {
-                  console.log('1st Title:', aicArt[leftRight[0]].title);
                   handleImageClick(0, aicArt[leftRight[0]].title);
                 }}
                 style={{ padding: 0 }}
@@ -117,7 +114,6 @@ function PlayGame({
                 <Button
                   variant='link'
                   onClick={() => {
-                    console.log('2nd Title:', aicArt[leftRight[1]].title);
                     handleImageClick(1, aicArt[leftRight[1]].title);
                   }}
                   style={{ padding: 0 }}

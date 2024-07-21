@@ -1,9 +1,3 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable function-paren-newline */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-quotes */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Col from 'react-bootstrap/Col';
@@ -16,18 +10,20 @@ import EndGame from './endGame';
 function Quiz() {
   const [userName, setUserName] = useState('');
   const [wallet, setWallet] = useState(0);
-  const [startGame, setStartGame] = useState(true);
-  const [playGame, setPlayGame] = useState(false);
-  const [endGame, setEndGame] = useState(false);
   const [aicArt, setAicArt] = useState([]);
   const [clickCount, setClickCount] = useState(0);
-  const [maxRounds, setMaxRounds] = useState(5);
+  const [maxRounds, setMaxRounds] = useState(6);
   const [currScore, setCurrScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [runScore, setRunScore] = useState(0);
   const [streak, setStreak] = useState(1);
   const [leftRight, setLeftRight] = useState([0, 1]);
   const [titleRound, setTitleRound] = useState(0);
+  const [startGame, setStartGame] = useState(true);
+  const [playGame, setPlayGame] = useState(false);
+  const [feedback, setFeedback] = useState('...');
+  const [feedbackStyle, setFeedbackStyle] = useState({});
+  const [endGame, setEndGame] = useState(false);
 
   const displayedTitle = aicArt[leftRight[titleRound]]?.title;
 
@@ -46,7 +42,6 @@ function Quiz() {
       .put(`/db/giveMoney/${name}`, { price: score })
       .then(() => {
         getUserData();
-        console.log('Reward: Success');
       })
       .catch((err) => {
         console.error('Reward: Failed ', err);
@@ -73,13 +68,15 @@ function Quiz() {
 
   const updateCurrScore = (title) => {
     if (title === displayedTitle) {
-      console.log('CORRECT!!!');
       const newStreak = streak * 2;
       setStreak(newStreak);
       setCurrScore(currScore + 5 * newStreak);
+      setFeedback('CORRECT!!!');
+      setFeedbackStyle({ color: 'green' });
     } else {
-      console.log('Sorry...');
       setStreak(1);
+      setFeedback('Sorry...');
+      setFeedbackStyle({ color: 'red' });
     }
   };
 
@@ -129,7 +126,7 @@ function Quiz() {
   };
 
   const getArt = () => {
-    for (let x = 0; x < 5; x++) {
+    for (let x = 0; x < 3; x++) {
       axios
         .get('/db/aicapi')
         .then((response) => {
@@ -146,8 +143,8 @@ function Quiz() {
   function pullArt() {
     axios
       .get('/db/quizart')
-      .then((data) => {
-        setAicArt(data.data);
+      .then((qArt) => {
+        setAicArt(qArt.data);
       })
       .catch((err) => console.error('DB Art Retrieval: Failed ', err));
   }
@@ -157,7 +154,6 @@ function Quiz() {
       .delete('/db/quizart')
       .then((response) => {
         if (response.status === 200) {
-          // console.log('Quiz Art Deletion: Success ');
         } else if (response.status === 404) {
           console.error('Quiz Art Deletion: None Found ');
         }
@@ -200,13 +196,14 @@ function Quiz() {
     setLeftRight([0, 1]);
     setCurrScore(0);
     setStreak(1);
+    setFeedback('...');
+    setFeedbackStyle({});
   };
 
   useEffect(() => {
     getUserData();
     getScore();
     getRunScore();
-    console.log('aicArt state updated:', aicArt);
   }, [aicArt]);
 
   return (
@@ -237,12 +234,14 @@ function Quiz() {
             handlePlayClick={handlePlayClick}
             handleImageClick={handleImageClick}
             aicArt={aicArt}
+            setAicArt={setAicArt}
             clickCount={clickCount}
             maxRounds={maxRounds}
             currScore={currScore}
             leftRight={leftRight}
             titleRound={titleRound}
-            setAicArt={setAicArt}
+            feedback={feedback}
+            feedbackStyle={feedbackStyle}
           />
         )}
         {endGame && (
