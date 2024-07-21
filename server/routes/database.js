@@ -377,6 +377,7 @@ dbRouter.get('/db/vaultOwner/', (req, res) => {
       res.send(vault);
     })
     .catch(() => {
+      console.error('Could not locate current user vault');
       res.sendStatus(500);
     });
 });
