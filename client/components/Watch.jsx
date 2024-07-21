@@ -15,7 +15,7 @@ function WatchItem({ imgTitle, isForSale }) {
   function sendMessage() {
     watchers.userData.map(({ name, email }) => {
       axios
-        .post('/messages', { name, email, imgTitle })
+        .post('/send-email', { name, email, imgTitle })
         .then((message) => {
           console.log('Message sent: ', message);
         })

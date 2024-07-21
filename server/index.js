@@ -8,6 +8,8 @@ const MongoStore = require('connect-mongo');
 const { authRouter } = require('./routes/auth');
 const { apiRouter } = require('./routes/api');
 const { dbRouter } = require('./routes/database');
+const { messRouter } = require('./routes/message');
+
 require('dotenv').config();
 
 const { EXPRESS_SECRET } = process.env;
@@ -49,6 +51,9 @@ app.use('/', apiRouter);
 
 // DB Routes
 app.use('/', dbRouter);
+
+// Message Routes
+app.use('/', messRouter);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
