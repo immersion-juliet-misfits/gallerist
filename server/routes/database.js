@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const express = require('express');
 
 const dbRouter = express.Router();
@@ -147,12 +148,14 @@ dbRouter.post('/db/culture/:culture', (req, res) => {
         if (!name) {
           res.status(200).send(cultureArt);
         } else {
-          Art.find({ culture }).where({ 'userGallery.name': name })
+          Art.find({ culture })
+            .where({ 'userGallery.name': name })
             .then((bothArt) => {
               if (bothArt.length) {
                 res.status(200).send(bothArt);
               }
-            }).catch(() => res.sendStatus(404));
+            })
+            .catch(() => res.sendStatus(404));
         }
       } else {
         res.sendStatus(404);
@@ -176,7 +179,7 @@ dbRouter.put('/db/art/:imageId', (req, res) => {
   Art.findOneAndUpdate(
     { imageId },
     { ...fieldsToUpdate, userGallery: { name, googleId } },
-    { new: true },
+    { new: true }
   )
     .then((updObj) => {
       if (updObj) {
@@ -218,7 +221,7 @@ dbRouter.put('/db/friends/', (req, res) => {
         User.findByIdAndUpdate(
           user._id,
           { $push: { friends: friend } },
-          { new: true },
+          { new: true }
         ).then(() => {
           res.sendStatus(200);
         });
@@ -247,7 +250,7 @@ dbRouter.put('/db/unfriend/', (req, res) => {
       User.findOneAndUpdate(
         user._id,
         { friends: user.friends },
-        { new: true },
+        { new: true }
       ).then(() => {
         res.sendStatus(200);
       });
@@ -288,7 +291,8 @@ dbRouter.post('/db/art', (req, res) => {
       console.error('Failed to create Art document: ', err);
       res.sendStatus(500);
     });
-  /**
+});
+/**
    * All of these fields are available in art object returned from GET: 'huam/object/:id'
   title: String,
   artist: String,
@@ -299,7 +303,6 @@ dbRouter.post('/db/art', (req, res) => {
   imageUrl: String,
   isForSale: False, //initialize to false
   */
-});
 
 // GET creates a vault for user's that don't have one setup...
 // ...otherwise send back existing vault data

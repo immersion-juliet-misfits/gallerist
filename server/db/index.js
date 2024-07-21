@@ -1,11 +1,11 @@
-/* eslint-disable camelcase */
 const mongoose = require('mongoose');
 const findOrCreate = require('mongoose-findorcreate');
 
 const { Schema, model } = mongoose;
 const db_uri = process.env.DB_URI;
 
-mongoose.connect(db_uri)
+mongoose
+  .connect(db_uri)
   .then(() => console.log('Connection to Database successful'))
   .catch((err) => console.log('Could not connect to database ', err));
 
@@ -16,6 +16,8 @@ const UserSchema = new Schema({
   // gallery: Array,
   friends: Array,
   wallet: Number,
+  quizHighScore: Number,
+  quizTotalScore: Number,
 });
 UserSchema.plugin(findOrCreate);
 
@@ -59,11 +61,19 @@ const VaultSchema = new Schema({
   }],
 });
 
+const AIC_Schema = new Schema({
+  id: { type: Number, required: true },
+  image_id: { type: String, required: true },
+  title: { type: String, required: true },
+  imageUrl: { type: String, required: true },
+});
+
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
 const Meme = model('Meme', MemeSchema);
 const Vault = model('Vault', VaultSchema);
+const AICart = model('AICart', AIC_Schema);
 
 module.exports = {
-  User, Art, Meme, Vault,
+  User, Art, Meme, Vault, AICart,
 };

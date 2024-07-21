@@ -23,6 +23,8 @@ function Gallery() {
   const [threeMemes, setThreeMemes] = useState([]);
   // hold number used for checking data
   const [number, setNumber] = useState(0);
+  // meme array
+  const [memeArray, setMemeArray] = useState([]);
 
   // send a request to get all users in the db
   const getAllUsers = () => {
@@ -73,7 +75,7 @@ function Gallery() {
     } else if (filter === 'meme') {
       axios.get('/meme/get')
         .then((result) => {
-          setImages(result.data);
+          setMemeArray(result.data);
           setThreeMemes([result.data[0], result.data[1], result.data[2]]);
           //  setThreeMemes([result.data[0]]);
           setMeme(true);
@@ -93,10 +95,10 @@ function Gallery() {
   // set the three memes to render
   const getThreeMemes = (num) => {
     if (num) {
-      setThreeMemes([images?.[0 + num], images?.[1 + num], images?.[2 + num]]);
+      setThreeMemes([memeArray?.[0 + num], memeArray?.[1 + num], memeArray?.[2 + num]]);
       // setThreeMemes([images?.[0 + num]]);
     } else {
-      setThreeMemes([images?.[0], images?.[1], images?.[2]]);
+      setThreeMemes([memeArray?.[0], memeArray?.[1], memeArray?.[2]]);
       //  setThreeMemes([images?.[0]]);
     }
   };
