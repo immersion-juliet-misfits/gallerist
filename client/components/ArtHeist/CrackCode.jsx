@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
 import HeistSuccess from './HeistSuccess';
 import HeistFailure from './HeistFailure';
 
@@ -19,6 +20,7 @@ function CrackCode() {
   const [previous, setPrevious] = useState('');
   const [disableDrop, setDisableDrop] = useState(false);
   const [disableInput, setDisableInput] = useState(true);
+  const [showArt, setShowArt] = useState(false);
 
   function getOtherVaults() {
     axios.get('/db/vault')
@@ -62,6 +64,7 @@ function CrackCode() {
         if (attempts === 3) {
           setResult(false);
           setDisableInput(() => !disableInput);
+          setShowArt(true);
           axios.put('/db/deductWallet', { price: 50 })
             .then(() => {
               console.log('You were fined for theft. - $50');
@@ -77,6 +80,10 @@ function CrackCode() {
     getOtherVaults();
   }, []);
 
+  function handleClose() {
+    setShowArt(false);
+  }
+
   function showColors(letter, i) {
     if (letter === selectedVault.code[i]) {
       return 'lime';
@@ -90,6 +97,29 @@ function CrackCode() {
   return (
     <Container className="text-center">
       <h1><strong>Crack the Code</strong></h1>
+      <Modal
+        show={showArt}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+        centered
+      >
+        <Modal.Header>
+          <Modal.Title>You were caught!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          You were not sneaky enough. You
+          <em> were </em>
+          fined $50 for art theft, however.
+        </Modal.Body>
+        <Modal.Footer>
+          <Link to="/home/heist" relative="path">
+            <Button variant="secondary" onClick={handleClose}>
+              Leave the scene
+            </Button>
+          </Link>
+        </Modal.Footer>
+      </Modal>
       {selectedVault.name
       && <h4>{`${selectedVault.name}'s Vault`}</h4>}
       {previous && (
