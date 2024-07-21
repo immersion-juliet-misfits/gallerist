@@ -57,10 +57,12 @@ const VaultSchema = new Schema({
   code: {
     type: String,
   },
-  artGallery: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Art',
-  }],
+  artGallery: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Art',
+    },
+  ],
 });
 
 const AIC_Schema = new Schema({
@@ -71,24 +73,20 @@ const AIC_Schema = new Schema({
 });
 
 const WatchedSchema = new Schema({
-  userData: [
-    {
-      email: {
-        type: Schema.Types.String,
-        ref: 'User',
-      },
-      name: {
-        type: Schema.Types.String,
-        ref: 'User',
-      },
-    },
-  ],
+  email: {
+    type: Schema.Types.String,
+    ref: 'User',
+  },
+  name: {
+    type: Schema.Types.String,
+    ref: 'User',
+  },
 
   title: {
     type: Schema.Types.String,
     ref: 'Art',
   },
-  message: String,
+  isWatched: Boolean,
 });
 
 const User = model('User', UserSchema);
@@ -99,5 +97,10 @@ const AICart = model('AICart', AIC_Schema);
 const Watch = model('Watch', WatchedSchema);
 
 module.exports = {
-  User, Art, Meme, Vault, Watch, AICart,
+  User,
+  Art,
+  Meme,
+  Vault,
+  Watch,
+  AICart,
 };

@@ -11,7 +11,6 @@ const { apiRouter } = require('./routes/api');
 const { dbRouter } = require('./routes/database');
 const { MemeRouter } = require('./routes/meme/Meme');
 const { quizRouter } = require('./routes/quizDBrouter');
-
 const { messRouter } = require('./routes/message');
 
 require('dotenv').config();
@@ -65,7 +64,7 @@ app.use('/meme', MemeRouter);
 app.use('/', quizRouter);
 
 // Message Routes
-app.use('/', messRouter);
+// app.use('/', messRouter);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));

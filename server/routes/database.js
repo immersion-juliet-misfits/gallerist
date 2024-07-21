@@ -3,7 +3,7 @@ const express = require('express');
 
 const dbRouter = express.Router();
 
-const { User, Art, Watch } = require('../db/index');
+const { User, Art, Watch, Vault } = require('../db/index');
 
 // GET: to return user's profile info upon load of Profile component (could be used elsewhere)
 dbRouter.get('/db/user/', (req, res) => {
@@ -149,15 +149,13 @@ dbRouter.post('/db/culture/:culture', (req, res) => {
           res.status(200).send(cultureArt);
         } else {
           Art.find({ culture })
-            .where({ 'userGallery.name': name })
+            .where({ 'userGallery.name': name });
           Art.find({ culture })
             .where({ 'userGallery.name': name })
             .then((bothArt) => {
               if (bothArt.length) {
                 res.status(200).send(bothArt);
               }
-            })
-            .catch(() => res.sendStatus(404));
             })
             .catch(() => res.sendStatus(404));
         }
@@ -183,7 +181,6 @@ dbRouter.put('/db/art/:imageId', (req, res) => {
   Art.findOneAndUpdate(
     { imageId },
     { ...fieldsToUpdate, userGallery: { name, googleId } },
-    { new: true }
     { new: true }
   )
     .then((updObj) => {
@@ -227,7 +224,6 @@ dbRouter.put('/db/friends/', (req, res) => {
           user._id,
           { $push: { friends: friend } },
           { new: true }
-          { new: true }
         ).then(() => {
           res.sendStatus(200);
         });
@@ -256,7 +252,6 @@ dbRouter.put('/db/unfriend/', (req, res) => {
       User.findOneAndUpdate(
         user._id,
         { friends: user.friends },
-        { new: true }
         { new: true }
       ).then(() => {
         res.sendStatus(200);
@@ -310,15 +305,13 @@ dbRouter.post('/db/art', (req, res) => {
   imageUrl: String,
   isForSale: False, //initialize to false
   */
-});
 
 // GET request to get all the watchers name and email by the art title
 dbRouter.get('/db/watch/:title', (req, res) => {
   const { title } = req.params;
-  console.log('title', title)
   Watch.find({ title })
     .then((watchers) => {
-      console.log('watches', watchers);
+      console.log('watchers', watchers)
       res.status(201).send(watchers);
     })
     .catch((err) => {
@@ -326,15 +319,28 @@ dbRouter.get('/db/watch/:title', (req, res) => {
     });
 });
 
+// // GET request to get all the watchers by user id
+// dbRouter.get('/db/watch/:id', (req, res) => {
+//   const {  } = req.user.docs;
+//   Watch.find({ title })
+//     .then((watchers) => {
+//       res.status(201).send(watchers);
+//     })
+//     .catch((err) => {
+//       console.error('Failed to find the art being watched: ', err);
+//     });
+// });
+
 // POST request to add the User name and email, and the Art title to the db
 dbRouter.post('/db/watch/:title', (req, res) => {
   // destructure relevant user info from request
   // const { name, email } = req.user.doc;
-  const { name, email } = req.body;
+  // const { isWatched } = req.body;
+  const { isWatched, name, email } = req.body;
   const { title } = req.params;
-
-  // if(!Watch.find({title})){
-  Watch.create({ userData: [{ email, name }], title })
+  // console.log('req.user', req.user.doc)
+  // console.log('body', req.body)
+  Watch.create({ email, name, title, isWatched })
     .then((data) => {
       res.status(201).send(data);
     })
@@ -342,30 +348,28 @@ dbRouter.post('/db/watch/:title', (req, res) => {
       console.error('Failed to create Watch document: ', err);
       res.sendStatus(500);
     });
-  // } else {
-  //   console.log('title already there')
-  // }
-  // });
 });
 
-// // Delete request to remove user from the watch list
-// dbRouter.patch('/db/watch/:title', (req, res) => {
-//   const { name, email } = req.user.doc;
-//   const { title } = req.params;
+// Delete request to remove what is being watched
+dbRouter.patch('/db/watch/:id', (req, res) => {
+  // const { name, email } = req.user.doc;
+  // const { isWatched } = req.body;
+  const { id } = req.params;
 
-//   Watch.findOneAndUpdate({ title })
-//     .then((deleteObj) => {
-//       if (deleteObj) {
-//         res.sendStatus(200);
-//       } else {
-//         res.sendStatus(404);
-//       }
-//     })
-//     .catch((err) => {
-//       console.error('Failed to Delete from watchlist: ', err);
-//       res.sendStatus(500);
-//     });
-// });
+  Watch.findByIdAndDelete({ id })
+    .then((data) => {
+      console.log(data)
+      if (data) {
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error('Failed to Delete from watchlist: ', err);
+      res.sendStatus(500);
+    });
+});
 
 // GET to receive all art data of only those || no conditional logic yet
 dbRouter.get('/db/artOwners', (req, res) => {
