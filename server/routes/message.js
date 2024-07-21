@@ -1,5 +1,6 @@
 const express = require('express');
 const axios = require('axios');
+
 require('dotenv').config();
 
 const messRouter = express.Router();
@@ -16,19 +17,19 @@ const connData = {
     to_name: '',
     from_name: 'Gallerist',
     to_email: '',
-    message: `The art piece ${art.title} is now for sale!`
-  }
+    message: `The art piece ${art.title} is now for sale!`,
+  },
 };
 
-  messRouter.post('https://api.emailjs.com/api/v1.0/email/send', connData)
-    .then((data) => {
-      console.log('data', data);
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      console.error('Could not send message: ', err);
-      res.sendStatus(500);
-    });
-};
+messRouter
+  .post('https://api.emailjs.com/api/v1.0/email/send', connData)
+  .then((data) => {
+    console.log('data', data);
+    res.status(200).send(data);
+  })
+  .catch((err) => {
+    console.error('Could not send message: ', err);
+    res.sendStatus(500);
+  });
 
 module.exports = messRouter;

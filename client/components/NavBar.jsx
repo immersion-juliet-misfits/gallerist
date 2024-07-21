@@ -22,6 +22,9 @@ function NavBar() {
             <Nav.Link as={NavLink} eventKey="profile" to="profile">
               Profile
             </Nav.Link>
+            <Nav.Link as={NavLink} eventKey="meme" to="meme">
+              MemeMaker
+            </Nav.Link>
             <Nav.Link as={NavLink} eventKey="gallery" to="gallery">
               Gallery
             </Nav.Link>
@@ -30,6 +33,9 @@ function NavBar() {
             </Nav.Link>
             <Nav.Link as={NavLink} eventKey="heist" to="heist">
               Heist
+            </Nav.Link>
+            <Nav.Link as={NavLink} eventKey="quiz" to="quiz">
+              Quiz
             </Nav.Link>
             <form action="/logout" method="post">
               <Button variant="secondary" type="submit">

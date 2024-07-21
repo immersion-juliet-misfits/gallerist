@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 const mongoose = require('mongoose');
 const findOrCreate = require('mongoose-findorcreate');
 
@@ -6,6 +5,7 @@ const { Schema, model } = mongoose;
 const db_uri = process.env.DB_URI;
 
 mongoose
+
   .connect(db_uri)
   .then(() => console.log('Connection to Database successful'))
   .catch((err) => console.log('Could not connect to database ', err));
@@ -17,6 +17,8 @@ const UserSchema = new Schema({
   // gallery: Array,
   friends: Array,
   wallet: Number,
+  quizHighScore: Number,
+  quizTotalScore: Number,
   email: String,
 });
 UserSchema.plugin(findOrCreate);
@@ -37,6 +39,14 @@ const ArtSchema = new Schema({
   price: Number,
 });
 
+const MemeSchema = new Schema({
+  title: String,
+  imageUrl: String,
+  options: Object,
+  user_id: String,
+  imageId: String,
+});
+
 const VaultSchema = new Schema({
   name: String,
   owner: {
@@ -51,6 +61,13 @@ const VaultSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Art',
   }],
+});
+
+const AIC_Schema = new Schema({
+  id: { type: Number, required: true },
+  image_id: { type: String, required: true },
+  title: { type: String, required: true },
+  imageUrl: { type: String, required: true },
 });
 
 const WatchedSchema = new Schema({
@@ -76,7 +93,11 @@ const WatchedSchema = new Schema({
 
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
+const Meme = model('Meme', MemeSchema);
 const Vault = model('Vault', VaultSchema);
+const AICart = model('AICart', AIC_Schema);
 const Watch = model('Watch', WatchedSchema);
 
-module.exports = { User, Art, Vault, Watch };
+module.exports = {
+  User, Art, Meme, Vault, Watch, AICart,
+};

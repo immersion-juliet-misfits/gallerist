@@ -13,21 +13,11 @@ function ArtHeist() {
   const [input, setInput] = useState('');
   const [passcode, setPasscode] = useState('');
 
-//   function getArtOwners() {
-//     axios.get('/db/artOwners/')
-//       .then(({ data }) => {
-//         console.log(data, 'others art');
-//       })
-//       .catch((err) => console.error('Could not GET users who currently own art', err));
-//   }
-
   function handleInput(e) {
-    // console.log(e.target.value);
     setInput(e.target.value);
   }
 
   function handleSetPasscode() {
-    // console.log(input.split(''), 'box setup');
     setPasscode(input);
     axios.patch('/db/vault/', { code: input })
       .then(() => {
@@ -39,10 +29,9 @@ function ArtHeist() {
   }
 
   function handleVaultMount() {
-    // console.log()
     axios.post('/db/vault')
-      .then((vault) => {
-        // console.log(vault, 'attempt');
+      .then(() => {
+        console.log('Vaults mounted');
       })
       .catch((err) => {
         console.error('Vault could not be found or created.', err);
@@ -50,16 +39,12 @@ function ArtHeist() {
   }
 
   useEffect(() => {
-    // getArtOwners();
-    // console.log(input, 'input');
-    // handleSetPasscode();
     handleVaultMount();
-    // console.log(passcode, 'passcode');
   }, [passcode]);
 
   return (
     <Container className="text-center">
-      <h1>Art Heist</h1>
+      <h1><strong>Art Heist</strong></h1>
       <h5>Set code</h5>
       <input type="text" maxLength="5" size="5" onChange={(e) => handleInput(e)} />
       <br />

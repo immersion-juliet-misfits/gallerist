@@ -1,6 +1,7 @@
 const express = require('express');
 
 const { getArtImages, getArtObj } = require('../api/huam');
+const { getAICart } = require('../api/aic');
 const { sendMessage } = require('./message');
 // const { User, Art } = require('../db/index');
 
@@ -43,6 +44,23 @@ apiRouter.get('/huam/object/:id', (req, res) => {
     })
     .catch((err) => {
       console.error('Cannot get ArtObj by id: ', err);
+      res.sendStatus(500);
+    });
+});
+
+apiRouter.get('/db/aicapi', (req, res) => {
+  getAICart()
+    .then((response) => {
+      const gotArt = response.data;
+      if (gotArt) {
+        res.status(200).send(gotArt.data);
+      } else {
+        console.error('No Art Found');
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error('AIC Art Retrieval Failed: ', err);
       res.sendStatus(500);
     });
 });

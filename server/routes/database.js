@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const express = require('express');
 
 const dbRouter = express.Router();
@@ -149,10 +150,14 @@ dbRouter.post('/db/culture/:culture', (req, res) => {
         } else {
           Art.find({ culture })
             .where({ 'userGallery.name': name })
+          Art.find({ culture })
+            .where({ 'userGallery.name': name })
             .then((bothArt) => {
               if (bothArt.length) {
                 res.status(200).send(bothArt);
               }
+            })
+            .catch(() => res.sendStatus(404));
             })
             .catch(() => res.sendStatus(404));
         }
@@ -178,6 +183,7 @@ dbRouter.put('/db/art/:imageId', (req, res) => {
   Art.findOneAndUpdate(
     { imageId },
     { ...fieldsToUpdate, userGallery: { name, googleId } },
+    { new: true }
     { new: true }
   )
     .then((updObj) => {
@@ -221,6 +227,7 @@ dbRouter.put('/db/friends/', (req, res) => {
           user._id,
           { $push: { friends: friend } },
           { new: true }
+          { new: true }
         ).then(() => {
           res.sendStatus(200);
         });
@@ -249,6 +256,7 @@ dbRouter.put('/db/unfriend/', (req, res) => {
       User.findOneAndUpdate(
         user._id,
         { friends: user.friends },
+        { new: true }
         { new: true }
       ).then(() => {
         res.sendStatus(200);
@@ -290,7 +298,8 @@ dbRouter.post('/db/art', (req, res) => {
       console.error('Failed to create Art document: ', err);
       res.sendStatus(500);
     });
-  /**
+});
+/**
    * All of these fields are available in art object returned from GET: 'huam/object/:id'
   title: String,
   artist: String,
@@ -438,12 +447,10 @@ dbRouter.patch('/db/vault/', (req, res) => {
     });
 });
 
-// **NOT UPDATING UNTIL SOMEONE VISITS HEIST PAGE CURRENTLY**
 dbRouter.get('/db/vault', (req, res) => {
   const { _id } = req.user.doc;
   Vault.find({ owner: { $ne: _id } })
     .then((owners) => {
-      // console.log(owners);
       res.status(200).send(owners);
     })
     .catch(() => {
@@ -455,11 +462,7 @@ dbRouter.get('/db/vault/:owner', (req, res) => {
   const { owner } = req.params;
   Vault.findOne({ owner })
     .then((vault) => {
-      // if (data.length > 0) {
       res.send(vault);
-      // } else {
-      //   res.sendStatus(500);
-      // }
     })
     .catch(() => {
       res.sendStatus(500);
@@ -470,9 +473,7 @@ dbRouter.post('/db/guess', (req, res) => {
   const { owner, input } = req.body;
   Vault.findOne({ owner, code: input })
     .then((vault) => {
-      // console.log('attempted passcode', owner, input);
       if (vault) {
-        // console.log(`successful login ${input}`);
         res.status(200).send(vault);
       } else {
         res.sendStatus(500);
@@ -490,9 +491,7 @@ dbRouter.get('/db/heistVault/:_id', (req, res) => {
       if (!vault) {
         res.sendStatus(500);
       } else {
-        // res.send(vault.artGallery)
         return Promise.all(vault.artGallery.map((art) => Art.findById(art)));
-        // res.json(test)
       }
     })
     .then((artData) => {
@@ -502,8 +501,7 @@ dbRouter.get('/db/heistVault/:_id', (req, res) => {
 
 dbRouter.post('/db/stealArt/:_id', (req, res) => {
   const { _id } = req.params;
-  // const { owner } = req.body;
-  // console.log(artId)
+  const { googleId } = req.user.doc;
 
   // find selected artwork
   Art.findById(_id).then((artwork) => {
