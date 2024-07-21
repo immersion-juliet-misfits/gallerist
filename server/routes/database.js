@@ -349,7 +349,7 @@ dbRouter.patch('/db/vault/', (req, res) => {
 
 dbRouter.get('/db/vault', (req, res) => {
   const { _id } = req.user.doc;
-  Vault.find({ owner: { $ne: _id } })
+  Vault.find({ owner: { $ne: _id }, code: { $exists: true } })
     .then((owners) => {
       res.status(200).send(owners);
     })
@@ -361,6 +361,18 @@ dbRouter.get('/db/vault', (req, res) => {
 dbRouter.get('/db/vault/:owner', (req, res) => {
   const { owner } = req.params;
   Vault.findOne({ owner })
+    .then((vault) => {
+      res.send(vault);
+    })
+    .catch(() => {
+      res.sendStatus(500);
+    });
+});
+
+dbRouter.get('/db/vaultOwner/', (req, res) => {
+  const { _id } = req.user.doc;
+  // const { _id } = req.user.doc;
+  Vault.findOne({ owner: _id })
     .then((vault) => {
       res.send(vault);
     })
