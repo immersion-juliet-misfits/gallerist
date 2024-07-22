@@ -64,7 +64,7 @@ app.use('/meme', MemeRouter);
 app.use('/', quizRouter);
 
 // Message Routes
-// app.use('/', messRouter);
+app.use('/', messRouter);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));

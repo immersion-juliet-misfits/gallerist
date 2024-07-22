@@ -148,8 +148,7 @@ dbRouter.post('/db/culture/:culture', (req, res) => {
         if (!name) {
           res.status(200).send(cultureArt);
         } else {
-          Art.find({ culture })
-            .where({ 'userGallery.name': name });
+          Art.find({ culture }).where({ 'userGallery.name': name });
           Art.find({ culture })
             .where({ 'userGallery.name': name })
             .then((bothArt) => {
@@ -311,7 +310,7 @@ dbRouter.get('/db/watch/:title', (req, res) => {
   const { title } = req.params;
   Watch.find({ title })
     .then((watchers) => {
-      console.log('watchers', watchers)
+      // console.log('watchers', watchers);
       res.status(201).send(watchers);
     })
     .catch((err) => {
@@ -334,9 +333,9 @@ dbRouter.get('/db/watch/:title', (req, res) => {
 // POST request to add the User name and email, and the Art title to the db
 dbRouter.post('/db/watch/:title', (req, res) => {
   // destructure relevant user info from request
-  // const { name, email } = req.user.doc;
-  // const { isWatched } = req.body;
-  const { isWatched, name, email } = req.body;
+  const { name, email } = req.user.doc;
+  const { isWatched } = req.body;
+  // const { isWatched, name, email } = req.body;
   const { title } = req.params;
   // console.log('req.user', req.user.doc)
   // console.log('body', req.body)
@@ -351,22 +350,19 @@ dbRouter.post('/db/watch/:title', (req, res) => {
 });
 
 // Delete request to remove what is being watched
-dbRouter.patch('/db/watch/:id', (req, res) => {
-  // const { name, email } = req.user.doc;
-  // const { isWatched } = req.body;
+dbRouter.delete('/db/watch/:id', (req, res) => {
   const { id } = req.params;
 
-  Watch.findByIdAndDelete({ id })
-    .then((data) => {
-      console.log(data)
-      if (data) {
+  Watch.findByIdAndDelete({ _id: id })
+    .then((deleteObj) => {
+      if (deleteObj) {
         res.sendStatus(200);
       } else {
         res.sendStatus(404);
       }
     })
     .catch((err) => {
-      console.error('Failed to Delete from watchlist: ', err);
+      console.error('Failed to Delete by id: ', err);
       res.sendStatus(500);
     });
 });
