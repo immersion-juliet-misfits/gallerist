@@ -7,14 +7,13 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import WatchItem from './Watch';
 
-function GalleryListItem({ image, users }) {
+function GalleryListItem({ image }) {
   // set up modal for friend request
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  // console.log('Gal img', image)
+
   // add a friend to users friend array
   function addFriend(e) {
     axios.put('/db/friends/', { friend: e.target.value })
@@ -51,7 +50,6 @@ function GalleryListItem({ image, users }) {
             <Button variant="primary" value={image.userGallery.name} onClick={addFriend}>
               Add Friend
             </Button>
-            <WatchItem imgTitle={image.title} isForSale={image.isForSale} users={users} />
           </div>
           <Link to={`/home/art/${image.imageId}`}>Click here for more details...</Link>
           <br />

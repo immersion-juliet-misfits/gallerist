@@ -5,7 +5,6 @@ const { Schema, model } = mongoose;
 const db_uri = process.env.DB_URI;
 
 mongoose
-
   .connect(db_uri)
   .then(() => console.log('Connection to Database successful'))
   .catch((err) => console.log('Could not connect to database ', err));
@@ -19,7 +18,6 @@ const UserSchema = new Schema({
   wallet: Number,
   quizHighScore: Number,
   quizTotalScore: Number,
-  email: String,
 });
 UserSchema.plugin(findOrCreate);
 
@@ -57,12 +55,10 @@ const VaultSchema = new Schema({
   code: {
     type: String,
   },
-  artGallery: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Art',
-    },
-  ],
+  artGallery: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Art',
+  }],
 });
 
 const AIC_Schema = new Schema({
@@ -72,35 +68,12 @@ const AIC_Schema = new Schema({
   imageUrl: { type: String, required: true },
 });
 
-const WatchedSchema = new Schema({
-  email: {
-    type: Schema.Types.String,
-    ref: 'User',
-  },
-  name: {
-    type: Schema.Types.String,
-    ref: 'User',
-  },
-
-  title: {
-    type: Schema.Types.String,
-    ref: 'Art',
-  },
-  isWatched: Boolean,
-});
-
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
 const Meme = model('Meme', MemeSchema);
 const Vault = model('Vault', VaultSchema);
 const AICart = model('AICart', AIC_Schema);
-const Watch = model('Watch', WatchedSchema);
 
 module.exports = {
-  User,
-  Art,
-  Meme,
-  Vault,
-  Watch,
-  AICart,
+  User, Art, Meme, Vault, AICart,
 };
