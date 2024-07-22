@@ -13,14 +13,16 @@ function WatchItem({ imgTitle, isForSale, users }) {
   // const [forSale, setSale] = useState(true);
 
   // Function to send notification
+  // console.log('send message', watchers);
   function sendMessage() {
-    // console.log('send message', watchers);
+    const { name, email, title } = watchers.data[0]
+    // watchers.data>
     // watchers.map(({ name, email, title }) => {
     axios
       .post('/send-email', {
-        name: 'Josh',
-        email: 'tremartin3003@gmail.com',
-        title: 'title',
+        name,
+        email,
+        title,
       })
       .then((message) => {
         console.log('Message sent: ', message);
@@ -35,7 +37,7 @@ function WatchItem({ imgTitle, isForSale, users }) {
     axios
       .get(`/db/watch/${imgTitle}`)
       .then((data) => {
-        console.log('get watcher data', data);
+        // console.log('get watcher data', data);
         setWatchers(data || '');
         setShowPass(data.isWatched || false);
       })
@@ -49,7 +51,7 @@ function WatchItem({ imgTitle, isForSale, users }) {
       .post(`/db/watch/${imgTitle}`, { isWatched: showPass })
       .then((data) => {
         // console.log('send watcher data', data);
-        console.log('showPass', isForSale, showPass);
+        // console.log('showPass', isForSale, showPass);
         if (showPass === true && isForSale === true) {
           sendMessage();
         }
