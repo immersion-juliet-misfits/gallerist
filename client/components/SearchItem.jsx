@@ -8,11 +8,8 @@ import Modal from 'react-bootstrap/Modal';
 function SearchItem({ image, idSearch }) {
   // modal state variable
   const [lgShow, setLgShow] = useState(false);
-
   return (
-    <Col
-      key={image.id}
-    >
+    <Col key={image.id}>
       <Image
         className="search-image"
         style={{ width: '300px', height: 'auto' }}
@@ -29,7 +26,11 @@ function SearchItem({ image, idSearch }) {
       >
         <Modal.Header closeButton />
         <Modal.Body>
-          <img src={image.baseimageurl} alt={image.title} className="img-fluid" />
+          <img
+            src={image.baseimageurl}
+            alt={image.title}
+            className="img-fluid"
+          />
           {' '}
         </Modal.Body>
       </Modal>

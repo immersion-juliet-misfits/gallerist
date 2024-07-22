@@ -2,6 +2,8 @@ const express = require('express');
 
 const { getArtImages, getArtObj } = require('../api/huam');
 const { getAICart } = require('../api/aic');
+const { sendMessage } = require('./message');
+// const { User, Art } = require('../db/index');
 
 const apiRouter = express.Router();
 
@@ -62,5 +64,7 @@ apiRouter.get('/db/aicapi', (req, res) => {
       res.sendStatus(500);
     });
 });
+
+
 
 module.exports = { apiRouter };
