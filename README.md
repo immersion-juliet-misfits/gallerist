@@ -153,3 +153,57 @@ Lastly, we'd like to express our thanks to the instructors and fellow students a
 [Raven Hughes](https://github.com/ravenhillh)
 
 [Robert Frank](https://githbu.com/jrfiii)
+
+
+############ *** Team Misfits Updates *** ############
+
+Our team sends Thanks to the original developers of this Project for creating such a fun project for us to work with!
+We have added the following features:
+
+### **Watchers**
+Is there a fine piece of art you have your eye on that belongs to another User?
+You can now keep an even closer eye on it by Watching the piece!
+When the current owner puts the piece up for sale, you will receive an email notifying you of a chance to make it yours!
+
+
+### **Meme Maker**
+Perhaps you want to add a little whimsy to your gallery? A little silliness? A little nonsense?
+Then you can use the Meme Maker to create fun pieces to display!
+You can even view Memes created by Users across the site in the main Gallery.
+
+
+### **Heist**
+For those of you who love mischief, we have Heist!
+If you can guess another Users vault code, you can steal one of their precious artworks!
+But don't think you can get up to no good without repercussions.
+If you want to be a thief, you must first set your own vault code so that others can steal from you as well.
+
+
+### **Quiz**
+Low on ¢a$h from buying Art ( and failed Heist attempts )?
+Replenish your savings by playing a few sessions of our Artwork Quiz!
+Deduce which Title matches the displayed pieces and be rewarded!
+
+
+### **AIC API Interaction**
+We've introduced the Art Institute of Chicago's API to retrieve extra Art for our Quiz game.
+Please give their [documentation](https://www.artic.edu/open-access/public-api) a look and be inspired to use it yourselves.
+It's free to use and requires no authentication key as long as you stay within their listed call limit!
+
+
+## **Contributing - Extended**
+These additions were made by another small team of 4 developers!
+
+[Cam’ron Calldwell](https://github.com/ccaldwell11)
+
+[Gage Cantrelle](https://github.com/gagecantrelle)
+
+[Josh Roberts](https://github.com/jrob112)
+
+[Trelana Martin](https://github.com/TreMartin-OS)
+
+
+
+
+
+
