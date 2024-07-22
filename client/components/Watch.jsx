@@ -62,8 +62,9 @@ function WatchItem({ imgTitle, isForSale, users }) {
   }
 
   function deleteWatcher() {
+    const { _id } = watchers.data[0]
     axios
-      .delete('db/watch/669d5aadf6866b9b6add03dd')
+      .delete(`db/watch/${_id}`)
       .then(() => {
         console.log('Item has been deleted from Watch');
         // getWatchers();
