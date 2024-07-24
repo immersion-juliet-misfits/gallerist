@@ -310,7 +310,6 @@ dbRouter.get('/db/watch/:title', (req, res) => {
   const { title } = req.params;
   Watch.find({ title })
     .then((watchers) => {
-      // console.log('watchers', watchers);
       res.status(201).send(watchers);
     })
     .catch((err) => {
@@ -337,8 +336,6 @@ dbRouter.post('/db/watch/:title', (req, res) => {
   const { isWatched } = req.body;
   // const { isWatched, name, email } = req.body;
   const { title } = req.params;
-  // console.log('req.user', req.user.doc)
-  // console.log('body', req.body)
   Watch.create({ email, name, title, isWatched })
     .then((data) => {
       res.status(201).send(data);

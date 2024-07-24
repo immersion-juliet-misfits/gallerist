@@ -12,7 +12,6 @@ const { PRIVATE_KEY } = process.env
 
 messRouter.post('/send-email', (req, res) => {
   const { name, email, title } = req.body;
-  // console.log('mess req.body', req.body)
   const connData = {
     private_key: PRIVATE_KEY,
     service_id: SERVICE_ID,
@@ -25,7 +24,6 @@ messRouter.post('/send-email', (req, res) => {
       message: `The art piece ${title} is now for sale!`,
     },
   };
-  console.log('connData', connData)
   axios.post('https://api.emailjs.com/api/v1.0/email/send', connData)
     .then((response) => {
       console.log('Email sent successfully:', response.data);

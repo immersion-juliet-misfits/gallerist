@@ -13,7 +13,6 @@ function WatchItem({ imgTitle, isForSale, users }) {
   // const [forSale, setSale] = useState(true);
 
   // Function to send notification
-  // console.log('send message', watchers);
   function sendMessage() {
     const { name, email, title } = watchers.data[0]
     // watchers.data>
@@ -37,7 +36,6 @@ function WatchItem({ imgTitle, isForSale, users }) {
     axios
       .get(`/db/watch/${imgTitle}`)
       .then((data) => {
-        // console.log('get watcher data', data);
         setWatchers(data || '');
         setShowPass(data.isWatched || false);
       })
@@ -49,9 +47,7 @@ function WatchItem({ imgTitle, isForSale, users }) {
   function sendWatchers() {
     axios
       .post(`/db/watch/${imgTitle}`, { isWatched: showPass })
-      .then((data) => {
-        // console.log('send watcher data', data);
-        // console.log('showPass', isForSale, showPass);
+      .then(() => {
         if (showPass === true && isForSale === true) {
           sendMessage();
         }
@@ -62,15 +58,15 @@ function WatchItem({ imgTitle, isForSale, users }) {
   }
 
   function deleteWatcher() {
-    const { _id } = watchers.data[0]
+    const { _id } = watchers.data[0];
+    console.log('id', _id);
     axios
-      .delete(`db/watch/${_id}`)
+      .delete(`/db/watch/${_id}`)
       .then(() => {
         console.log('Item has been deleted from Watch');
         // getWatchers();
       })
       .catch((err) => {
-        console.log('Wid', watchers);
         console.error('Failed to delete watcher: ', err);
       });
   }
