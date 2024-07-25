@@ -58,6 +58,13 @@ Once you have an API key, this repo relies on a .env file (already listed in the
 - **GOOGLE_CLIENT_ID** : Necessary for Authentication.  Create a project in your [Google Developer Console](http://console.cloud.google.com/) and create an OAuth client ID. For more details, we followed [this guide](https://www.passportjs.org/tutorials/google/register/) from the Passport docs.
 - **GOOGLE_CLIENT_SECRET** : (see above)
 - **EXPRESS_SECRET** : a random string of your liking, also used in the authentication set-up
+- **NODE_ENV** : set to 'development' for local and 'production' for deployment
+- **DB_URI** : the link to the database
+- **SERVICE_ID** : create an account with emailjs and use the service id once the connection has been made to goggle
+- **TEMPLATE_ID** : use the default template in emailjs, be sure to add {{email}} in the cc
+- **USER_ID** : use the public key, after that make sure to go to the security tab an confirm that Allow EmailJS API for non-browser applications has been checked
+
+
 
 #### **Optional Variable**s
 
