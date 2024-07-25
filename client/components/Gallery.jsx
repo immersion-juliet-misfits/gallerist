@@ -168,7 +168,6 @@ function Gallery() {
           <Col key={`${image.imageId}-${i}`}>
             <GalleryListItem
               image={image}
-              users={usersArray}
             />
           </Col>
         ))}

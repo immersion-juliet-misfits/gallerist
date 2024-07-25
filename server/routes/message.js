@@ -8,12 +8,12 @@ require('dotenv').config();
 const { SERVICE_ID } = process.env;
 const { TEMPLATE_ID } = process.env;
 const { USER_ID } = process.env;
-const { PRIVATE_KEY } = process.env
+// const { PRIVATE_KEY } = process.env;
 
 messRouter.post('/send-email', (req, res) => {
   const { name, email, title } = req.body;
+  console.log('body', name, email, title)
   const connData = {
-    private_key: PRIVATE_KEY,
     service_id: SERVICE_ID,
     template_id: TEMPLATE_ID,
     user_id: USER_ID,

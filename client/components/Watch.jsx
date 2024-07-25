@@ -8,35 +8,30 @@ function WatchItem({ imgTitle, isForSale, users }) {
   const [showPass, setShowPass] = useState(false);
   // watcher state
   const [watchers, setWatchers] = useState([]);
-  // const watchIds = watchers.data.map((watcher) => watcher.id)
   // // isForSale state
   // const [forSale, setSale] = useState(true);
 
   // Function to send notification
   function sendMessage() {
-    const { name, email, title } = watchers.data[0]
-    // watchers.data>
-    // watchers.map(({ name, email, title }) => {
-    axios
-      .post('/send-email', {
-        name,
-        email,
-        title,
-      })
-      .then((message) => {
-        console.log('Message sent: ', message);
-      })
-      .catch((err) => {
-        console.error('Failed to send message: ', err);
-      });
-    // });
+    watchers.data.map((watcher) => {
+      const { name, email, title } = watcher;
+      console.log('watcher', watcher);
+      axios
+        .post('/send-email', { name, email, title })
+        .then((message) => {
+          console.log('Message sent: ', message);
+        })
+        .catch((err) => {
+          console.error('Failed to send message: ', err);
+        });
+    });
   }
 
   function getWatchers() {
     axios
       .get(`/db/watch/${imgTitle}`)
       .then((data) => {
-        setWatchers(data || '');
+        setWatchers(data);
         setShowPass(data.isWatched || false);
       })
       .catch((err) => {

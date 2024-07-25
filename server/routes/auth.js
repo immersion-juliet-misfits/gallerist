@@ -10,15 +10,11 @@ passport.use(new GoogleStrategy({
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
   callbackURL: '/oauth2/redirect/google',
-  scope: ['email', 'profile'],
+  scope: ['profile'],
 }, ((accessToken, refreshToken, profile, cb) => {
   // Standardized profile that returns from Google, check it out with console log below
-  // console.log('profile', profile);
-  User.findOrCreate({
-    googleId: profile.id,
-    name: profile.displayName,
-    email: profile.emails[0].value,
-  })
+  // console.log(profile);
+  User.findOrCreate({ googleId: profile.id, name: profile.displayName })
     .then((data) => {
       cb(null, data);
 
