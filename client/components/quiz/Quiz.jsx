@@ -126,7 +126,7 @@ function Quiz() {
   };
 
   const getArt = () => {
-    for (let x = 0; x < 3; x++) {
+    for (let x = 0; x < 5; x++) {
       axios
         .get('/db/aicapi')
         .then((response) => {
@@ -170,7 +170,7 @@ function Quiz() {
     getArt();
     setTimeout(() => {
       pullArt();
-    }, 3000);
+    }, 4000);
   };
 
   const handlePlayClick = () => {

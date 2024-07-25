@@ -3,7 +3,7 @@ const express = require('express');
 
 const dbRouter = express.Router();
 
-const { User, Art, Vault } = require('../db/index');
+const { User, Art, Vault, Watch } = require('../db/index');
 
 // GET: to return user's profile info upon load of Profile component (could be used elsewhere)
 dbRouter.get('/db/user/', (req, res) => {
@@ -303,6 +303,92 @@ dbRouter.post('/db/art', (req, res) => {
   imageUrl: String,
   isForSale: False, //initialize to false
   */
+
+// GET request to get all the watchers name and email by the art title
+dbRouter.get('/db/watch/:title', (req, res) => {
+  const { title } = req.params;
+  Watch.find({ title })
+    .then((watchers) => {
+      res.status(201).send(watchers);
+    })
+    .catch((err) => {
+      console.error('Failed to find the art being watched: ', err);
+    });
+});
+
+// // GET request to get all the watchers by user id
+// dbRouter.get('/db/watch/:id', (req, res) => {
+//   const {  } = req.user.docs;
+//   Watch.find({ title })
+//     .then((watchers) => {
+//       res.status(201).send(watchers);
+//     })
+//     .catch((err) => {
+//       console.error('Failed to find the art being watched: ', err);
+//     });
+// });
+
+// POST request to add the User name and email, and the Art title to the db
+dbRouter.post('/db/watch/:title', (req, res) => {
+  // destructure relevant user info from request
+  const { name, email } = req.user.doc;
+  const { isWatched } = req.body;
+  // const { isWatched, name, email } = req.body;
+  const { title } = req.params;
+  Watch.create({ email, name, title, isWatched })
+    .then((data) => {
+      res.status(201).send(data);
+    })
+    .catch((err) => {
+      console.error('Failed to create Watch document: ', err);
+      res.sendStatus(500);
+    });
+});
+
+// Delete request to remove what is being watched
+dbRouter.delete('/db/watch/:id', (req, res) => {
+  const { id } = req.params;
+
+  Watch.findByIdAndDelete({ _id: id })
+    .then((deleteObj) => {
+      if (deleteObj) {
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error('Failed to Delete by id: ', err);
+      res.sendStatus(500);
+    });
+});
+
+// GET to receive all art data of only those || no conditional logic yet
+dbRouter.get('/db/artOwners', (req, res) => {
+  const { googleId } = req.user.doc;
+
+  Art.find({ 'userGallery.googleId': { $ne: googleId } })
+    .then((pieces) => {
+      // if (data.length >= 0) {
+      res.status(200).send(pieces);
+      // }
+    })
+    .catch(() => {
+      res.sendStatus(500);
+    });
+});
+
+// GET random art piece from a user's collection
+dbRouter.get('/db/randomArt/:googleId', (req, res) => {
+  const { googleId } = req.params;
+  Art.find({ 'userGallery.googleId': googleId })
+    .then((data) => {
+      res.send(data[Math.floor(data.length * Math.random())]);
+    })
+    .catch(() => {
+      res.sendStatus(500);
+    });
+});
 
 // GET creates a vault for user's that don't have one setup...
 // ...otherwise send back existing vault data

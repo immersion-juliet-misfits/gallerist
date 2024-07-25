@@ -68,6 +68,24 @@ const AIC_Schema = new Schema({
   imageUrl: { type: String, required: true },
 });
 
+const WatchedSchema = new Schema({
+  email: {
+    type: Schema.Types.String,
+    ref: 'User',
+  },
+  name: {
+    type: Schema.Types.String,
+    ref: 'User',
+  },
+
+  title: {
+    type: Schema.Types.String,
+    ref: 'Art',
+  },
+  message: String,
+  isWatched: Boolean,
+});
+
 const User = model('User', UserSchema);
 const Art = model('Art', ArtSchema);
 const Meme = model('Meme', MemeSchema);
@@ -75,5 +93,5 @@ const Vault = model('Vault', VaultSchema);
 const AICart = model('AICart', AIC_Schema);
 
 module.exports = {
-  User, Art, Meme, Vault, AICart,
+  User, Art, Meme, Vault, AICart, Watch,
 };
