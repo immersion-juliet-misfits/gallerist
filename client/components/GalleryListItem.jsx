@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import WatchItem from './Watch'; 
 
 function GalleryListItem({ image, users}) {
   // set up modal for friend request
@@ -23,7 +24,7 @@ function GalleryListItem({ image, users}) {
           handleShow();
         }
       })
-      .catch((err) => console.log(err, 'friend not added'));
+      .catch((err) => console.log(err, 'Friend not added'));
   }
   return (
     <Container fluid>
@@ -50,6 +51,7 @@ function GalleryListItem({ image, users}) {
             <Button variant="primary" value={image.userGallery.name} onClick={addFriend}>
               Add Friend
             </Button>
+            <WatchItem imgTitle={image.title} isForSale={image.isForSale} users={users} />
           </div>
           <Link to={`/home/art/${image.imageId}`}>Click here for more details...</Link>
           <br />
