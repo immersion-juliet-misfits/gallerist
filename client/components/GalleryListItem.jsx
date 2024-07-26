@@ -24,7 +24,7 @@ function GalleryListItem({ image, users }) {
           handleShow();
         }
       })
-      .catch((err) => console.log(err, 'friend not added'));
+      .catch((err) => console.log(err, 'Friend not added'));
   }
   return (
     <Container fluid>
@@ -51,7 +51,7 @@ function GalleryListItem({ image, users }) {
             <Button variant="primary" value={image.userGallery.name} onClick={addFriend}>
               Add Friend
             </Button>
-            <WatchItem imgTitle={image.title} isForSale={image.forSale} users={users} />
+            <WatchItem imgTitle={image.title} isForSale={image.isForSale} users={users} />
           </div>
           <Link to={`/home/art/${image.imageId}`}>Click here for more details...</Link>
           <br />

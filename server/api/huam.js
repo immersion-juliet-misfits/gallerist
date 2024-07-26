@@ -4,9 +4,13 @@ require('dotenv').config();
 const { APIKEY } = process.env;
 
 // Initial api request for images results with a user-supplied keyword
-const getArtImages = (keyword) => axios(
-  `https://api.harvardartmuseums.org/image?q=${keyword}&apikey=${APIKEY}&sort=random`,
-);
+const getArtImages = (keyword) => axios.get('https://api.harvardartmuseums.org/image', {
+  params: {
+    q: `description:${keyword}`,
+    apikey: APIKEY,
+    sort: 'random',
+  },
+});
 
 // After DB functions are imported, create document for each artwork
 /**

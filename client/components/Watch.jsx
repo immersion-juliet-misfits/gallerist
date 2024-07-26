@@ -9,6 +9,7 @@ function WatchItem({ imgTitle, isForSale, users }) {
   // watcher state
   const [watchers, setWatchers] = useState([]);
 
+
   // Function to send notification
   function sendMessage() {
     watchers.data.map((watcher) => {
