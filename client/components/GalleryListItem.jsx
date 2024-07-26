@@ -7,9 +7,9 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import WatchItem from './Watch'; 
+import WatchItem from './Watch';
 
-function GalleryListItem({ image, users}) {
+function GalleryListItem({ image, users }) {
   // set up modal for friend request
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
