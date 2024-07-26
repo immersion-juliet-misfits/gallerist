@@ -8,8 +8,7 @@ function WatchItem({ imgTitle, isForSale, users }) {
   const [showPass, setShowPass] = useState(false);
   // watcher state
   const [watchers, setWatchers] = useState([]);
-  // // isForSale state
-  // const [forSale, setSale] = useState(true);
+  
 
   // Function to send notification
   function sendMessage() {
