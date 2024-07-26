@@ -8,8 +8,6 @@ function WatchItem({ imgTitle, isForSale, users }) {
   const [showPass, setShowPass] = useState(false);
   // watcher state
   const [watchers, setWatchers] = useState([]);
-  // // isForSale state
-  // const [forSale, setSale] = useState(true);
 
   // Function to send notification
   function sendMessage() {
@@ -91,7 +89,7 @@ function WatchItem({ imgTitle, isForSale, users }) {
   }, [imgTitle]);
 
   return (
-    <Button variant='outline' style={{ paddingBottom: '20px' }}>
+    <Button variant="outline" style={{ paddingBottom: '20px' }}>
       {showPass ? (
         <EyeSlashFill onClick={clickHandler} />
       ) : (
