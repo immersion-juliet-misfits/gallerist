@@ -48,6 +48,10 @@ When we initially made this project in January 2024, this key was free, and the 
 
 Also, please note that we did not realize the API does not return the most standardized objects from each endpoint.  The "This artwork is no longer available" modal was the band-aid we developed for this problem.  Perhaps you can find a better fix for handling the API responses, or switch to a more uniform art museum API altogether...
 
+### **EmailJS**
+We interact with the EmailJS to send email notifications. Check out the [documentation](https://www.emailjs.com/).
+
+
 ### **Environmental Variables**
 
 #### **Required Variables for App to Function**
@@ -70,7 +74,6 @@ Once you have an API key, this repo relies on a .env file (already listed in the
 
 The following variables are optional for setting the Webpack config to Development Mode and seeding the database with a fake dataset, which should no longer be necessary if you got an API Key, but are explained for full transparency:
 
-- **NODE_ENV** : set to 'development', although our webpack config will default to 'production' if you don't include this
 - **GOOGLEID** : necessary for the 'seed' script to initialize the database with the fakeData found in /server/db/fakeData.js.  You can find your google id and name in the mongosh shell with the command `db.users.find({})`.
 - **GOOGLENAME** : (see above)
 
@@ -80,7 +83,9 @@ Fork the organization's [repo](https://github.com/Par-For-Loops/gallerist/) and 
 
 You can then run the `npm run build` script to allow webpack and babel to create a transpiled bundle.js.
 
-Lastly, run `npm start` to create a server and you should have a local instance of our site running at the 3000 port. Your server terminal should provide a link to open the application in your browser.
+Run `npm start` to create a server and you should have a local instance of our site running at the 3000 port. Your server terminal should provide a link to open the application in your browser.
+
+Run `npm run dev` to run the build and start the server concurrently.
 
 ## **Deployment**
 
@@ -178,12 +183,8 @@ Perhaps you want to add a little whimsy to your gallery? A little silliness? A l
 Then you can use the Meme Maker to create fun pieces to display!
 You can even view Memes created by Users across the site in the main Gallery.
 
-
 ### **Heist**
-For those of you who love mischief, we have Heist!
-If you can guess another Users vault code, you can steal one of their precious artworks!
-But don't think you can get up to no good without repercussions.
-If you want to be a thief, you must first set your own vault code so that others can steal from you as well.
+The Heist page allows a user to set a pass code for their art vault which stores all of the user's owned artworks. A user can then decide to attempt to steal artwork from other user's vault by guessing their pass code. A user has four attempts to guess a pass code with the aid of hints related to the accuracy of the user's guess. If the user is successful they can steal a single art piece and if they are unsuccessful they lose $50.
 
 
 ### **Quiz**
