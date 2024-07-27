@@ -162,7 +162,7 @@ Lastly, we'd like to express our thanks to the instructors and fellow students a
 
 [Raven Hughes](https://github.com/ravenhillh)
 
-[Robert Frank](https://githbu.com/jrfiii)
+[Robert Frank](https://github.com/jrfiii)
 
 ############ **_ Team Misfits Updates _** ############
 
