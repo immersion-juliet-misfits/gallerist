@@ -20,21 +20,21 @@ The Individual Artwork Info page gives a user a more in-depth explanation of a p
 
 ### **Profile**
 
-The Profile page allows the user to manage their collected artworks and friends list, as well as check the funds in their wallet.  Art can be listed for sale in the Auction section, or simply deleted from their gallery, where it might still be picked up by an enterprising art dealer.
+The Profile page allows the user to manage their collected artworks and friends list, as well as check the funds in their wallet. Art can be listed for sale in the Auction section, or simply deleted from their gallery, where it might still be picked up by an enterprising art dealer.
 
 ### **Auction**
 
-The Auction page lists all of the art that has been listed for sale by all of the users.  It also reminds the user of the available funds in their wallet. Artwork can be perused and purchased for the list price with the simple click of a button. Don't spend too much time contemplating your purchase, or it might be bought out from under your nose.  All sales are final.
+The Auction page lists all of the art that has been listed for sale by all of the users. It also reminds the user of the available funds in their wallet. Artwork can be perused and purchased for the list price with the simple click of a button. Don't spend too much time contemplating your purchase, or it might be bought out from under your nose. All sales are final.
 
 ## **Frameworks and Libraries**
 
-The app was developed with **Node 20** on an **Express 4.18** framework that handles back-end requests.  Our database is **MongoDb Community v5.0** using a **Mongoose v8** ODM.
+The app was developed with **Node 20** on an **Express 4.18** framework that handles back-end requests. Our database is **MongoDb Community v5.0** using a **Mongoose v8** ODM.
 
 Authentication is handled by **Passport** with a **Google Oauth 2.0** strategy. Environmental variables are handled by **Dotenv**.
 
-The front-end was designed with **React v18**, with **Hooks**.  Client-side routing is handled by **React Router v6.21**.  Styling is **Bootstrap v5.3**, with several **React Bootstrap** components, as well as CSS preprocessing with **Sass**.
+The front-end was designed with **React v18**, with **Hooks**. Client-side routing is handled by **React Router v6.21**. Styling is **Bootstrap v5.3**, with several **React Bootstrap** components, as well as CSS preprocessing with **Sass**.
 
-Several other devDependencies used by our team include linting by **Eslint extending AirBnB** rules, with JSX, React, and React Hooks plugins, as well as a few customizations.  Our build was bundled by **Webpack**, with the JavaScript compiled by **Babel**.  We used **Prettier** to help enforce code formatting.
+Several other devDependencies used by our team include linting by **Eslint extending AirBnB** rules, with JSX, React, and React Hooks plugins, as well as a few customizations. Our build was bundled by **Webpack**, with the JavaScript compiled by **Babel**. We used **Prettier** to help enforce code formatting.
 
 Please refer to our [package.json](https://github.com/Par-For-Loops/gallerist/blob/main/package.json) for the full list of dependencies and versions.
 
@@ -42,15 +42,15 @@ Please refer to our [package.json](https://github.com/Par-For-Loops/gallerist/bl
 
 ### **HUAM API**
 
-We interact with the Harvard University Art Museum (HUAM) API to retrieve art.  Check out the [documentation](https://github.com/harvardartmuseums/api-docs) for this API on Github and sign up for your own API key with Harvard at [this link to a Google form](https://docs.google.com/forms/d/e/1FAIpQLSfkmEBqH76HLMMiCC-GPPnhcvHC9aJS86E32dOd0Z8MpY2rvQ/viewform) in the "Access to the API section".
+We interact with the Harvard University Art Museum (HUAM) API to retrieve art. Check out the [documentation](https://github.com/harvardartmuseums/api-docs) for this API on Github and sign up for your own API key with Harvard at [this link to a Google form](https://docs.google.com/forms/d/e/1FAIpQLSfkmEBqH76HLMMiCC-GPPnhcvHC9aJS86E32dOd0Z8MpY2rvQ/viewform) in the "Access to the API section".
 
 When we initially made this project in January 2024, this key was free, and the email response from Harvard was instantaneous and automatic. We hope the above details remain true for you, but be aware that this could possibly change.
 
-Also, please note that we did not realize the API does not return the most standardized objects from each endpoint.  The "This artwork is no longer available" modal was the band-aid we developed for this problem.  Perhaps you can find a better fix for handling the API responses, or switch to a more uniform art museum API altogether...
+Also, please note that we did not realize the API does not return the most standardized objects from each endpoint. The "This artwork is no longer available" modal was the band-aid we developed for this problem. Perhaps you can find a better fix for handling the API responses, or switch to a more uniform art museum API altogether...
 
 ### **EmailJS**
-We interact with the EmailJS to send email notifications. Check out the [documentation](https://www.emailjs.com/).
 
+We interact with the EmailJS to send email notifications. Check out the [documentation](https://www.emailjs.com/).
 
 ### **Environmental Variables**
 
@@ -59,7 +59,7 @@ We interact with the EmailJS to send email notifications. Check out the [documen
 Once you have an API key, this repo relies on a .env file (already listed in the .gitignore) that should have the following environmental variables defined:
 
 - **APIKEY** : set to the key given to you by Harvard
-- **GOOGLE_CLIENT_ID** : Necessary for Authentication.  Create a project in your [Google Developer Console](http://console.cloud.google.com/) and create an OAuth client ID. For more details, we followed [this guide](https://www.passportjs.org/tutorials/google/register/) from the Passport docs.
+- **GOOGLE_CLIENT_ID** : Necessary for Authentication. Create a project in your [Google Developer Console](http://console.cloud.google.com/) and create an OAuth client ID. For more details, we followed [this guide](https://www.passportjs.org/tutorials/google/register/) from the Passport docs.
 - **GOOGLE_CLIENT_SECRET** : (see above)
 - **EXPRESS_SECRET** : a random string of your liking, also used in the authentication set-up
 - **NODE_ENV** : set to 'development' for local and 'production' for deployment
@@ -68,18 +68,16 @@ Once you have an API key, this repo relies on a .env file (already listed in the
 - **TEMPLATE_ID** : use the default template in emailjs, be sure to add {{email}} in the cc
 - **USER_ID** : use the public key, after that make sure to go to the security tab an confirm that Allow EmailJS API for non-browser applications has been checked
 
-
-
 #### **Optional Variable**s
 
 The following variables are optional for setting the Webpack config to Development Mode and seeding the database with a fake dataset, which should no longer be necessary if you got an API Key, but are explained for full transparency:
 
-- **GOOGLEID** : necessary for the 'seed' script to initialize the database with the fakeData found in /server/db/fakeData.js.  You can find your google id and name in the mongosh shell with the command `db.users.find({})`.
+- **GOOGLEID** : necessary for the 'seed' script to initialize the database with the fakeData found in /server/db/fakeData.js. You can find your google id and name in the mongosh shell with the command `db.users.find({})`.
 - **GOOGLENAME** : (see above)
 
 ## **Terminal Scripts**
 
-Fork the organization's [repo](https://github.com/Par-For-Loops/gallerist/) and make a clone to your development environment of choice.  Once you have ensured that you have MongoDB installed and its service started, as well as created the .env file with the necessary variables defined above, you can install the project dependencies by running `npm install`.
+Fork the organization's [repo](https://github.com/Par-For-Loops/gallerist/) and make a clone to your development environment of choice. Once you have ensured that you have MongoDB installed and its service started, as well as created the .env file with the necessary variables defined above, you can install the project dependencies by running `npm install`.
 
 You can then run the `npm run build` script to allow webpack and babel to create a transpiled bundle.js.
 
@@ -105,10 +103,10 @@ Beware: make sure you only have one running instance, or you will quickly deplen
 
 Navigate to the 'Instance summary' in AWS and click on the Security tab about halfway down the page. Then click the link to access the Security Group that contains the firewall rules for the instance ("sg-somethingSomethingSomething" or similar). Then click 'Edit inbound rules', and add the three rules below:
 
-|     TYPE      |  PORT RANGE   |     SOURCE      |      WHY?                             |
-| ------------- | ------------- | -------------   | ------------------------------------- |
-| SSH           |  22           | Local-Dev-IP/32 |  SSH into instance from your computer |
-| Custom TCP    | 3000 (server) | 0.0.0.0/0       | User access from internet             |
+| TYPE       | PORT RANGE    | SOURCE          | WHY?                                 |
+| ---------- | ------------- | --------------- | ------------------------------------ |
+| SSH        | 22            | Local-Dev-IP/32 | SSH into instance from your computer |
+| Custom TCP | 3000 (server) | 0.0.0.0/0       | User access from internet            |
 
 Now that SSH access is enabled, we'll connect to the instance and set it up to host the app.
 
@@ -138,15 +136,15 @@ Lastly, you must recreate the .env file by running the following command:
 
 `nano .env` (and paste in the variables outlined above)
 
-You must then exit the text editor with `:wq` or `^x` depending on your editor and follow the prompts to save the file.  Check your work by running `cat .env` to read the newly created .env file with the correct environmental variables.
+You must then exit the text editor with `:wq` or `^x` depending on your editor and follow the prompts to save the file. Check your work by running `cat .env` to read the newly created .env file with the correct environmental variables.
 
 ### 7. Build the app, start the server, and access
 
 Run the following commands to a build the app for deployment and start the server:
 
-```npm run build```
+`npm run build`
 
-```npm run start```
+`npm run start`
 
 ## **Contributing**
 
@@ -164,42 +162,49 @@ Lastly, we'd like to express our thanks to the instructors and fellow students a
 
 [Raven Hughes](https://github.com/ravenhillh)
 
-[Robert Frank](https://githbu.com/jrfiii)
+[Robert Frank](https://github.com/jrfiii)
 
-
-############ *** Team Misfits Updates *** ############
+############ **_ Team Misfits Updates _** ############
 
 Our team sends Thanks to the original developers of this Project for creating such a fun project for us to work with!
 We have added the following features:
 
 ### **Watchers**
+
 Is there a fine piece of art you have your eye on that belongs to another User?
 You can now keep an even closer eye on it by Watching the piece!
 When the current owner puts the piece up for sale, you will receive an email notifying you of a chance to make it yours!
 
-
 ### **Meme Maker**
+
 Perhaps you want to add a little whimsy to your gallery? A little silliness? A little nonsense?
 Then you can use the Meme Maker to create fun pieces to display!
 You can even view Memes created by Users across the site in the main Gallery.
 
 ### **Heist**
+
 The Heist page allows a user to set a pass code for their art vault which stores all of the user's owned artworks. A user can then decide to attempt to steal artwork from other user's vault by guessing their pass code. A user has four attempts to guess a pass code with the aid of hints related to the accuracy of the user's guess. If the user is successful they can steal a single art piece and if they are unsuccessful they lose $50.
 
-
 ### **Quiz**
+
 Low on ¢a$h from buying Art ( and failed Heist attempts )?
 Replenish your savings by playing a few sessions of our Artwork Quiz!
 Deduce which Title matches the displayed pieces and be rewarded!
 
-
 ### **AIC API Interaction**
+
 We've introduced the Art Institute of Chicago's API to retrieve extra Art for our Quiz game.
 Please give their [documentation](https://www.artic.edu/open-access/public-api) a look and be inspired to use it yourselves.
 It's free to use and requires no authentication key as long as you stay within their listed call limit!
 
+### **imgflip(memeMaker) API**
+
+We've introduce the imgflip Api for the MemeMake component to give us random templates which the user can use to create their own uniq memes.
+You don't have to make an account/key for the use of the api, this is link for the imgflip https://imgflip.com/api.
+Only the get request is free to use
 
 ## **Contributing - Extended**
+
 These additions were made by another small team of 4 developers!
 
 [Cam’ron Calldwell](https://github.com/ccaldwell11)
@@ -209,9 +214,3 @@ These additions were made by another small team of 4 developers!
 [Josh Roberts](https://github.com/jrob112)
 
 [Trelana Martin](https://github.com/TreMartin-OS)
-
-
-
-
-
-
