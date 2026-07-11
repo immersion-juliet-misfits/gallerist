@@ -7,15 +7,15 @@ import Image from 'react-bootstrap/Image';
 import Container from 'react-bootstrap/Container';
 
 function PhotoInfo() {
-  const { imageId } = useParams();
+  const { _id } = useParams();
   const [currPhoto, changePhoto] = useState([]);
   const [photoOwner, befriendOwner] = useState('');
   function getPhotoInfo() {
-    axios(`/db/artwork/${imageId}`)
+    axios(`/db/artwork/${_id}`)
       .then((results) => {
         // console.log(results.data[0].userGallery.name)
-        changePhoto(results.data[0]);
-        befriendOwner(results.data[0].userGallery.name)
+        changePhoto(results.data);
+        befriendOwner(results.data.userGallery.name)
       })
       .catch((err) => console.error(err));
   }

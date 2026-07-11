@@ -8,7 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 function SearchItem({ image, idSearch }) {
   // modal state variable
   const [lgShow, setLgShow] = useState(false);
-
+  // console.log(image);
   return (
     <Col
       key={image.id}
@@ -42,7 +42,7 @@ function SearchItem({ image, idSearch }) {
         }}
         style={{ paddingBottom: '20px' }}
       >
-        ❤️
+        💲BUY💲
       </Button>
     </Col>
   );

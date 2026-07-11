@@ -9,13 +9,13 @@ function PalGalleryItem({ image }) {
   return (
     <Container fluid>
       <Row>
-        <Col className="gallery-item" key={image.imageId}>
+        <Col className="gallery-item" key={image._id}>
           <div>
             <Image
               className="gallery-image"
               style={{ width: '250px', height: 'auto' }}
               src={image.imageUrl}
-              id={image.imageId}
+              id={image._id}
               alt={image.title}
             />
             <br />
@@ -24,7 +24,7 @@ function PalGalleryItem({ image }) {
               {image.title}
             </div>
           </div>
-          <Link to={`/home/art/${image.imageId}`}>Click here for more details...</Link>
+          <Link to={`/home/art/${image._id}`}>Click here for more details...</Link>
           <br />
         </Col>
       </Row>

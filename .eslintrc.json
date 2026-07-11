@@ -20,6 +20,7 @@
         "react/forbid-prop-types": "off",
         "react/require-default-props": "off",
         "react/jsx-no-bind": "off",
-        "react/no-array-index-key": "off"
+        "react/no-array-index-key": "off",
+        "linebreak-style": "off"
     }
 }

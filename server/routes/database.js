@@ -90,9 +90,9 @@ dbRouter.get('/db/art/', (req, res) => {
 });
 
 // GETs specific Artwork based on imageId sent
-dbRouter.get('/db/artwork/:imageId', (req, res) => {
-  const { imageId } = req.params;
-  Art.find({ imageId })
+dbRouter.get('/db/artwork/:_id', (req, res) => {
+  const { _id } = req.params;
+  Art.findById(_id)
     .then((artwork) => {
       if (artwork) {
         res.status(200).send(artwork);
@@ -101,7 +101,7 @@ dbRouter.get('/db/artwork/:imageId', (req, res) => {
       }
     })
     .catch((err) => {
-      console.error('Failed to find artwork by imageId: ', err);
+      console.error('Failed to find artwork by id: ', err);
       res.sendStatus(500);
     });
 });
@@ -172,12 +172,12 @@ dbRouter.post('/db/culture/:culture', (req, res) => {
 // then fields in req.body are part of update object,
 // Lastly, takes googleId and name from req.user.doc
 // to update userGallery field based on which user sent request
-dbRouter.put('/db/art/:imageId', (req, res) => {
-  const { imageId } = req.params;
+dbRouter.put('/db/art/:_id', (req, res) => {
+  const { _id } = req.params;
   const { googleId, name } = req.user.doc;
   const fieldsToUpdate = req.body;
-  Art.findOneAndUpdate(
-    { imageId },
+  Art.findByIdAndUpdate(
+    _id,
     { ...fieldsToUpdate, userGallery: { name, googleId } },
     { new: true }
   )
@@ -190,13 +190,14 @@ dbRouter.put('/db/art/:imageId', (req, res) => {
     })
     .catch((err) => {
       console.error('Failed to Update art by imageId: ', err);
+      res.sendStatus(500);
     });
 });
 
 // Delete request to remove Art object's from gallery
-dbRouter.delete('/db/art/:imageId', (req, res) => {
-  const { imageId } = req.params;
-  Art.findOneAndDelete({ imageId })
+dbRouter.delete('/db/art/:_id', (req, res) => {
+  const { _id } = req.params;
+  Art.findOneAndDelete(_id)
     .then((deleteObj) => {
       if (deleteObj) {
         res.sendStatus(200);
@@ -205,7 +206,7 @@ dbRouter.delete('/db/art/:imageId', (req, res) => {
       }
     })
     .catch((err) => {
-      console.error('Failed to Delete by imageId: ', err);
+      console.error('Failed to Delete by id: ', err);
       res.sendStatus(500);
     });
 });

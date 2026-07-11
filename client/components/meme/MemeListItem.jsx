@@ -19,7 +19,7 @@ function MemeListItem({ image, num }) {
 
   return (
 
-    <Col key={image.imageId}>
+    <Col key={image._id}>
       <div>
         <Image
           style={{

@@ -58,7 +58,7 @@ function AuctionItem({ art, setSale }) {
               bidClick(e);
               payOwner();
             }}
-            value={art.imageId}
+            value={art._id}
             variant="outline-dark"
           >
             {`Buy from ${art.userGallery.name} for $${art.price}`}
