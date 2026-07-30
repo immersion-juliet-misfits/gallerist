@@ -15,37 +15,48 @@ function NavBar() {
           <Navbar.Brand>
             <strong>GLLRST</strong>
           </Navbar.Brand>
-          <Nav activeKey={location.pathname}>
-            <Nav.Link as={NavLink} eventKey="search" to="search">
-              Search
-            </Nav.Link>
-            <Nav.Link as={NavLink} eventKey="profile" to="profile">
-              Profile
-            </Nav.Link>
-            <Nav.Link as={NavLink} eventKey="meme" to="meme">
-              MemeMaker
-            </Nav.Link>
-            <Nav.Link as={NavLink} eventKey="gallery" to="gallery">
-              Gallery
-            </Nav.Link>
-            <Nav.Link as={NavLink} eventKey="auction" to="auction">
-              Auction
-            </Nav.Link>
-            <Nav.Link as={NavLink} eventKey="heist" to="heist">
-              Heist
-            </Nav.Link>
-            <Nav.Link as={NavLink} eventKey="quiz" to="quiz">
-              Quiz
-            </Nav.Link>
-            <form action="/logout" method="post">
-              <Button variant="secondary" type="submit">
-                Sign out
-              </Button>
-            </form>
-          </Nav>
+          <Navbar.Toggle aria-controls="main-navbar" />
+          <Navbar.Collapse id="main-navbar">
+            <Nav activeKey={location.pathname}>
+              <Nav.Link as={NavLink} eventKey="search" to="search">
+                Search
+              </Nav.Link>
+              <Nav.Link as={NavLink} eventKey="profile" to="profile">
+                Profile
+              </Nav.Link>
+              <Nav.Link as={NavLink} eventKey="meme" to="meme">
+                MemeMaker
+              </Nav.Link>
+              <Nav.Link as={NavLink} eventKey="gallery" to="gallery">
+                Gallery
+              </Nav.Link>
+              <Nav.Link as={NavLink} eventKey="blackmarket" to="blackmarket">
+                Black Market
+              </Nav.Link>
+              <Nav.Link as={NavLink} eventKey="auction" to="auction">
+                Auction
+              </Nav.Link>
+              <Nav.Link as={NavLink} eventKey="showcase" to="showcase">
+                Showcase
+              </Nav.Link>
+              <Nav.Link as={NavLink} eventKey="heist" to="heist">
+                Heist
+              </Nav.Link>
+              <Nav.Link as={NavLink} eventKey="quiz" to="quiz">
+                Quiz
+              </Nav.Link>
+              <Nav.Link as={NavLink} eventKey="canvas" to="canvas">
+                Canvas
+              </Nav.Link>
+              <form action="/logout" method="post">
+                <Button variant="secondary" type="submit">
+                  Sign out
+                </Button>
+              </form>
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
-      <br />
       <Outlet />
     </>
   );

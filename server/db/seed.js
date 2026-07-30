@@ -19,4 +19,5 @@ const seedMongo = () => Art.deleteMany({})
   ))
   .finally(() => process.exit(0));
 
-seedMongo();
+// this seed was causing duplicates- instead of relying on seed, go to search
+// seedMongo();

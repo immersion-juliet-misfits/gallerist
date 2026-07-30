@@ -5,14 +5,11 @@ import Image from 'react-bootstrap/Image';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 
-function SearchItem({ image, idSearch }) {
+function SearchItem({ image, idSearch, isOwned }) {
   // modal state variable
   const [lgShow, setLgShow] = useState(false);
-
   return (
-    <Col
-      key={image.id}
-    >
+    <Col key={image.id}>
       <Image
         className="search-image"
         style={{ width: '300px', height: 'auto' }}
@@ -34,16 +31,28 @@ function SearchItem({ image, idSearch }) {
         </Modal.Body>
       </Modal>
       <br />
-      <Button
-        variant="outline"
-        type="submit"
-        onClick={() => {
-          idSearch(image.id);
-        }}
-        style={{ paddingBottom: '20px' }}
-      >
-        ❤️
-      </Button>
+
+      {/* conditionally render the button based on global ownership */}
+      {isOwned ? (
+        <Button
+          variant="secondary"
+          disabled
+          style={{ paddingBottom: '20px' }}
+        >
+          🔒 Claimed
+        </Button>
+      ) : (
+        <Button
+          variant="outline"
+          type="submit"
+          onClick={() => {
+            idSearch(image.id);
+          }}
+          style={{ paddingBottom: '20px' }}
+        >
+          💲BUY💲
+        </Button>
+      )}
     </Col>
   );
 }
@@ -51,6 +60,7 @@ function SearchItem({ image, idSearch }) {
 SearchItem.propTypes = {
   image: PropTypes.object.isRequired,
   idSearch: PropTypes.func,
+  isOwned: PropTypes.bool,
 };
 
 export default SearchItem;

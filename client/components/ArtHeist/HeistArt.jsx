@@ -34,7 +34,7 @@ function HeistArt({ artwork }) {
     <div>
       <Container fluid>
         <Row>
-          <Col className="gallery-item" key={artwork.imageId}>
+          <Col className="gallery-item" key={artwork._id}>
             <div>
               <Modal
                 show={showArt}
@@ -61,7 +61,7 @@ function HeistArt({ artwork }) {
               <Image
                 style={{ width: '250px', height: 'auto' }}
                 src={artwork.imageUrl}
-                id={artwork.imageId}
+                id={artwork._id}
                 alt={artwork.title}
                 onClick={() => handleTheft()}
               />

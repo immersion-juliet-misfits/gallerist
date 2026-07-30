@@ -79,7 +79,7 @@ dbRouter.put('/db/deductWallet/', (req, res) => {
 
 // GETs all Art documents from Art table in database
 dbRouter.get('/db/art/', (req, res) => {
-  Art.find({})
+  Art.find({ ownerId: { $ne: 'black_market' } })
     .then((docs) => {
       res.status(200).send(docs);
     })
@@ -90,9 +90,9 @@ dbRouter.get('/db/art/', (req, res) => {
 });
 
 // GETs specific Artwork based on imageId sent
-dbRouter.get('/db/artwork/:imageId', (req, res) => {
-  const { imageId } = req.params;
-  Art.find({ imageId })
+dbRouter.get('/db/artwork/:_id', (req, res) => {
+  const { _id } = req.params;
+  Art.findById(_id)
     .then((artwork) => {
       if (artwork) {
         res.status(200).send(artwork);
@@ -101,7 +101,7 @@ dbRouter.get('/db/artwork/:imageId', (req, res) => {
       }
     })
     .catch((err) => {
-      console.error('Failed to find artwork by imageId: ', err);
+      console.error('Failed to find artwork by id: ', err);
       res.sendStatus(500);
     });
 });
@@ -172,12 +172,12 @@ dbRouter.post('/db/culture/:culture', (req, res) => {
 // then fields in req.body are part of update object,
 // Lastly, takes googleId and name from req.user.doc
 // to update userGallery field based on which user sent request
-dbRouter.put('/db/art/:imageId', (req, res) => {
-  const { imageId } = req.params;
+dbRouter.put('/db/art/:_id', (req, res) => {
+  const { _id } = req.params;
   const { googleId, name } = req.user.doc;
   const fieldsToUpdate = req.body;
-  Art.findOneAndUpdate(
-    { imageId },
+  Art.findByIdAndUpdate(
+    _id,
     { ...fieldsToUpdate, userGallery: { name, googleId } },
     { new: true }
   )
@@ -190,13 +190,14 @@ dbRouter.put('/db/art/:imageId', (req, res) => {
     })
     .catch((err) => {
       console.error('Failed to Update art by imageId: ', err);
+      res.sendStatus(500);
     });
 });
 
 // Delete request to remove Art object's from gallery
-dbRouter.delete('/db/art/:imageId', (req, res) => {
-  const { imageId } = req.params;
-  Art.findOneAndDelete({ imageId })
+dbRouter.delete('/db/art/:_id', (req, res) => {
+  const { _id } = req.params;
+  Art.findByIdAndDelete(_id)
     .then((deleteObj) => {
       if (deleteObj) {
         res.sendStatus(200);
@@ -205,7 +206,7 @@ dbRouter.delete('/db/art/:imageId', (req, res) => {
       }
     })
     .catch((err) => {
-      console.error('Failed to Delete by imageId: ', err);
+      console.error('Failed to Delete by id: ', err);
       res.sendStatus(500);
     });
 });
@@ -276,19 +277,26 @@ dbRouter.get('/db/auction/', (req, res) => {
 // ART Routes: create() via a Post needs to come once we have the full art obj
 // POST '/db/art/ ==> req.body will contain fields corresponding to Art Schema
 dbRouter.post('/db/art', (req, res) => {
-  // destructure relevant user info from request
   const { name, googleId } = req.user.doc;
   const { art } = req.body;
 
-  // Spread contents of art object from req.body into document creation object,
-  // along with userGallery field to associate with user that is curating this artwork
-  Art.create({ ...art, userGallery: { name, googleId } })
+  // check if this specific piece already exists in the database
+  Art.findOne({ url: art.url })
+    .then((existingArt) => {
+      if (existingArt) {
+        // if it exists, just update the owner instead of making a duplicate
+        return Art.findByIdAndUpdate(existingArt._id, {
+          userGallery: { name, googleId }
+        });
+      }
+      // if it does not exist- create it
+      return Art.create({ ...art, userGallery: { name, googleId } });
+    })
     .then(() => {
-      // send 201 status in response
       res.sendStatus(201);
     })
     .catch((err) => {
-      console.error('Failed to create Art document: ', err);
+      console.error('Failed to process Art document: ', err);
       res.sendStatus(500);
     });
 });

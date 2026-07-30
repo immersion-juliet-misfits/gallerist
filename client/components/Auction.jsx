@@ -69,7 +69,7 @@ function Auction() {
   // Maps over auctionArray to produce items,
   // pass setSale down as prop to trigger state change in parent
   const auctionItems = auctionArray.map((art) => (
-    <AuctionItem key={art.imageId} art={art} setSale={setSale} />
+    <AuctionItem key={art._id} art={art} setSale={setSale} />
   ));
 
   // Wallet not initialized when User created,

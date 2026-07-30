@@ -214,3 +214,46 @@ These additions were made by another small team of 4 developers!
 [Josh Roberts](https://github.com/jrob112)
 
 [Trelana Martin](https://github.com/TreMartin-OS)
+
+
+############ **_ Sleepers And Insomniacs Updates _** ############
+
+We added on the orginal project + additions made by the previous team Mifits. Big thanks to everyone who worked on the project previously. We wanted to make features that 
+that added to existing functionality in meaningful ways while keeping the identity focused on art and social elements. In additions to these added features, bug fixes and 
+adjustments to existing functionality were introduced. There were issues related to the HUAM and an id that was being used instead of the unique Mongo id or Google id- Devin
+tackled these fixes. There were also issues regarding duplicates being made in the Gallery, on the user's Profile and on the Search page, which Claire tackled. 
+
+### **New Features Include:**
+
+### **Blackmarket:**
+
+The Black Market was made in order to give users who use the Heists feature a way to pawn off their art convertly at a flat rate. Additionally, users who create their own 
+art via using the Canvas feature or users who purchase art while browsing the app can sell art they have made or collected. A filter was made in order to make buying art more
+of a randomized experience to introduce a fun/unique way to obtain art (though at more premium price). Users can also randomly obtain vouchers that can be exchanged for in-app 
+currency and are a sort of "hit" to counter the experience of getting potential "duds" since buying is randomized. Users can also haggle with the Black Market in order to 
+try their luck at getting reduced prices, though poor luck may lead to a price increase. 
+
+### **Social Element- Extension:**
+
+The social element was extended by both a comments and likes/dislikes feature on the Gallery, allowing users to further interact with each other and express their 
+opinions of owned pieces. Users can leave comments, see other peoples' comments, and edit or delete their own comments on each piece displayed in the Gallery. These
+comments are accessible by clicking the image of the piece. Users can leave likes or dislikes as well, both of which are displayed as counters beneath the art piece.
+
+### **Canvas:**
+
+Added a page allowing for drawings to be made on a canvas. Any user made art can be sold and displayed on the gallery like any other art pieces. Drawings that users were working on can be saved and picked up later.
+
+### **ShowCase:**
+
+The showcase event is essentially a user-created (curated) slideshow with music.
+Click Create Showcase -> Showcase Studio view -> complete the form:
+> _Title_, _Message/Description_, _startDate/endDate_ (sets public run time), _Music playlist_ selection\*, _Art piece_ selection, _Save draft_ (edit/publish/delete later) or _Publish_.
+- On clicking view Showcase, slideshow and playlist both auto-play.
+- User can also manually navigate next/previous image slides, play/pause/ff/rew music, adjust volume, and change playback speed. \*\*Pausing the music does not pause the image slides.
+> \***About playlists:** User can create a playlist by selecting any number of the provided songs in Showcase setup they want to include. They can choose the play order, including toggling shuffle, which overrides any previous order they may have set.
+> _Audio tracks are provided in `/server/public/audio`. They are all original, never-released, mostly rough/unfinished pieces of mine. There are no samples used that need to be cleared and no other licensing/permissions necessary to use them)._
+
+[Devin Delgado](https://github.com/dzaeltic)
+[Garrin Costa Jr.](https://github.com/Gmcjr)
+[Christian Fields](https://github.com/cfields05)
+[Claire Happel](https://github.com/ClaireHappel)

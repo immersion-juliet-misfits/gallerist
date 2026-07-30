@@ -21,22 +21,34 @@ function Search() {
   // boolean state value for spinner
   const [isLoading, setIsLoading] = useState(false);
 
+  // state to check if something is owned
+  const [ownedInventory, setOwnedInventory] = useState([]);
+
   // Modal state for 404 errors
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  // function to fetch all pieces of art currently in the database
+  const fetchInventory = () => {
+    axios.get('/db/art/')
+      .then((res) => {
+        const urls = res.data.map((art) => art.imageUrl);
+        setOwnedInventory(urls);
+      })
+      .catch((err) => console.error('Failed to fetch global inventory:', err));
+  };
+
   // axios post request to user's gallery
-  function postToGallery(artObj) {
+  function postToGallery(artObj, imageUrl) {
     axios.post('/db/art', {
       art: {
         title: artObj.title,
-        artist: artObj.people[0].displayname,
+        artist: artObj.people?.[0].displayname || 'unknown',
         date: artObj.dated,
         culture: artObj.culture,
-        imageId: artObj.id,
         url: artObj.url,
-        imageUrl: artObj.images[0].baseimageurl,
+        imageUrl,
         isForSale: false,
         price: 0,
       },
@@ -44,6 +56,8 @@ function Search() {
       // console.log('succesfully posted to db');
       setMessage('Piece acquired for $5!');
       handleShow();
+      // if something is bought- fetch the inventory:
+      fetchInventory();
       // deduct $5 from wallet upon adding to gallery
       axios
         .put('/db/deductWallet/', {
@@ -73,12 +87,19 @@ function Search() {
   function idSearch(id) {
     axios(`/huam/object/${id}`)
       .then(({ data }) => {
-        // console.log(data);
-        if (data[0].images.length === 0) {
-          setMessage('Sorry this piece is no longer available');
+        const artObj = data[0];
+        const imageUrl = artObj.images?.[0]?.baseimageurl
+          || artObj.primaryimageurl
+          || artObj.baseimageurl;
+
+        if (!imageUrl) {
+          setMessage('Sorry, this piece has no image available');
           handleShow();
+          return;
         }
-        return postToGallery(data[0]);
+
+        // eslint-disable-next-line consistent-return
+        return postToGallery(artObj, imageUrl);
       })
       .catch((err) => console.error(err));
   }
@@ -87,9 +108,10 @@ function Search() {
     idSearch(id);
   });
 
-  // set default search on mount
+  // set default search on mount and fetchInventory on mount
   useEffect(() => {
     keywordSearch('abstract');
+    fetchInventory();
   }, []);
 
   return (
@@ -111,7 +133,6 @@ function Search() {
         size="sm"
         variant="outline"
         onClick={() => {
-          // console.log('keyword: ', search);
           if (search.length > 0) {
             keywordSearch(search);
             setIsLoading(true);
@@ -130,15 +151,18 @@ function Search() {
       </Button>
       <br />
       <Row align="center" gap={3} style={{ listStyleType: 'none', paddingTop: '20px' }}>
-        {
-          images.map((image) => (
+        {images.map((image) => {
+          const isOwned = ownedInventory.includes(image.baseimageurl);
+
+          return (
             <SearchItem
               image={image}
               key={image.id}
               idSearch={handleClick}
+              isOwned={isOwned}
             />
-          ))
-        }
+          );
+        })}
       </Row>
 
       <Modal show={show} onHide={handleClose}>

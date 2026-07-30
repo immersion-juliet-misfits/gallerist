@@ -23,7 +23,7 @@ function HeistSuccess({ selectedVault }) {
       <Row>
         {Array.isArray(selectedVault.artGallery)
         && art.map((artwork, i) => (
-          <Col key={`${artwork.imageId}-${i}`}>
+          <Col key={`${artwork._id}-${i}`}>
             <HeistArt artwork={artwork} />
           </Col>
         ))}
